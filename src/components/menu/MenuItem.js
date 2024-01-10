@@ -1,6 +1,6 @@
 import { CartContext } from "@/components/AppContext";
 import { useContext } from "react";
-import FlyingButton from "react-flying-item";
+// import FlyingButton from "react-flying-item";
 
 export default function MenuItem(menuItem) {
   const { image, name, description, basePrice } = menuItem;
@@ -22,14 +22,14 @@ export default function MenuItem(menuItem) {
       <h4 className="font-semibold text-xl my-3">{name}</h4>
       <p className="text-gray-500 text-sm line-clamp-3">{description}</p>
       <div className="flying-button-parent mt-4">
-        <FlyingButton targetTop={"5%"} targetLeft={"95%"} src={image}>
-          <div
-            className="primary sticky bottom-2"
-            onClick={handleAddToCartButtonClick}
-          >
-            Add to cart ${basePrice}
-          </div>
-        </FlyingButton>
+        {/* <FlyingButton targetTop={"5%"} targetLeft={"95%"} src={image}> */}
+        {/*   <div */}
+        {/*     className="primary sticky bottom-2" */}
+        {/*     onClick={handleAddToCartButtonClick} */}
+        {/*   > */}
+        {/*     Add to cart ${basePrice} */}
+        {/*   </div> */}
+        {/* </FlyingButton> */}
       </div>
     </div>
   );

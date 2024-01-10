@@ -1,10 +1,10 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faHouse } from "@fortawesome/free-solid-svg-icons";
-import {
-  faLinkedinIn,
-  faInstagram,
-  faTiktok,
-} from "@fortawesome/free-brands-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEnvelope, faHouse } from "@fortawesome/free-solid-svg-icons";
+// import {
+//   faLinkedinIn,
+//   faInstagram,
+//   faTiktok,
+// } from "@fortawesome/free-brands-svg-icons";
 import SectionHeaders from "./SectionHeaders";
 
 export default function Header() {
@@ -20,7 +20,8 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-800"
             >
-              <FontAwesomeIcon icon={faEnvelope} className="social-icon-size" />
+							A
+              {/* <FontAwesomeIcon icon={faEnvelope} className="social-icon-size" /> */}
             </a>
           </li>
           <li className="mr-4">
@@ -30,10 +31,11 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-800"
             >
-              <FontAwesomeIcon
-                icon={faLinkedinIn}
-                className="social-icon-size"
-              />
+							A
+              {/* <FontAwesomeIcon */}
+                {/* icon={faLinkedinIn} */}
+                {/* className="social-icon-size" */}
+              {/* /> */}
             </a>
           </li>
           <li className="mr-4">
@@ -43,10 +45,11 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-800"
             >
-              <FontAwesomeIcon
-                icon={faInstagram}
-                className="social-icon-size"
-              />
+							A
+              {/* <FontAwesomeIcon */}
+                {/* icon={faInstagram} */}
+                {/* className="social-icon-size" */}
+              {/* /> */}
             </a>
           </li>
           <li className="mr-4">
@@ -56,7 +59,8 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-800"
             >
-              <FontAwesomeIcon icon={faTiktok} className="social-icon-size" />
+							A
+              {/* <FontAwesomeIcon icon={faTiktok} className="social-icon-size" /> */}
             </a>
           </li>
           <li>
@@ -66,7 +70,8 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-800"
             >
-              <FontAwesomeIcon icon={faHouse} className="social-icon-size" />
+							A
+              {/* <FontAwesomeIcon icon={faHouse} className="social-icon-size" /> */}
             </a>
           </li>
         </ul>
