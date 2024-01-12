@@ -23,6 +23,7 @@ export default function CartPage() {
   //calculate item cost
   let subtotal = 0;
   for (const p of cartProducts) {
+		console.log(parseInt(p.price))
     subtotal += cartProductPrice(p);
   }
 

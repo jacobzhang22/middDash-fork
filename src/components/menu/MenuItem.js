@@ -7,6 +7,7 @@ export default function MenuItem(menuItem) {
   const { addToCart } = useContext(CartContext);
 
   function handleAddToCartButtonClick() {
+		console.log("adding to car")
     addToCart(menuItem);
   }
 
@@ -26,7 +27,7 @@ export default function MenuItem(menuItem) {
       <div className="flying-button-parent mt-4">
         <div targetTop={"5%"} targetLeft={"95%"} src={image}>
           <div
-            className="primary sticky bottom-2 cursor-pointer "
+            className="primary sticky bottom-2 cursor-pointer border-black border-2 rounded-[10px] "
             onClick={handleAddToCartButtonClick}
           >
             Add to cart ${price}

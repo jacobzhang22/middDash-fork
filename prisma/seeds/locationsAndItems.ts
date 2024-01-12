@@ -16,11 +16,12 @@ async function main() {
 				create: [
 					{
 						name: 'Dr Feel Good',
-						price: "5"
+						price: 5,
+						featured: true
 					},
 					{
 						name: 'Something else',
-						price: "2"
+						price: 2
 					},
 				],
 			},
@@ -38,11 +39,11 @@ async function main() {
 				create: [
 					{
 						name: 'Pizza',
-						price: "4"
+						price: 4
 					},
 					{
 						name: 'Gatorade',
-						price: '19',
+						price: 19,
 					},
 				],
 			},

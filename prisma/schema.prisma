@@ -21,7 +21,7 @@ model Item {
   location            Location   @relation(fields: [locationId], references: [id])
   locationId          String 
 	image String?
-	price               String @default("5")
+	price               Int @default(5)
 	featured Boolean    @default(false)
  
 }
