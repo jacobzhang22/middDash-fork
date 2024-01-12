@@ -12,13 +12,18 @@ model Location {
   id    String @id @default(cuid()) @map("_id") 
 	name  String @unique
   items Item[]
+	image String?
 }
 
 model Item {
-  id       String @id @default(cuid()) @map("_id") 
-	name 		 String @unique
-  location   Location   @relation(fields: [locationId], references: [id])
-  locationId String 
+  id                  String @id @default(cuid()) @map("_id") 
+	name 		            String @unique
+  location            Location   @relation(fields: [locationId], references: [id])
+  locationId          String 
+	image String?
+	price               String @default("5")
+	featured Boolean    @default(false)
+ 
 }
 
 

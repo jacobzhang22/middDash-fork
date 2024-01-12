@@ -19,7 +19,7 @@ export default function MenuPage() {
             <div className="text-center">
               <SectionHeaders mainHeader={location.name} />
             </div>
-            <div className="grid grid-cols-3 gap-4 mt-6 mb-12">
+            <div className="flex flex-row justify-center gap-4 mt-6 mb-12">
               { location.items
                 .map((item) => (
 									<div key = {item.key} >

@@ -6,7 +6,7 @@ import SectionHeaders from "./SectionHeaders";
 export default function HomeMenu() {
   const [featuredItems, setFeaturedItems] = useState([]);
   useEffect(() => {
-    fetch("/api/menu-items").then((res) => {
+    fetch("/api/menu-items/featured").then((res) => {
       res.json().then((menuItems) => {
         setFeaturedItems(menuItems.slice(-3));
       });
@@ -18,9 +18,13 @@ export default function HomeMenu() {
       <div className="text-center mb-4">
         <SectionHeaders mainHeader={"Featured Items"} />
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className=" flex flex-row justify-center gap-4">
         {featuredItems?.length > 0 &&
-          featuredItems.map((item) => <MenuItem {...item} />)}
+          featuredItems.map((item) => (
+						<div key = {item.id}>
+							<MenuItem {...item} />
+						</div>
+				))}
       </div>
     </section>
   );
