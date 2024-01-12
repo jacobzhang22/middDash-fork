@@ -1,5 +1,6 @@
 import { MenuItem } from "../../../models/MenuItem";
-import mongoose from "mongoose";
+import { PrismaClient } from '@prisma/client'
+// import mongoose from "mongoose";
 
 export async function POST(req) {
   mongoose.connect(process.env.MONGO_URL);
@@ -16,8 +17,17 @@ export async function PUT(req) {
 }
 
 export async function GET() {
-  mongoose.connect(process.env.MONGO_URL);
-  return Response.json(await MenuItem.find());
+	const prisma = new PrismaClient()
+
+	const allItems = await prisma.location.findMany({
+		include: {
+			items: true,
+		},
+	})
+
+	await prisma.$disconnect()
+  // mongoose.connect(process.env.MONGO_URL);
+  return Response.json(allItems);
 }
 
 export async function DELETE(req) {

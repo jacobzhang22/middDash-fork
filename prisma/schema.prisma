@@ -7,6 +7,22 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+
+model Location {
+  id    String @id @default(cuid()) @map("_id") 
+	name  String @unique
+  items Item[]
+}
+
+model Item {
+  id       String @id @default(cuid()) @map("_id") 
+	name 		 String @unique
+  location   Location   @relation(fields: [locationId], references: [id])
+  locationId String 
+}
+
+
+
 model Account {
   id                 String    @id @default(cuid())
   userId             String
@@ -22,6 +38,7 @@ model Account {
 
   @@unique([providerId, providerAccountId])
 }
+
 
 model Session {
   id           String   @id @default(cuid())

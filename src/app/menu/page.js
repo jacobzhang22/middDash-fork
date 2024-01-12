@@ -4,30 +4,27 @@ import MenuItem from "@/components/menu/MenuItem";
 import { useEffect, useState } from "react";
 
 export default function MenuPage() {
-  const [categories, setCategories] = useState([]);
-  const [menuItems, setMenuItems] = useState([]);
+  const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    fetch("/api/categories").then((res) => {
-      res.json().then((categories) => setCategories(categories));
-    });
-    fetch("/api/menu-items").then((res) => {
-      res.json().then((menuItems) => setMenuItems(menuItems));
+    fetch("/api/locations?items=true").then((res) => {
+      res.json().then((locationItems) => setLocations(locationItems));
     });
   }, []);
   return (
     <section className="mt-8">
-      {categories?.length > 0 &&
-        categories.map((c) => (
-          <div>
+      {locations.length > 0 &&
+        locations.map((location) => (
+          <div key = {location.id}>
             <div className="text-center">
-              <SectionHeaders mainHeader={c.name} />
+              <SectionHeaders mainHeader={location.name} />
             </div>
             <div className="grid grid-cols-3 gap-4 mt-6 mb-12">
-              {menuItems
-                .filter((item) => item.category === c._id)
+              { location.items
                 .map((item) => (
-                  <MenuItem {...item} />
+									<div key = {item.key} >
+										<MenuItem {...item} />
+									</div>
                 ))}
             </div>
           </div>
