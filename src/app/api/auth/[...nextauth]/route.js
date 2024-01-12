@@ -1,10 +1,8 @@
-// import mongoose from "mongoose";
 import { User } from "../../../../models/User";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
-// import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/libs/mongoConnect";
 
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
@@ -13,9 +11,12 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-// mongoose.connect(process.env.MONGO_URL);
-
 export const authOptions = {
+
+	session: {
+		strategy: 'jwt',
+	},
+
   secret: process.env.SECRET,
   // adapter: MongoDBAdapter(clientPromise),
 	adapter: PrismaAdapter(prisma),
@@ -49,7 +50,8 @@ export const authOptions = {
         return null;
       },
     }),
-  ],
+	],
+
 };
 
 const handler = NextAuth(authOptions);
