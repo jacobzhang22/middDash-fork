@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
-import { User } from "@/models/User";
+import { PrismaClient } from '@prisma/client'
 
 export async function GET() {
-  mongoose.connect(process.env.MONGO_URL);
-  const users = await User.find();
-  return Response.json(users);
+	const prisma = new PrismaClient()
+	const users = await prisma.user.findMany()
+	prisma.$disconnect()
+	return Response.json(users);
 }

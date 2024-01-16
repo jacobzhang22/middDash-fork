@@ -7,43 +7,41 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-
 model Location {
-  id    String @id @default(cuid()) @map("_id") 
-	name  String @unique
+  id    String  @id @default(cuid()) @map("_id")
+  name  String  @unique
+  image String?
   items Item[]
-	image String?
 }
 
 model Item {
-  id                  String @id @default(cuid()) @map("_id") 
-	name 		            String @unique
-  location            Location   @relation(fields: [locationId], references: [id])
-  locationId          String 
-	image String?
-	price               Int @default(5)
-	featured Boolean    @default(false)
- 
+  id         String   @id @default(cuid()) @map("_id")
+  name       String   @unique
+  locationId String
+  image      String?
+  price      Int      @default(5)
+  featured   Boolean  @default(false)
+  location   Location @relation(fields: [locationId], references: [id])
 }
-
-
 
 model Account {
   id                 String    @id @default(cuid())
   userId             String
-  providerType       String
-  providerId         String
+  type       String
+  token_type       String
+  provider         String
+  scope         String
   providerAccountId  String
   refreshToken       String?
-  accessToken        String?
-  accessTokenExpires DateTime?
+  access_token        String?
+  expires_at Int
+	id_token           String?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   user               User      @relation(fields: [userId], references: [id])
 
-  @@unique([providerId, providerAccountId])
+  @@unique([provider, providerAccountId])
 }
-
 
 model Session {
   id           String   @id @default(cuid())
@@ -60,14 +58,14 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  phone         String?   @unique
-  dorm         String?   
-  roomNumber         String? 
-  password      String?
   emailVerified DateTime?
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  password      String?
+  dorm          String?
+  phone         String?   @unique
+  roomNumber    String?
   accounts      Account[]
   sessions      Session[]
 }
@@ -82,4 +80,3 @@ model VerificationRequest {
 
   @@unique([identifier, token])
 }
-
