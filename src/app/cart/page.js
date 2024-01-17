@@ -42,8 +42,10 @@ export default function CartPage() {
         cartProducts,
       }),
     });
-    const link = await response.json();
-    window.location = link;
+    const {data} = await response.json();
+
+		console.log("data", data )
+		
   }
 
   return (

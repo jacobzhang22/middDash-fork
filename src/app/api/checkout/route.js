@@ -3,6 +3,7 @@
 
 import {authOptions} from "../auth/[...nextauth]/route.js"
 import { PrismaClient } from "@prisma/client"
+import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 
 export async function POST(req, res) {
@@ -38,6 +39,10 @@ console.log("address", address);
 
 
 	prisma.$disconnect()
+
+		return new NextResponse(JSON.stringify(
+		{ data: order }
+	), { status: 200 })
 
 
   //   const stripeSession = await stripe.checkout.sessions.create({
