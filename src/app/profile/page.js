@@ -21,7 +21,7 @@ export default function ProfilePage() {
       fetch("/api/profile").then((response) => {
         response.json().then((data) => {
           setUser(data);
-          setIsAdmin(data.admin);
+          setIsAdmin(data.isAdmin);
           setProfileFetched(true);
         });
       });

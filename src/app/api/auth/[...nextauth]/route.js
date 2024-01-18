@@ -54,14 +54,17 @@ export const authOptions = {
 	callbacks: {
 		async session({ session, token, user }) {
 			session.user.id = token.userId
+			session.user.isAdmin = token.isAdmin
 			// console.log("returning session", session)
 			return session
 		},
 		async jwt({ token, user }) {
 			// * User only available on first run.
+			// console.log("cur user", user)
 			if (user) {
 				// console.log("have user", user)
 				token.userId = user.id
+				token.isAdmin = user.isAdmin
 				// token.premium = user.premium
 			}
 

@@ -12,9 +12,9 @@ export default function EditUserPage() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch("/api/profile?_id=" + id).then((res) => {
-      res.json().then((user) => {
-        setUser(user);
+    fetch("/api/users/" + id).then((res) => {
+      res.json().then((data) => {
+        setUser(data.user);
       });
     });
   }, []);
@@ -23,7 +23,7 @@ export default function EditUserPage() {
     ev.preventDefault();
 
     const promise = new Promise(async (resolve, reject) => {
-      const res = fetch("/api/profile", {
+      const res = fetch("/api/users/" + user.id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, _id: id }),
@@ -42,7 +42,7 @@ export default function EditUserPage() {
     return "Loading user profile...";
   }
 
-  if (!data.admin) {
+  if (!data.isAdmin) {
     return "Not an admin.";
   }
 
@@ -50,7 +50,7 @@ export default function EditUserPage() {
     <section className="mt-8 mx-auto max-w-2xl">
       <UserTabs isAdmin={true} />
       <div className="mt-8">
-        <UserForm user={user} onSave={handleSaveButtonClick} />
+				{user && <UserForm user={user} onSave = {handleSaveButtonClick}/>}
       </div>
     </section>
   );
