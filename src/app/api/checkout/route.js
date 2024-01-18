@@ -53,8 +53,8 @@ console.log("address", address);
 
 
 
-	console.log("cart procd", cartProducts)
-	console.log("testing", cartProducts.map(prod => {return `<span>${prod.name}</span>` }).join(", "))
+	// console.log("cart procd", cartProducts)
+	// console.log("testing", cartProducts.map(prod => {return `<span>${prod.name}</span>` }).join(", "))
 
 	var transporter = nodemailer.createTransport({
 		service: 'gmail',
@@ -66,7 +66,7 @@ console.log("address", address);
 
 	var mailOptions = {
 		from: 'midddevclub@gmail.com',
-		to: activeDashers[0].email,
+		to: activeDashers.map(dasher => dasher.email),
 		subject: 'New Order',
 		html: `
 		<div>
