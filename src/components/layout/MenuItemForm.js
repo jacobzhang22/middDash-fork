@@ -1,26 +1,28 @@
 import EditableImage from "@/components/layout/EditableImage";
 import { useEffect, useState } from "react";
+import DeleteButton from "@/components/DeleteButton";
 
-export default function MenuItemForm({ onSubmit, menuItem }) {
+export default function MenuItemForm({ onSubmit, menuItem, onDelete  }) {
   const [image, setImage] = useState(menuItem?.image || "");
   const [name, setName] = useState(menuItem?.name || "");
   const [description, setDescription] = useState(menuItem?.description || "");
-  const [basePrice, setBasePrice] = useState(menuItem?.basePrice || "");
+  const [price, setPrice] = useState(menuItem?.price || "");
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(menuItem?.category || "");
 
   useEffect(() => {
-    fetch("/api/categories").then((res) => {
-      res.json().then((categories) => {
-        setCategories(categories);
-      });
-    });
-  }, []);
+		console.log("menuItem", menuItem)
+    // fetch("/api/categories").then((res) => {
+    //   res.json().then((categories) => {
+    //     setCategories(categories);
+    //   });
+    // });
+  }, [menuItem]);
 
   return (
     <form
       onSubmit={(ev) =>
-        onSubmit(ev, { image, name, description, basePrice, category })
+        onSubmit(ev, { image, name, description, price, category })
       }
       className="mt-8 max-w-2xl mx-auto"
     >
@@ -49,16 +51,22 @@ export default function MenuItemForm({ onSubmit, menuItem }) {
             value={category}
             onChange={(ev) => setCategory(ev.target.value)}
           >
-            {categories?.length > 0 &&
-              categories.map((c) => <option value={c._id}>{c.name}</option>)}
+            {/* {categories?.length > 0 && */}
+            {/*   categories.map((c) => <option value={c._id}>{c.name}</option>)} */}
           </select>
-          <label>Price</label>
+          <label>Price ($) </label>
           <input
             type="text"
-            value={basePrice}
-            onChange={(ev) => setBasePrice(ev.target.value)}
+            value={price}
+            onChange={(ev) => setPrice(ev.target.value)}
           />
           <button type="submit">Save</button>
+					<div className = "mt-2" >
+					<DeleteButton
+            label="Delete this menu item"
+            onDelete={onDelete}
+          />
+					</div>
         </div>
       </div>
     </form>

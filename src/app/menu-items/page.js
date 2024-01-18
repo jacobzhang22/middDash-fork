@@ -49,7 +49,7 @@ export default function MenuItemsPage() {
               { location.items
                 .map((item) => (
 									<div key = {item.key} >
-										<Link href = {"/menu-items/" + item.id}>
+										<Link href = {"/menu-items/edit/" + item.id}>
 											<MenuItem {...item} />
 										</Link>
 									</div>
