@@ -72,7 +72,7 @@ export default function CategoriesPage() {
     return "Loading user info...";
   }
 
-  if (!profileData.admin) {
+  if (!profileData.isAdmin) {
     return "Not an admin";
   }
 
