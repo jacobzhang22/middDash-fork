@@ -9,15 +9,15 @@ import { useProfile } from "@/components/UseProfile";
 
 export default function CartPage() {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
-  const [address, setAddress] = useState({});
+	const [address, setAddress] = useState({phone: "", roomNumber: "", dorm: ""});
   const { data: profileData } = useProfile();
 
   useEffect(() => {
-    if (profileData?.roomNumber) {
-      const { phone, roomNumber, dorm } = profileData;
-      const addressFromProfile = { phone, roomNumber, dorm };
-      setAddress(addressFromProfile);
-    }
+    // if (profileData?.roomNumber) {
+    //   const { phone, roomNumber, dorm } = profileData;
+    //   const addressFromProfile = { phone, roomNumber, dorm };
+    //   setAddress(addressFromProfile);
+    // }
   }, [profileData]);
 
   //calculate item cost
@@ -28,9 +28,9 @@ export default function CartPage() {
   }
 
   function handleAddressChange(propName, value) {
-    setAddress((prevAddress) => {
-      ({ ...prevAddress, [propName]: value });
-    });
+		const newAddr = {...address}
+		newAddr[propName] = value
+		setAddress(newAddr)
   }
 
   async function proceedToCheckout(ev) {
@@ -42,8 +42,10 @@ export default function CartPage() {
         cartProducts,
       }),
     });
-    const link = await response.json();
-    window.location = link;
+    const {data} = await response.json();
+
+		console.log("data", data )
+		
   }
 
   return (

@@ -17,7 +17,7 @@ export const authOptions = {
 		strategy: 'jwt',
 	},
 
-  secret: process.env.SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   // adapter: MongoDBAdapter(clientPromise),
 	adapter: PrismaAdapter(prisma),
   providers: [
@@ -51,6 +51,25 @@ export const authOptions = {
       },
     }),
 	],
+	callbacks: {
+		async session({ session, token, user }) {
+			session.user.id = token.userId
+			// console.log("returning session", session)
+			return session
+		},
+		async jwt({ token, user }) {
+			// * User only available on first run.
+			if (user) {
+				// console.log("have user", user)
+				token.userId = user.id
+				// token.premium = user.premium
+			}
+
+			// console.log("returning token", token)
+			return token
+		}
+	}
+
 
 };
 
