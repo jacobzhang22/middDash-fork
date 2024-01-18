@@ -5,6 +5,7 @@ import {authOptions} from "../auth/[...nextauth]/route.js"
 import { PrismaClient } from "@prisma/client"
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
+import nodemailer from 'nodemailer'
 
 export async function POST(req, res) {
   // mongoose.connect(process.env.MONGO_URL);
@@ -36,6 +37,72 @@ console.log("address", address);
 			phone: address.phone
 		}
 	})
+
+
+	const location = await prisma.location.findUnique({
+		where: {id : order.locationId}
+	})
+	// send the order to everyone who has notifications on
+	//
+	const activeDashers = await prisma.user.findMany({
+		where : {isDasher: true, dasherNotifications: true }
+	})
+	console.log("active dashers:", activeDashers)
+
+
+
+
+
+	console.log("cart procd", cartProducts)
+	console.log("testing", cartProducts.map(prod => {return `<span>${prod.name}</span>` }).join(", "))
+
+	var transporter = nodemailer.createTransport({
+		service: 'gmail',
+		auth: {
+			user: 'midddevclub@gmail.com',
+			pass: 'ejuq wnnj iorg ggya'
+		}
+	});
+
+	var mailOptions = {
+		from: 'midddevclub@gmail.com',
+		to: activeDashers[0].email,
+		subject: 'New Order',
+		html: `
+		<div>
+		New order:
+		<br/>
+			From: ${location.name}
+			<br/>
+			To: ${order.destinationDorm}
+			<br/>
+			Items: ${cartProducts.map(prod => {return `<span> ${prod.name} </span>` }).join(", ")}
+		</div>
+		`
+	};
+
+	transporter.sendMail(mailOptions, function(error, info){
+		if (error) {
+			console.log(error);
+		} else {
+			console.log('Email sent: ' + info.response);
+		}
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	prisma.$disconnect()
