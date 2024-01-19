@@ -14,9 +14,9 @@ export async function PUT(req, context) {
 	const targetItemId = context.params.id
 
 	// if the currnet user is an admin
-	console.log("session", session)
 	if(session.user.isAdmin) {
 		const body = await req.json()
+	console.log("body", body)
 
 		const currentItem = await prisma.item.findUnique({ 
 			where: { id : targetItemId }, 
@@ -27,6 +27,11 @@ export async function PUT(req, context) {
 			data: {
 				name: body.name ? body.name : currentItem.name,
 				price: body.price ? parseInt(body.price) : currentItem.price,
+				location: {
+					connect: {
+						id: body.location,
+					}
+				},
 			}
 
 		});
@@ -60,4 +65,25 @@ export async function GET(req, context) {
 	prisma.$disconnect()
 
 	return Response.json({item: item});
+}
+
+export async function DELETE(req, context) {
+
+const prisma = new PrismaClient()
+	const session = await getServerSession(authOptions);
+	const targetItemId = context.params.id
+
+	// if the currnet user is an admin
+	if(session.user.isAdmin) {
+
+		const deletedItem = await prisma.item.delete({ 
+			where: { id : targetItemId } 
+		});
+
+		return Response.json({status: "success"});
+	}
+
+	prisma.$disconnect()
+	return Response.json({user: "error"});
+
 }

@@ -1,6 +1,8 @@
 import EditableImage from "@/components/layout/EditableImage";
 import { useEffect, useState } from "react";
 import DeleteButton from "@/components/DeleteButton";
+import { useSearchParams } from 'next/navigation'
+
 
 export default function MenuItemForm({ onSubmit, menuItem, onDelete  }) {
   const [image, setImage] = useState(menuItem?.image || "");
@@ -8,21 +10,36 @@ export default function MenuItemForm({ onSubmit, menuItem, onDelete  }) {
   const [description, setDescription] = useState(menuItem?.description || "");
   const [price, setPrice] = useState(menuItem?.price || "");
   const [categories, setCategories] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [location, setLocation] = useState(menuItem?.locationId || "");
   const [category, setCategory] = useState(menuItem?.category || "");
 
   useEffect(() => {
 		console.log("menuItem", menuItem)
-    // fetch("/api/categories").then((res) => {
-    //   res.json().then((categories) => {
-    //     setCategories(categories);
-    //   });
-    // });
+    fetch("/api/locations").then((res) => {
+      res.json().then((newLocations) => {
+        setLocations(newLocations);
+				if(location == ""){
+					setLocation(newLocations[0].id)
+				}
+				console.log("new locations", newLocations)
+      });
+    });
   }, [menuItem]);
+
+	const searchParams = useSearchParams()
+ 
+  const paramLoc = searchParams.get('location')
+  useEffect(() => {
+		setLocation(paramLoc)
+  }, [paramLoc]);
+ 
+
 
   return (
     <form
       onSubmit={(ev) =>
-        onSubmit(ev, { image, name, description, price, category })
+        onSubmit(ev, { image, name, description, price, location })
       }
       className="mt-8 max-w-2xl mx-auto"
     >
@@ -40,20 +57,22 @@ export default function MenuItemForm({ onSubmit, menuItem, onDelete  }) {
             value={name}
             onChange={(ev) => setName(ev.target.value)}
           />
+
+          <label>Location</label>
+          <select
+            value={location}
+            onChange={(ev) => setLocation(ev.target.value)}
+          >
+            {locations?.length > 0 && 
+               locations.map((l) => <option  key = {l.id} value={l.id}>{l.name}</option>)}
+          </select>
+
           <label>Description</label>
           <input
             type="text"
             value={description}
             onChange={(ev) => setDescription(ev.target.value)}
           />
-          <label>Category</label>
-          <select
-            value={category}
-            onChange={(ev) => setCategory(ev.target.value)}
-          >
-            {/* {categories?.length > 0 && */}
-            {/*   categories.map((c) => <option value={c._id}>{c.name}</option>)} */}
-          </select>
           <label>Price ($) </label>
           <input
             type="text"
