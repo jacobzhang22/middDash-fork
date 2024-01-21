@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import MenuItem from "@/components/menu/MenuItem";
+import NewMenuItem from "@/components/menu/NewMenuItem";
 
 export default function MenuItemsPage() {
   const { loading, data } = useProfile();
@@ -45,15 +46,21 @@ export default function MenuItemsPage() {
             <div className="text-center">
               <SectionHeaders mainHeader={location.name} />
             </div>
-            <div className="flex flex-row justify-center gap-4 mt-6 mb-12">
+            <div className="flex flex-row justify-center items-stretch gap-4 mt-6 mb-12">
               { location.items
                 .map((item) => (
 									<div key = {item.key} >
-										<Link href = {"/menu-items/" + item.id}>
+										<Link href = {"/menu-items/edit/" + item.id}>
 											<MenuItem {...item} />
 										</Link>
 									</div>
                 ))}
+							<div className = "" >
+								<Link href = {`/menu-items/new?location=${location.id}`} className = " h-full " >
+									<NewMenuItem />
+								</Link>
+
+							</div>
             </div>
           </div>
         ))}

@@ -1,12 +1,36 @@
 import { MenuItem } from "../../../models/MenuItem";
 import { PrismaClient } from '@prisma/client'
-// import mongoose from "mongoose";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export async function POST(req) {
-  mongoose.connect(process.env.MONGO_URL);
-  const data = await req.json();
-  const menuItemDoc = await MenuItem.create(data);
-  return Response.json(menuItemDoc);
+export async function POST(req, context) {
+
+	const prisma = new PrismaClient()
+	const session = await getServerSession(authOptions);
+
+	// if the currnet user is an admin
+	if(session.user.isAdmin) {
+		const body = await req.json()
+	// console.log("body", body)
+
+		const newItem = await prisma.item.create({ 
+			data: {
+				name: body.name ,
+				price: parseInt(body.price) ,
+				location: {
+					connect: {
+						id: body.location,
+					}
+				},
+			}
+
+		});
+		return Response.json({item: newItem});
+	}
+
+	prisma.$disconnect()
+	return Response.json({item: "error"});
+
 }
 
 export async function PUT(req) {

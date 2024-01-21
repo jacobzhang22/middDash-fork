@@ -17,39 +17,38 @@ export default function EditMenuItemPage() {
   const { loading, data } = useProfile();
 
   useEffect(() => {
-    fetch("/api/menu-items").then((res) => {
-      res.json().then((items) => {
-        const item = items.find((i) => i._id === id);
-        setMenuItem(item);
+    fetch("/api/menu-items/" + id).then((res) => {
+      res.json().then((data) => {
+        setMenuItem(data.item);
       });
     });
   }, []);
 
   async function handleFormSubmit(ev, data) {
+		console.log("submitting")
     ev.preventDefault();
-    data = { ...data, _id: id };
-    const savingPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch("/api/menu-items", {
-        method: "PUT",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (response.ok) resolve();
-      else reject();
-    });
+    data = { ...data, id: id };
+		const response = await fetch("/api/menu-items/" + id, {
+			method: "PUT",
+			body: JSON.stringify(data),
+			headers: { "Content-Type": "application/json" },
+		});
+		const parsedData = await response.json()
+		setMenuItem(parsedData.item)
 
-    await toast.promise(savingPromise, {
-      loading: "Saving item",
-      success: "Saved",
-      error: "Error",
-    });
+    // await toast.promise(savingPromise, {
+    //   loading: "Saving item",
+    //   success: "Saved",
+    //   error: "Error",
+    // });
 
-    setRedirectToItems(true);
+    // setRedirectToItems(true);
   }
 
   async function handleDeleteClick() {
+
     const promise = new Promise(async (resolve, reject) => {
-      const res = await fetch("/api/menu-items?_id=" + id, {
+      const res = await fetch("/api/menu-items/" + id, {
         method: "DELETE",
       });
       if (res.ok) resolve();
@@ -73,7 +72,7 @@ export default function EditMenuItemPage() {
     return "Loading user info...";
   }
 
-  if (!data.admin) {
+  if (!data.isAdmin) {
     return "Not an admin.";
   }
 
@@ -86,15 +85,7 @@ export default function EditMenuItemPage() {
           <span>Show all menu items</span>
         </Link>
       </div>
-      <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit} />
-      <div className="max-w-md mx-auto mt-2">
-        <div className="max-w-xs ml-auto pl-4">
-          <DeleteButton
-            label="Delete this menu item"
-            onDelete={handleDeleteClick}
-          />
-        </div>
-      </div>
+			{menuItem && <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit} onDelete  = {handleDeleteClick}/>}
     </section>
   );
 }
