@@ -1,15 +1,14 @@
-"use client";
-import UserTabs from "@/components/layout/UserTabs";
-import { useEffect, useState } from "react";
-import { useProfile } from "@/components/UseProfile";
-import toast from "react-hot-toast";
-import DeleteButton from "@/components/DeleteButton";
+'use client';
+
+// import { useState } from 'react';
+import UserTabs from '@/components/layout/UserTabs';
+// import { useProfile } from '@/components/UseProfile';
 
 export default function CategoriesPage() {
-  const [categoryName, setCategoryName] = useState("");
-  const [categories, setCategories] = useState([]);
-  const { loading: profileLoading, data: profileData } = useProfile();
-  const [editedCategory, setEditedCategory] = useState(null);
+  // const [categoryName, setCategoryName] = useState('');
+  // const [categories, setCategories] = useState([]);
+  // const { loading: profileLoading, data: profileData } = useProfile();
+  // const [editedCategory, setEditedCategory] = useState(null);
 
   // useEffect(() => {
   //   fetchCategories();
@@ -78,7 +77,7 @@ export default function CategoriesPage() {
 
   return (
     <section className="mt-8 max-w-2xl mx-auto">
-      <UserTabs isAdmin={true} />
+      <UserTabs isAdmin />
       {/* <form className="mt-8" onSubmit={handleCategorySubmit}> */}
       {/*   <div className="flex gap-2 items-end"> */}
       {/*     <div className="grow"> */}

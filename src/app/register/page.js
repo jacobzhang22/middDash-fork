@@ -1,12 +1,13 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-import { signIn } from "next-auth/react";
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 
 export default function RegisterPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [creatingUser, setCreatingUser] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
   const [error, setError] = useState(false);
@@ -15,10 +16,10 @@ export default function RegisterPage() {
     setCreatingUser(true);
     setError(false);
     setUserCreated(false);
-    const response = await fetch("/api/register", {
-      method: "POST",
+    const response = await fetch('/api/register', {
+      method: 'POST',
       body: JSON.stringify({ email, password }),
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
     if (response.ok) {
       setUserCreated(true);
@@ -32,8 +33,12 @@ export default function RegisterPage() {
       <h1 className="text-center text-primary text-4xl mb-4">Register</h1>
       {userCreated && (
         <div className="my-4 text-center">
-          User created. <br></br>Now you can{" "}
-          <Link className="underline" href={"/login"}>
+          User created.
+          {' '}
+          <br />
+          Now you can
+          {' '}
+          <Link className="underline" href="/login">
             Login &raquo;
           </Link>
         </div>
@@ -67,15 +72,16 @@ export default function RegisterPage() {
           or login with provider
         </div>
         <button
-          onClick={(e) => {e.preventDefault(); signIn("google", { callbackUrl: "/" })}}
+          onClick={(e) => { e.preventDefault(); signIn('google', { callbackUrl: '/' }); }}
           className="flex gap-4 justify-center"
         >
-          <Image src={"/google.png"} alt={""} width={24} height={24} />
+          <Image src="/google.png" alt="" width={24} height={24} />
           Login with google
         </button>
         <div className="text-center my-4 text-gray-500 border-t pt-4">
-          Existing account?{" "}
-          <Link classname="underline" href={"/login"}>
+          Existing account?
+          {' '}
+          <Link classname="underline" href="/login">
             Login here &raquo;
           </Link>
         </div>

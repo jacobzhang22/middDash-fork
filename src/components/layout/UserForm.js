@@ -1,23 +1,24 @@
-"use client";
-import { useState } from "react";
-import { useProfile } from "../UseProfile";
-import AddressInputs from "@/components/layout/AddressInputs";
+'use client';
+
+import { useState } from 'react';
+import { useProfile } from '../UseProfile';
+import AddressInputs from '@/components/layout/AddressInputs';
 
 export default function UserForm({ user, onSave }) {
-  const [userName, setUserName] = useState(user?.name || "");
-  const [image, setImage] = useState(user?.image || "");
-  const [phone, setPhone] = useState(user?.phone || "");
-  const [roomNumber, setRoomNumber] = useState(user?.roomNumber || "");
-  const [dorm, setDorm] = useState(user?.dorm || "");
+  const [userName, setUserName] = useState(user?.name || '');
+  const [image, setImage] = useState(user?.image || '');
+  const [phone, setPhone] = useState(user?.phone || '');
+  const [roomNumber, setRoomNumber] = useState(user?.roomNumber || '');
+  const [dorm, setDorm] = useState(user?.dorm || '');
   const [admin, setAdmin] = useState(user?.isAdmin || false);
   const [dasher, setDasher] = useState(user?.isDasher || false);
   const { data: loggedInUserData } = useProfile();
 
-	console.log("users", user)
+  console.log('users', user);
   function handleAddressChange(propName, value) {
-    if (propName === "dorm") setDorm(value);
-    if (propName === "roomNumber") setRoomNumber(value);
-    if (propName === "phone") setPhone(value);
+    if (propName === 'dorm') setDorm(value);
+    if (propName === 'roomNumber') setRoomNumber(value);
+    if (propName === 'phone') setPhone(value);
   }
 
   return (
@@ -29,9 +30,11 @@ export default function UserForm({ user, onSave }) {
       {/* </div> */}
       <form
         className="grow"
-        onSubmit={(ev) =>
-					{onSave(ev, { name: userName, image, phone, admin, roomNumber, dorm, dasher })}
-        }
+        onSubmit={(ev) => {
+          onSave(ev, {
+            name: userName, image, phone, admin, roomNumber, dorm, dasher,
+          });
+        }}
       >
         <label>First and last name</label>
         <input
@@ -43,9 +46,9 @@ export default function UserForm({ user, onSave }) {
         <label>Email</label>
         <input
           type="email"
-          disabled={true}
+          disabled
           value={user.email}
-          placeholder={"email"}
+          placeholder="email"
         />
         <AddressInputs
           addressProps={{
@@ -65,28 +68,28 @@ export default function UserForm({ user, onSave }) {
                 id="adminCb"
                 type="checkbox"
                 className=""
-                value={"1"}
+                value="1"
                 checked={admin}
                 onClick={(ev) => setAdmin(ev.target.checked)}
               />
               <span>Admin</span>
             </label>
-          <div>
-            <label
-              className="p-2 inline-flex items-center gap-2 mb-2"
-              htmlFor="dasherCb"
-            >
-              <input
-                id="dasherCb"
-                type="checkbox"
-                className=""
-                value={"1"}
-                checked={dasher}
-                onClick={(ev) => setDasher(ev.target.checked)}
-              />
-              <span>Dasher</span>
-            </label>
-          </div>
+            <div>
+              <label
+                className="p-2 inline-flex items-center gap-2 mb-2"
+                htmlFor="dasherCb"
+              >
+                <input
+                  id="dasherCb"
+                  type="checkbox"
+                  className=""
+                  value="1"
+                  checked={dasher}
+                  onClick={(ev) => setDasher(ev.target.checked)}
+                />
+                <span>Dasher</span>
+              </label>
+            </div>
           </div>
         )}
         <button type="submit" className="my-2">

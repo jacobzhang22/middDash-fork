@@ -1,10 +1,7 @@
 // import mongoose from "mongoose";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { User } from "@/models/User";
-import { UserInfo } from "@/models/UserInfo";
-import { PrismaClient } from "@prisma/client"
-
+import { getServerSession } from 'next-auth';
+import { PrismaClient } from '@prisma/client';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 // export async function PUT(req) {
 
@@ -18,11 +15,11 @@ import { PrismaClient } from "@prisma/client"
 
 // 	const body = await req.json()
 
-// 	const currentUser = await prisma.user.findUnique({ 
+// 	const currentUser = await prisma.user.findUnique({
 // 		where: { email : session.user.email},
 // 	});
 
-// 	const updatedUser = await prisma.user.update({ 
+// 	const updatedUser = await prisma.user.update({
 // 		where: { email : session.user.email},
 // 		data: {
 // 			name: body.name ? body.name : currentUser.name,
@@ -38,23 +35,23 @@ import { PrismaClient } from "@prisma/client"
 // }
 
 export async function GET(req) {
-const prisma = new PrismaClient()
- const session = await getServerSession(authOptions);
+  const prisma = new PrismaClient();
+  const session = await getServerSession(authOptions);
 
-	// console.log("session", session)
-	const user = await prisma.user.findUnique({ 
-		where: { email : session.user.email},
-		select: {
-			id: true,
-			isDasher: true,
-			isAdmin: true,
-			name: true,
-			phone: true,
-			dorm: true,
-			roomNumber: true
-		},	
-	});
-	prisma.$disconnect()
+  // console.log("session", session)
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: {
+      id: true,
+      isDasher: true,
+      isAdmin: true,
+      name: true,
+      phone: true,
+      dorm: true,
+      roomNumber: true,
+    },
+  });
+  prisma.$disconnect();
 
   return Response.json({ ...user });
 }

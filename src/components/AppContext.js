@@ -1,21 +1,22 @@
-"use client";
-import { SessionProvider } from "next-auth/react";
-import { createContext, useEffect, useState } from "react";
+'use client';
+
+import { SessionProvider } from 'next-auth/react';
+import { createContext, useEffect, useState } from 'react';
 
 export const CartContext = createContext({});
 
 export function cartProductPrice(cartProduct) {
-  let price = parseInt(cartProduct.price);
+  const price = parseInt(cartProduct.price);
   return price;
 }
 
 export function AppProvider({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
-  const ls = typeof window !== "undefined" ? window.localStorage : null;
+  const ls = typeof window !== 'undefined' ? window.localStorage : null;
 
   useEffect(() => {
-    if (ls && ls.getItem("cart")) {
-      setCartProducts(JSON.parse(ls.getItem("cart")));
+    if (ls && ls.getItem('cart')) {
+      setCartProducts(JSON.parse(ls.getItem('cart')));
     }
   }, []);
 
@@ -27,7 +28,7 @@ export function AppProvider({ children }) {
   function removeCartProduct(indexToRemove) {
     setCartProducts((prevCartProducts) => {
       const newCartProducts = prevCartProducts.filter(
-        (v, index) => index !== indexToRemove
+        (v, index) => index !== indexToRemove,
       );
       saveCartProductsToLocalStorage(newCartProducts);
       return newCartProducts;
@@ -36,7 +37,7 @@ export function AppProvider({ children }) {
 
   function saveCartProductsToLocalStorage(cartProducts) {
     if (ls) {
-      ls.setItem("cart", JSON.stringify(cartProducts));
+      ls.setItem('cart', JSON.stringify(cartProducts));
     }
   }
 

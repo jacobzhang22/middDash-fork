@@ -1,9 +1,9 @@
-const { default: SectionHeaders } = require("./SectionHeaders");
+const { default: SectionHeaders } = require('./SectionHeaders');
 
 export default function Hero() {
   return (
     <section className="text-center my-16">
-      <SectionHeaders mainHeader={"About Us"} />
+      <SectionHeaders mainHeader="About Us" />
       <div className="text-gray-500 max-w-md mx-auto mt-4 flex flex-col gap-4">
         <p>
           MiddDev, also known as Middlebury Development, is a student-led
