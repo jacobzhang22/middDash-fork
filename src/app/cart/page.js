@@ -13,11 +13,11 @@ export default function CartPage() {
   const { data: profileData } = useProfile();
 
   useEffect(() => {
-    // if (profileData?.roomNumber) {
-    //   const { phone, roomNumber, dorm } = profileData;
-    //   const addressFromProfile = { phone, roomNumber, dorm };
-    //   setAddress(addressFromProfile);
-    // }
+    if (profileData?.roomNumber) {
+      const { phone, roomNumber, dorm } = profileData;
+      const addressFromProfile = { phone, roomNumber, dorm };
+      setAddress(addressFromProfile);
+    }
   }, [profileData]);
 
   //calculate item cost

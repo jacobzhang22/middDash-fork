@@ -74,6 +74,7 @@ model User {
   name          String?
   email         String?   @unique
   isDasher      Boolean   @default(false)
+	dasherNotifications Boolean   @default(false)
   isAdmin       Boolean   @default(false)
   emailVerified DateTime?
   image         String?
