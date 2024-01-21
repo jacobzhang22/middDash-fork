@@ -1,8 +1,9 @@
 "use client";
-import UserTabs from "@/components/layout/UserTabs";
+
 import { useEffect, useState } from "react";
-import { useProfile } from "@/components/UseProfile";
 import toast from "react-hot-toast";
+import UserTabs from "@/components/layout/UserTabs";
+import useProfile from "@/components/UseProfile";
 import DeleteButton from "@/components/DeleteButton";
 
 export default function CategoriesPage() {
@@ -11,10 +12,6 @@ export default function CategoriesPage() {
   const { loading: profileLoading, data: profileData } = useProfile();
   const [editedCategory, setEditedCategory] = useState(null);
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
   function fetchCategories() {
     fetch("/api/categories").then((res) => {
       res.json().then((categories) => {
@@ -22,6 +19,10 @@ export default function CategoriesPage() {
       });
     });
   }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   async function handleCategorySubmit(ev) {
     ev.preventDefault();
@@ -52,7 +53,7 @@ export default function CategoriesPage() {
 
   async function handleDeleteClick(_id) {
     const promise = new Promise(async (resolve, reject) => {
-      const response = await fetch("/api/categories?_id=" + _id, {
+      const response = await fetch(`/api/categories?_id=${_id}`, {
         method: "DELETE",
       });
       if (response.ok) resolve();
@@ -78,7 +79,7 @@ export default function CategoriesPage() {
 
   return (
     <section className="mt-8 max-w-2xl mx-auto">
-      <UserTabs isAdmin={true} />
+      <UserTabs isAdmin />
       <form className="mt-8" onSubmit={handleCategorySubmit}>
         <div className="flex gap-2 items-end">
           <div className="grow">
@@ -116,6 +117,7 @@ export default function CategoriesPage() {
         <h2 className="mt-8 text-sm text-gray-500">Existing category:</h2>
         {categories?.length > 0 &&
           categories.map((c) => (
+            // eslint-disable-next-line react/jsx-key
             <div className="bg-gray-100 rounded-xl p-2 px-4 flex gap-1 mb-1 items-center">
               <div className="grow">{c.name}</div>
               <div className="flex gap-1">

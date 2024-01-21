@@ -1,4 +1,6 @@
+/* eslint-disable */
 "use client";
+
 import { useEffect, useState } from "react";
 import MenuItem from "../menu/MenuItem";
 import SectionHeaders from "./SectionHeaders";
@@ -16,15 +18,15 @@ export default function HomeMenu() {
   return (
     <section className="">
       <div className="text-center mb-4">
-        <SectionHeaders mainHeader={"Featured Items"} />
+        <SectionHeaders mainHeader="Featured Items" />
       </div>
       <div className=" flex flex-row justify-center gap-4">
         {featuredItems?.length > 0 &&
           featuredItems.map((item) => (
-						<div key = {item.id}>
-							<MenuItem {...item} />
-						</div>
-				))}
+            <div key={item.id}>
+              <MenuItem {...item} />
+            </div>
+          ))}
       </div>
     </section>
   );

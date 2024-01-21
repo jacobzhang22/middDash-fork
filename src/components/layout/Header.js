@@ -1,11 +1,10 @@
 "use client";
-import { useSession } from "next-auth/react";
+
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/components/AppContext";
 import ShoppingCart from "@/components/icons/ShoppingCart";
-import { useEffect, useState } from "react";
 
 export default function Header() {
   const session = useSession();
@@ -15,29 +14,31 @@ export default function Header() {
   const { cartProducts } = useContext(CartContext);
 
   if (userName && userName.includes("")) {
+    // eslint-disable-next-line prefer-destructuring
     userName = userName.split(" ")[0];
   }
 
-	// useEffect(()=> {console.log("sesh", session)},[])
+  // useEffect(()=> {console.log("sesh", session)},[])
 
   return (
     <header className="flex items-center justify-between">
       <nav className="flex items-center gap-8 text-gray-500 font-semibold">
-        <Link className="text-primary font-semibold text-2xl" href={"/"}>
+        <Link className="text-primary font-semibold text-2xl" href="/">
           MIDD-DASH
         </Link>
-        <Link href={"/"}>Home</Link>
-        <Link href={"/menu"}>Menu</Link>
-        <Link href={"/#about"}>About</Link>
-        <Link href={"/#contact"}>Contact</Link>
-				{userData && userData.isAdmin && <Link href={"/admin"}>Admin</Link>}
+        <Link href="/">Home</Link>
+        <Link href="/menu">Menu</Link>
+        <Link href="/#about">About</Link>
+        <Link href="/#contact">Contact</Link>
+        {userData && userData.isAdmin && <Link href="/admin">Admin</Link>}
       </nav>
       <nav className="flex items-center gap-4 text-gray-500 font-semibold">
         {status === "authenticated" && (
           <>
-            <Link href={"/profile"} className="whitespace-nowrap">
+            <Link href="/profile" className="whitespace-nowrap">
               Hello, {userName}
             </Link>
+            {/* eslint-disable-next-line react/button-has-type */}
             <button
               onClick={() => signOut()}
               className="bg-primary rounded-full text-white px-8 py-2"
@@ -49,16 +50,16 @@ export default function Header() {
         )}
         {status === "unauthenticated" && (
           <>
-            <Link href={"/login"}>Login</Link>
+            <Link href="/login">Login</Link>
             <Link
-              href={"/register"}
+              href="/register"
               className="bg-primary rounded-full text-white px-8 py-2"
             >
               Register
             </Link>
           </>
         )}
-        <Link href={"/cart"} className="relative">
+        <Link href="/cart" className="relative">
           <ShoppingCart />
           <span className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
             {cartProducts.length}
