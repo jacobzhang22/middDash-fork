@@ -69,3 +69,4 @@ export async function GET(req, context) {
   // prisma.$disconnect()
   return Response.json({ user });
 }
+

@@ -1,12 +1,13 @@
 // import mongoose from "mongoose";
 // const stripe = require("stripe")(process.env.STRIPE_SK);
 
-import { PrismaClient } from '@prisma/client';
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/route';
+import {authOptions} from "../auth/[...nextauth]/route.js"
+import { PrismaClient } from "@prisma/client"
+import { NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import nodemailer from 'nodemailer'
 
-async function POST(req, res) {
+export async function POST(req, res) {
   // mongoose.connect(process.env.MONGO_URL);
   const session = await getServerSession(authOptions);
   console.log('session', session);
@@ -24,19 +25,86 @@ async function POST(req, res) {
   console.log('total price', totalPrice);
   console.log('address', address);
 
-  const order = await prisma.order.create({
-    data: {
-      userId: session.user.id,
-      locationId: cartProducts[0].locationId,
-      price: totalPrice,
-      items: { connect: cartProducts.map((prod) => ({ id: prod.id })) },
-      destinationDorm: address.dorm,
-      destinationRoom: address.roomNumber,
-      phone: address.phone,
-    },
-  });
+	const order = await prisma.order.create({
+		data: {
+			userId: session.user.id,
+			locationId: cartProducts[0].locationId,
+			price: totalPrice,
+			items: { connect: cartProducts.map(prod => { return  { id: prod.id }}) },
+			destinationDorm: address.dorm,
+			destinationRoom: address.roomNumber,
+			phone: address.phone
+		}
+	})
 
-  prisma.$disconnect();
+
+	const location = await prisma.location.findUnique({
+		where: {id : order.locationId}
+	})
+	// send the order to everyone who has notifications on
+	//
+	const activeDashers = await prisma.user.findMany({
+		where : {isDasher: true, dasherNotifications: true }
+	})
+	console.log("active dashers:", activeDashers)
+
+
+
+
+
+	// console.log("cart procd", cartProducts)
+	// console.log("testing", cartProducts.map(prod => {return `<span>${prod.name}</span>` }).join(", "))
+
+	var transporter = nodemailer.createTransport({
+		service: 'gmail',
+		auth: {
+			user: 'midddevclub@gmail.com',
+			pass: 'ejuq wnnj iorg ggya'
+		}
+	});
+
+	var mailOptions = {
+		from: 'midddevclub@gmail.com',
+		to: activeDashers.map(dasher => dasher.email),
+		subject: 'New Order',
+		html: `
+		<div>
+		New order:
+		<br/>
+			From: ${location.name}
+			<br/>
+			To: ${order.destinationDorm}
+			<br/>
+			Items: ${cartProducts.map(prod => {return `<span> ${prod.name} </span>` }).join(", ")}
+		</div>
+		`
+	};
+
+	transporter.sendMail(mailOptions, function(error, info){
+		if (error) {
+			console.log(error);
+		} else {
+			console.log('Email sent: ' + info.response);
+		}
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	prisma.$disconnect()
 
   return new NextResponse(JSON.stringify(
     { data: order },
