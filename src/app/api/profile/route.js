@@ -6,36 +6,36 @@ import { UserInfo } from "@/models/UserInfo";
 import { PrismaClient } from "@prisma/client"
 
 
-// export async function PUT(req) {
+export async function PUT(req) {
 
-// const prisma = new PrismaClient()
-//  const session = await getServerSession(authOptions);
+const prisma = new PrismaClient()
+ const session = await getServerSession(authOptions);
 
-// 	console.log("session", session)
-// 	if(session.user.isAdmin) {
-// 		console.log("have an admin")
-// 	}
+	console.log("session", session)
+	if(session.user.isAdmin) {
+		console.log("have an admin")
+	}
 
-// 	const body = await req.json()
+	const body = await req.json()
 
-// 	const currentUser = await prisma.user.findUnique({ 
-// 		where: { email : session.user.email},
-// 	});
+	const currentUser = await prisma.user.findUnique({ 
+		where: { email : session.user.email},
+	});
 
-// 	const updatedUser = await prisma.user.update({ 
-// 		where: { email : session.user.email},
-// 		data: {
-// 			name: body.name ? body.name : currentUser.name,
-// 			image: body.image ? body.image : currentUser.image,
-// 			phone: body.phone ? body.phone : currentUser.phone,
-// 			roomNumber: body.roomNumber ? body.roomNumber : currentUser.roomNumber,
-// 			dorm: body.dorm ? body.dorm : currentUser.dorm,
-// 		}
-// 	});
-// 	prisma.$disconnect()
+	const updatedUser = await prisma.user.update({ 
+		where: { email : session.user.email},
+		data: {
+			name: body.name ? body.name : currentUser.name,
+			image: body.image ? body.image : currentUser.image,
+			phone: body.phone ? body.phone : currentUser.phone,
+			roomNumber: body.roomNumber ? body.roomNumber : currentUser.roomNumber,
+			dorm: body.dorm ? body.dorm : currentUser.dorm,
+		}
+	});
+	prisma.$disconnect()
 
-//   return Response.json({updatedUser});
-// }
+  return Response.json({updatedUser});
+}
 
 export async function GET(req) {
 const prisma = new PrismaClient()
