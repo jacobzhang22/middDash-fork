@@ -5,12 +5,12 @@
 //   faInstagram,
 //   faTiktok,
 // } from "@fortawesome/free-brands-svg-icons";
-import SectionHeaders from "./SectionHeaders";
+import SectionHeaders from './SectionHeaders';
 
 export default function Header() {
   return (
     <section className="text-center my-8">
-      <SectionHeaders mainHeader={"Contact Us"} />
+      <SectionHeaders mainHeader="Contact Us" />
       <div className="mt-8">
         <ul className="flex list-none p-0 justify-center">
           <li className="mr-4">
@@ -20,7 +20,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-800"
             >
-							A
+              A
               {/* <FontAwesomeIcon icon={faEnvelope} className="social-icon-size" /> */}
             </a>
           </li>
@@ -31,10 +31,10 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-800"
             >
-							A
+              A
               {/* <FontAwesomeIcon */}
-                {/* icon={faLinkedinIn} */}
-                {/* className="social-icon-size" */}
+              {/* icon={faLinkedinIn} */}
+              {/* className="social-icon-size" */}
               {/* /> */}
             </a>
           </li>
@@ -45,10 +45,10 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-800"
             >
-							A
+              A
               {/* <FontAwesomeIcon */}
-                {/* icon={faInstagram} */}
-                {/* className="social-icon-size" */}
+              {/* icon={faInstagram} */}
+              {/* className="social-icon-size" */}
               {/* /> */}
             </a>
           </li>
@@ -59,7 +59,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-800"
             >
-							A
+              A
               {/* <FontAwesomeIcon icon={faTiktok} className="social-icon-size" /> */}
             </a>
           </li>
@@ -70,7 +70,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-800"
             >
-							A
+              A
               {/* <FontAwesomeIcon icon={faHouse} className="social-icon-size" /> */}
             </a>
           </li>

@@ -1,15 +1,22 @@
+/* eslint-disable */
+
 "use client";
-import { CartContext, cartProductPrice } from "@/components/AppContext";
-import SectionHeaders from "@/components/layout/SectionHeaders";
+
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
+import { CartContext, cartProductPrice } from "@/components/AppContext";
+import SectionHeaders from "@/components/layout/SectionHeaders";
 import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
-import { useProfile } from "@/components/UseProfile";
+import useProfile from "@/components/UseProfile";
 
 export default function CartPage() {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
-	const [address, setAddress] = useState({phone: "", roomNumber: "", dorm: ""});
+  const [address, setAddress] = useState({
+    phone: "",
+    roomNumber: "",
+    dorm: "",
+  });
   const { data: profileData } = useProfile();
 
   useEffect(() => {
@@ -20,17 +27,17 @@ export default function CartPage() {
     }
   }, [profileData]);
 
-  //calculate item cost
+  // calculate item cost
   let subtotal = 0;
   for (const p of cartProducts) {
-		console.log(parseInt(p.price))
+    console.log(parseInt(p.price));
     subtotal += cartProductPrice(p);
   }
 
   function handleAddressChange(propName, value) {
-		const newAddr = {...address}
-		newAddr[propName] = value
-		setAddress(newAddr)
+    const newAddr = { ...address };
+    newAddr[propName] = value;
+    setAddress(newAddr);
   }
 
   async function proceedToCheckout(ev) {
@@ -42,10 +49,9 @@ export default function CartPage() {
         cartProducts,
       }),
     });
-    const {data} = await response.json();
+    const { data } = await response.json();
 
-		console.log("data", data )
-		
+    console.log("data", data);
   }
 
   return (
@@ -60,7 +66,11 @@ export default function CartPage() {
           )}
           {cartProducts?.length > 0 &&
             cartProducts.map((product, index) => (
-              <div className="flex items-center gap-4 border-b py-4" key = {index}>
+              // eslint-disable-next-line react/no-array-index-key
+              <div
+                className="flex items-center gap-4 border-b py-4"
+                key={index}
+              >
                 <div className="w-24">
                   {/* <Image */}
                   {/*   src={product.image} */}

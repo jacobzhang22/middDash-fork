@@ -1,5 +1,6 @@
 "use client";
-import { useProfile } from "@/components/UseProfile";
+
+import useProfile from "@/components/UseProfile";
 import Right from "@/components/icons/Right";
 import UserTabs from "@/components/layout/UserTabs";
 import Image from "next/image";
@@ -31,39 +32,40 @@ export default function MenuItemsPage() {
 
   return (
     <section className="mt-8 max-w-2xl mx-auto">
-      <UserTabs isAdmin={true} />
+      <UserTabs isAdmin />
       <div className="mt-8">
-        <Link className="button flex" href={"/menu-items/new"}>
+        <Link className="button flex" href="/menu-items/new">
           <span>Create new menu item</span>
           <Right />
         </Link>
       </div>
       <div>
         <h2 className="text-sm text-gray-500 mt-8">Edit menu items:</h2>
-      {locations.length > 0 &&
-        locations.map((location) => (
-          <div key = {location.id}>
-            <div className="text-center">
-              <SectionHeaders mainHeader={location.name} />
-            </div>
-            <div className="flex flex-row justify-center items-stretch gap-4 mt-6 mb-12">
-              { location.items
-                .map((item) => (
-									<div key = {item.key} >
-										<Link href = {"/menu-items/edit/" + item.id}>
-											<MenuItem {...item} />
-										</Link>
-									</div>
+        {locations.length > 0 &&
+          locations.map((location) => (
+            <div key={location.id}>
+              <div className="text-center">
+                <SectionHeaders mainHeader={location.name} />
+              </div>
+              <div className="flex flex-row justify-center items-stretch gap-4 mt-6 mb-12">
+                {location.items.map((item) => (
+                  <div key={item.key}>
+                    <Link href={`/menu-items/edit/${item.id}`}>
+                      <MenuItem {...item} />
+                    </Link>
+                  </div>
                 ))}
-							<div className = "" >
-								<Link href = {`/menu-items/new?location=${location.id}`} className = " h-full " >
-									<NewMenuItem />
-								</Link>
-
-							</div>
+                <div className="">
+                  <Link
+                    href={`/menu-items/new?location=${location.id}`}
+                    className=" h-full "
+                  >
+                    <NewMenuItem />
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </section>
   );

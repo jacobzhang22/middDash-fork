@@ -1,11 +1,12 @@
 "use client";
+
 import { SessionProvider } from "next-auth/react";
 import { createContext, useEffect, useState } from "react";
 
 export const CartContext = createContext({});
 
 export function cartProductPrice(cartProduct) {
-  let price = parseInt(cartProduct.price);
+  const price = parseInt(cartProduct.price);
   return price;
 }
 
@@ -19,6 +20,12 @@ export function AppProvider({ children }) {
     }
   }, []);
 
+  function saveCartProductsToLocalStorage(cartProducts) {
+    if (ls) {
+      ls.setItem("cart", JSON.stringify(cartProducts));
+    }
+  }
+
   function clearCart() {
     setCartProducts([]);
     saveCartProductsToLocalStorage([]);
@@ -27,17 +34,11 @@ export function AppProvider({ children }) {
   function removeCartProduct(indexToRemove) {
     setCartProducts((prevCartProducts) => {
       const newCartProducts = prevCartProducts.filter(
-        (v, index) => index !== indexToRemove
+        (v, index) => index !== indexToRemove,
       );
       saveCartProductsToLocalStorage(newCartProducts);
       return newCartProducts;
     });
-  }
-
-  function saveCartProductsToLocalStorage(cartProducts) {
-    if (ls) {
-      ls.setItem("cart", JSON.stringify(cartProducts));
-    }
   }
 
   function addToCart(product) {
@@ -52,6 +53,7 @@ export function AppProvider({ children }) {
   return (
     <SessionProvider>
       <CartContext.Provider
+        // eslint-disable-next-line react/jsx-no-constructed-context-values
         value={{
           cartProducts,
           setCartProducts,

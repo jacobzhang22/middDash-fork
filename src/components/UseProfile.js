@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export function useProfile() {
+// eslint-disable-next-line import/prefer-default-export
+export default function useProfile() {
   const [data, setData] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {

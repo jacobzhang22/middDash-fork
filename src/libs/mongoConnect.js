@@ -9,6 +9,7 @@ const uri = process.env.MONGO_URL;
 const options = {};
 
 let client;
+// eslint-disable-next-line import/no-mutable-exports
 let clientPromise;
 
 if (process.env.NODE_ENV === "development") {

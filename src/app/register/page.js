@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -32,8 +33,9 @@ export default function RegisterPage() {
       <h1 className="text-center text-primary text-4xl mb-4">Register</h1>
       {userCreated && (
         <div className="my-4 text-center">
-          User created. <br></br>Now you can{" "}
-          <Link className="underline" href={"/login"}>
+          User created. <br />
+          Now you can{" "}
+          <Link className="underline" href="/login">
             Login &raquo;
           </Link>
         </div>
@@ -66,16 +68,20 @@ export default function RegisterPage() {
         <div className="my-4 text-center text-gray-500">
           or login with provider
         </div>
+        {/* eslint-disable-next-line react/button-has-type */}
         <button
-          onClick={(e) => {e.preventDefault(); signIn("google", { callbackUrl: "/" })}}
+          onClick={(e) => {
+            e.preventDefault();
+            signIn("google", { callbackUrl: "/" });
+          }}
           className="flex gap-4 justify-center"
         >
-          <Image src={"/google.png"} alt={""} width={24} height={24} />
+          <Image src="/google.png" alt="" width={24} height={24} />
           Login with google
         </button>
         <div className="text-center my-4 text-gray-500 border-t pt-4">
           Existing account?{" "}
-          <Link classname="underline" href={"/login"}>
+          <Link classname="underline" href="/login">
             Login here &raquo;
           </Link>
         </div>

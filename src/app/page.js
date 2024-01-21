@@ -1,7 +1,7 @@
-import Hero from "../components/layout/Hero";
-import HomeMenu from "../components/layout/HomeMenu";
-import AboutUs from "../components/layout/AboutUs";
-import SocialMediaBar from "../components/layout/SocialMediaBar";
+import Hero from '../components/layout/Hero';
+import HomeMenu from '../components/layout/HomeMenu';
+import AboutUs from '../components/layout/AboutUs';
+import SocialMediaBar from '../components/layout/SocialMediaBar';
 
 export default function Home() {
   return (

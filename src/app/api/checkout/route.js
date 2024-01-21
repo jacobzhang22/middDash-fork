@@ -1,74 +1,69 @@
 // import mongoose from "mongoose";
 // const stripe = require("stripe")(process.env.STRIPE_SK);
 
-import {authOptions} from "../auth/[...nextauth]/route.js"
-import { PrismaClient } from "@prisma/client"
-import { NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import nodemailer from 'nodemailer'
+import { PrismaClient } from "@prisma/client";
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import nodemailer from "nodemailer";
+import { authOptions } from "../auth/[...nextauth]/route";
 
+// eslint-disable-next-line import/prefer-default-export
 export async function POST(req, res) {
   // mongoose.connect(process.env.MONGO_URL);
-	const session = await getServerSession(authOptions)
-	console.log("session", session)
+  const session = await getServerSession(authOptions);
+  console.log("session", session);
 
-	const prisma = new PrismaClient()
+  const prisma = new PrismaClient();
   const { cartProducts, address } = await req.json();
-	console.log("cart", cartProducts)
+  console.log("cart", cartProducts);
 
+  // should really pull from db instead of post to avoid spoofing
+  const totalPrice = cartProducts.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.price,
+    0,
+  );
 
-	// should really pull from db instead of post to avoid spoofing
-	const totalPrice = cartProducts.reduce(
-		(accumulator, currentValue) => accumulator + currentValue.price,
-		0,
-	);
+  console.log("total price", totalPrice);
+  console.log("address", address);
 
-console.log("total price", totalPrice);
-console.log("address", address);
+  const order = await prisma.order.create({
+    data: {
+      userId: session.user.id,
+      locationId: cartProducts[0].locationId,
+      price: totalPrice,
+      items: { connect: cartProducts.map((prod) => ({ id: prod.id })) },
+      destinationDorm: address.dorm,
+      destinationRoom: address.roomNumber,
+      phone: address.phone,
+    },
+  });
 
-	const order = await prisma.order.create({
-		data: {
-			userId: session.user.id,
-			locationId: cartProducts[0].locationId,
-			price: totalPrice,
-			items: { connect: cartProducts.map(prod => { return  { id: prod.id }}) },
-			destinationDorm: address.dorm,
-			destinationRoom: address.roomNumber,
-			phone: address.phone
-		}
-	})
+  const location = await prisma.location.findUnique({
+    where: { id: order.locationId },
+  });
+  // send the order to everyone who has notifications on
+  //
+  const activeDashers = await prisma.user.findMany({
+    where: { isDasher: true, dasherNotifications: true },
+  });
+  console.log("active dashers:", activeDashers);
 
+  // console.log("cart procd", cartProducts)
+  // console.log("testing", cartProducts.map(prod => {return `<span>${prod.name}</span>` }).join(", "))
 
-	const location = await prisma.location.findUnique({
-		where: {id : order.locationId}
-	})
-	// send the order to everyone who has notifications on
-	//
-	const activeDashers = await prisma.user.findMany({
-		where : {isDasher: true, dasherNotifications: true }
-	})
-	console.log("active dashers:", activeDashers)
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "midddevclub@gmail.com",
+      pass: "ejuq wnnj iorg ggya",
+    },
+  });
 
-
-
-
-
-	// console.log("cart procd", cartProducts)
-	// console.log("testing", cartProducts.map(prod => {return `<span>${prod.name}</span>` }).join(", "))
-
-	var transporter = nodemailer.createTransport({
-		service: 'gmail',
-		auth: {
-			user: 'midddevclub@gmail.com',
-			pass: 'ejuq wnnj iorg ggya'
-		}
-	});
-
-	var mailOptions = {
-		from: 'midddevclub@gmail.com',
-		to: activeDashers.map(dasher => dasher.email),
-		subject: 'New Order',
-		html: `
+  const mailOptions = {
+    from: "midddevclub@gmail.com",
+    to: activeDashers.map((dasher) => dasher.email),
+    subject: "New Order",
+    html: `
 		<div>
 		New order:
 		<br/>
@@ -76,41 +71,22 @@ console.log("address", address);
 			<br/>
 			To: ${order.destinationDorm}
 			<br/>
-			Items: ${cartProducts.map(prod => {return `<span> ${prod.name} </span>` }).join(", ")}
+			Items: ${cartProducts.map((prod) => `<span> ${prod.name} </span>`).join(", ")}
 		</div>
-		`
-	};
+		`,
+  };
 
-	transporter.sendMail(mailOptions, function(error, info){
-		if (error) {
-			console.log(error);
-		} else {
-			console.log('Email sent: ' + info.response);
-		}
-	});
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(`Email sent: ${info.response}`);
+    }
+  });
 
+  prisma.$disconnect();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	prisma.$disconnect()
-
-		return new NextResponse(JSON.stringify(
-		{ data: order }
-	), { status: 200 })
-
+  return new NextResponse(JSON.stringify({ data: order }), { status: 200 });
 
   //   const stripeSession = await stripe.checkout.sessions.create({
   //     line_items: [],
