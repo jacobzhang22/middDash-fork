@@ -13,6 +13,22 @@ To view the database models and data:
 npx prisma studio
 ```
 
+## Database Issues:
+Delete the database:
+```shell
+rm prisma/dev.db
+```
+Re-run migrations:
+```shell
+npx prisma migrate dev
+```
+
+Seed the database:
+```shell
+npx prisma db seed prisma/seeds/locationsAndItems.ts   
+```
+
+
 # Git
 Making a new branch:
 ```shell
