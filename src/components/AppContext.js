@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { SessionProvider } from 'next-auth/react';
-import { createContext, useEffect, useState } from 'react';
+import { SessionProvider } from "next-auth/react";
+import { createContext, useEffect, useState } from "react";
 
 export const CartContext = createContext({});
 
@@ -12,13 +12,19 @@ export function cartProductPrice(cartProduct) {
 
 export function AppProvider({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
-  const ls = typeof window !== 'undefined' ? window.localStorage : null;
+  const ls = typeof window !== "undefined" ? window.localStorage : null;
 
   useEffect(() => {
-    if (ls && ls.getItem('cart')) {
-      setCartProducts(JSON.parse(ls.getItem('cart')));
+    if (ls && ls.getItem("cart")) {
+      setCartProducts(JSON.parse(ls.getItem("cart")));
     }
   }, []);
+
+  function saveCartProductsToLocalStorage(cartProducts) {
+    if (ls) {
+      ls.setItem("cart", JSON.stringify(cartProducts));
+    }
+  }
 
   function clearCart() {
     setCartProducts([]);
@@ -35,12 +41,6 @@ export function AppProvider({ children }) {
     });
   }
 
-  function saveCartProductsToLocalStorage(cartProducts) {
-    if (ls) {
-      ls.setItem('cart', JSON.stringify(cartProducts));
-    }
-  }
-
   function addToCart(product) {
     setCartProducts((prevProducts) => {
       const cartProduct = { ...product };
@@ -53,6 +53,7 @@ export function AppProvider({ children }) {
   return (
     <SessionProvider>
       <CartContext.Provider
+        // eslint-disable-next-line react/jsx-no-constructed-context-values
         value={{
           cartProducts,
           setCartProducts,

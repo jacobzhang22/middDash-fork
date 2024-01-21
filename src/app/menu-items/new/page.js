@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { redirect } from 'next/navigation';
-import Link from 'next/link';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { useProfile } from '@/components/UseProfile';
-import Left from '@/components/icons/Left';
-import EditableImage from '@/components/layout/EditableImage';
-import UserTabs from '@/components/layout/UserTabs';
-import MenuItemForm from '@/components/layout/MenuItemForm';
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import useProfile from "@/components/UseProfile";
+import Left from "@/components/icons/Left";
+import EditableImage from "@/components/layout/EditableImage";
+import UserTabs from "@/components/layout/UserTabs";
+import MenuItemForm from "@/components/layout/MenuItemForm";
 
 export default function NewMenuItemPage() {
   const [redirectToItems, setRedirectToItems] = useState(false);
@@ -18,30 +18,30 @@ export default function NewMenuItemPage() {
     ev.preventDefault();
 
     const savingPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch('/api/menu-items', {
-        method: 'POST',
+      const response = await fetch("/api/menu-items", {
+        method: "POST",
         body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
       if (response.ok) resolve();
       else reject();
     });
 
     await toast.promise(savingPromise, {
-      loading: 'Saving item',
-      success: 'Saved',
-      error: 'Error',
+      loading: "Saving item",
+      success: "Saved",
+      error: "Error",
     });
 
     setRedirectToItems(true);
   }
 
   if (redirectToItems) {
-    return redirect('/menu-items');
+    return redirect("/menu-items");
   }
 
   if (loading) {
-    return 'Loading user info...';
+    return "Loading user info...";
   }
 
   if (!data.isAdmin) {

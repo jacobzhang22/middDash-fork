@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { User } from '@/models/User';
-import { UserInfo } from '@/models/UserInfo';
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import User from "@/models/User";
+import UserInfo from "@/models/UserInfo";
 
 export async function PUT(req, context) {
   const prisma = new PrismaClient();
@@ -29,7 +29,7 @@ export async function PUT(req, context) {
         isDasher: body.dasher,
         isAdmin: body.admin ? body.admin : currentUser.isAdmin,
       },
-			 select: {
+      select: {
         id: true,
         isDasher: true,
         isAdmin: true,
@@ -38,35 +38,33 @@ export async function PUT(req, context) {
         dorm: true,
         roomNumber: true,
       },
-
     });
     return Response.json({ user: updatedUser });
   }
 
   prisma.$disconnect();
-  return Response.json({ user: 'error' });
+  return Response.json({ user: "error" });
 }
 
 export async function GET(req, context) {
   const { id } = context.params;
-  console.log('target id', id);
+  console.log("target id", id);
 
   const prisma = new PrismaClient();
   const user = await prisma.user.findUnique({
     where: {
       id,
     },
-	 select: {
-		 id: true,
-		 isDasher: true,
-		 isAdmin: true,
-		 name: true,
-		 phone: true,
-		 dorm: true,
-		 roomNumber: true,
+    select: {
+      id: true,
+      isDasher: true,
+      isAdmin: true,
+      name: true,
+      phone: true,
+      dorm: true,
+      roomNumber: true,
     },
   });
   // prisma.$disconnect()
   return Response.json({ user });
 }
-

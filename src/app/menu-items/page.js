@@ -1,5 +1,6 @@
 "use client";
-import { useProfile } from "@/components/UseProfile";
+
+import useProfile from "@/components/UseProfile";
 import Right from "@/components/icons/Right";
 import UserTabs from "@/components/layout/UserTabs";
 import Image from "next/image";
@@ -14,7 +15,7 @@ export default function MenuItemsPage() {
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    fetch('/api/locations?items=true').then((res) => {
+    fetch("/api/locations?items=true").then((res) => {
       res.json().then((newLocations) => {
         setLocations(newLocations);
       });
@@ -22,11 +23,11 @@ export default function MenuItemsPage() {
   }, []);
 
   if (loading) {
-    return 'Loading user info...';
+    return "Loading user info...";
   }
 
   if (!data.isAdmin) {
-    return 'Not an admin.';
+    return "Not an admin.";
   }
 
   return (
@@ -40,30 +41,31 @@ export default function MenuItemsPage() {
       </div>
       <div>
         <h2 className="text-sm text-gray-500 mt-8">Edit menu items:</h2>
-        {locations.length > 0
-        && locations.map((location) => (
-          <div key={location.id}>
-            <div className="text-center">
-              <SectionHeaders mainHeader={location.name} />
-            </div>
-            <div className="flex flex-row justify-center items-stretch gap-4 mt-6 mb-12">
-              { location.items
-                .map((item) => (
-									<div key = {item.key} >
-										<Link href = {"/menu-items/edit/" + item.id}>
-											<MenuItem {...item} />
-										</Link>
-									</div>
+        {locations.length > 0 &&
+          locations.map((location) => (
+            <div key={location.id}>
+              <div className="text-center">
+                <SectionHeaders mainHeader={location.name} />
+              </div>
+              <div className="flex flex-row justify-center items-stretch gap-4 mt-6 mb-12">
+                {location.items.map((item) => (
+                  <div key={item.key}>
+                    <Link href={`/menu-items/edit/${item.id}`}>
+                      <MenuItem {...item} />
+                    </Link>
+                  </div>
                 ))}
-							<div className = "" >
-								<Link href = {`/menu-items/new?location=${location.id}`} className = " h-full " >
-									<NewMenuItem />
-								</Link>
-
-							</div>
+                <div className="">
+                  <Link
+                    href={`/menu-items/new?location=${location.id}`}
+                    className=" h-full "
+                  >
+                    <NewMenuItem />
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </section>
   );

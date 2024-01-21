@@ -1,10 +1,9 @@
 import EditableImage from "@/components/layout/EditableImage";
 import { useEffect, useState } from "react";
 import DeleteButton from "@/components/DeleteButton";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation";
 
-
-export default function MenuItemForm({ onSubmit, menuItem, onDelete  }) {
+export default function MenuItemForm({ onSubmit, menuItem, onDelete }) {
   const [image, setImage] = useState(menuItem?.image || "");
   const [name, setName] = useState(menuItem?.name || "");
   const [description, setDescription] = useState(menuItem?.description || "");
@@ -15,26 +14,24 @@ export default function MenuItemForm({ onSubmit, menuItem, onDelete  }) {
   const [category, setCategory] = useState(menuItem?.category || "");
 
   useEffect(() => {
-		console.log("menuItem", menuItem)
+    console.log("menuItem", menuItem);
     fetch("/api/locations").then((res) => {
       res.json().then((newLocations) => {
         setLocations(newLocations);
-				if(location == ""){
-					setLocation(newLocations[0].id)
-				}
-				console.log("new locations", newLocations)
+        if (location === "") {
+          setLocation(newLocations[0].id);
+        }
+        console.log("new locations", newLocations);
       });
     });
   }, [menuItem]);
 
-	const searchParams = useSearchParams()
- 
-  const paramLoc = searchParams.get('location')
-  useEffect(() => {
-		setLocation(paramLoc)
-  }, [paramLoc]);
- 
+  const searchParams = useSearchParams();
 
+  const paramLoc = searchParams.get("location");
+  useEffect(() => {
+    setLocation(paramLoc);
+  }, [paramLoc]);
 
   return (
     <form
@@ -45,7 +42,7 @@ export default function MenuItemForm({ onSubmit, menuItem, onDelete  }) {
     >
       <div
         className="grid items-start gap-4"
-        style={{ gridTemplateColumns: '.3fr .7fr' }}
+        style={{ gridTemplateColumns: ".3fr .7fr" }}
       >
         <div>
           <EditableImage link={image} setLink={setImage} />
@@ -63,8 +60,12 @@ export default function MenuItemForm({ onSubmit, menuItem, onDelete  }) {
             value={location}
             onChange={(ev) => setLocation(ev.target.value)}
           >
-            {locations?.length > 0 && 
-               locations.map((l) => <option  key = {l.id} value={l.id}>{l.name}</option>)}
+            {locations?.length > 0 &&
+              locations.map((l) => (
+                <option key={l.id} value={l.id}>
+                  {l.name}
+                </option>
+              ))}
           </select>
 
           <label>Description</label>
@@ -80,12 +81,9 @@ export default function MenuItemForm({ onSubmit, menuItem, onDelete  }) {
             onChange={(ev) => setPrice(ev.target.value)}
           />
           <button type="submit">Save</button>
-					<div className = "mt-2" >
-					<DeleteButton
-            label="Delete this menu item"
-            onDelete={onDelete}
-          />
-					</div>
+          <div className="mt-2">
+            <DeleteButton label="Delete this menu item" onDelete={onDelete} />
+          </div>
         </div>
       </div>
     </form>

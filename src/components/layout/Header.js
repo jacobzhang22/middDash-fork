@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useSession, signOut } from 'next-auth/react';
-import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '@/components/AppContext';
-import ShoppingCart from '@/components/icons/ShoppingCart';
+import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "@/components/AppContext";
+import ShoppingCart from "@/components/icons/ShoppingCart";
 
 export default function Header() {
   const session = useSession();
@@ -13,8 +13,9 @@ export default function Header() {
   let userName = userData?.name || userData?.email;
   const { cartProducts } = useContext(CartContext);
 
-  if (userName && userName.includes('')) {
-    userName = userName.split(' ')[0];
+  if (userName && userName.includes("")) {
+    // eslint-disable-next-line prefer-destructuring
+    userName = userName.split(" ")[0];
   }
 
   // useEffect(()=> {console.log("sesh", session)},[])
@@ -32,23 +33,22 @@ export default function Header() {
         {userData && userData.isAdmin && <Link href="/admin">Admin</Link>}
       </nav>
       <nav className="flex items-center gap-4 text-gray-500 font-semibold">
-        {status === 'authenticated' && (
+        {status === "authenticated" && (
           <>
             <Link href="/profile" className="whitespace-nowrap">
-              Hello,
-              {' '}
-              {userName}
+              Hello, {userName}
             </Link>
+            {/* eslint-disable-next-line react/button-has-type */}
             <button
               onClick={() => signOut()}
               className="bg-primary rounded-full text-white px-8 py-2"
             >
-              {' '}
+              {" "}
               Logout
             </button>
           </>
         )}
-        {status === 'unauthenticated' && (
+        {status === "unauthenticated" && (
           <>
             <Link href="/login">Login</Link>
             <Link

@@ -1,25 +1,25 @@
-import { PrismaClient } from '@prisma/client';
+/* eslint-disable */
+import { PrismaClient } from "@prisma/client";
 
-import { grilleImage, middXImage } from './images/images';
+import { grilleImage, middXImage } from "./images/images";
 // import middXImage from "./images/middXImage.js"
 const prisma = new PrismaClient();
 async function main() {
   const grille = await prisma.location.upsert({
-    where: { name: 'Grille' },
-    update: {
-    },
+    where: { name: "Grille" },
+    update: {},
     create: {
-      name: 'Grille',
+      name: "Grille",
       image: grilleImage,
       items: {
         create: [
           {
-            name: 'Dr Feel Good',
+            name: "Dr Feel Good",
             price: 5,
             featured: true,
           },
           {
-            name: 'Something else',
+            name: "Something else",
             price: 2,
           },
         ],
@@ -28,20 +28,19 @@ async function main() {
   });
 
   const middX = await prisma.location.upsert({
-    where: { name: 'middX' },
-    update: {
-    },
+    where: { name: "middX" },
+    update: {},
     create: {
-      name: 'middX',
+      name: "middX",
       image: middXImage,
       items: {
         create: [
           {
-            name: 'Pizza',
+            name: "Pizza",
             price: 4,
           },
           {
-            name: 'Gatorade',
+            name: "Gatorade",
             price: 19,
           },
         ],

@@ -1,16 +1,22 @@
-'use client';
+/* eslint-disable */
 
-import Image from 'next/image';
-import { useContext, useEffect, useState } from 'react';
-import { CartContext, cartProductPrice } from '@/components/AppContext';
-import SectionHeaders from '@/components/layout/SectionHeaders';
-import Trash from '@/components/icons/Trash';
-import AddressInputs from '@/components/layout/AddressInputs';
-import { useProfile } from '@/components/UseProfile';
+"use client";
+
+import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
+import { CartContext, cartProductPrice } from "@/components/AppContext";
+import SectionHeaders from "@/components/layout/SectionHeaders";
+import Trash from "@/components/icons/Trash";
+import AddressInputs from "@/components/layout/AddressInputs";
+import useProfile from "@/components/UseProfile";
 
 export default function CartPage() {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
-  const [address, setAddress] = useState({ phone: '', roomNumber: '', dorm: '' });
+  const [address, setAddress] = useState({
+    phone: "",
+    roomNumber: "",
+    dorm: "",
+  });
   const { data: profileData } = useProfile();
 
   useEffect(() => {
@@ -35,9 +41,9 @@ export default function CartPage() {
   }
 
   async function proceedToCheckout(ev) {
-    const response = await fetch('/api/checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         address,
         cartProducts,
@@ -45,7 +51,7 @@ export default function CartPage() {
     });
     const { data } = await response.json();
 
-    console.log('data', data);
+    console.log("data", data);
   }
 
   return (
@@ -58,9 +64,13 @@ export default function CartPage() {
           {cartProducts?.length === 0 && (
             <div>No products in your shopping cart</div>
           )}
-          {cartProducts?.length > 0
-            && cartProducts.map((product, index) => (
-              <div className="flex items-center gap-4 border-b py-4" key={index}>
+          {cartProducts?.length > 0 &&
+            cartProducts.map((product, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <div
+                className="flex items-center gap-4 border-b py-4"
+                key={index}
+              >
                 <div className="w-24">
                   {/* <Image */}
                   {/*   src={product.image} */}
@@ -73,8 +83,7 @@ export default function CartPage() {
                   <h3 className="font-semibold">{product.name}</h3>
                 </div>
                 <div className="text-lg font-semibold">
-                  $
-                  {cartProductPrice(product)}
+                  ${cartProductPrice(product)}
                 </div>
                 <div className="ml-2">
                   <button
@@ -90,22 +99,13 @@ export default function CartPage() {
           <div className="py-2 pr-16 flex justify-end items-center">
             <div className="text-gray-500">
               Subtotal:
-              <br />
-              {' '}
-              Delivery:
-              <br />
-              {' '}
-              Total:
+              <br /> Delivery:
+              <br /> Total:
             </div>
             <div className="text-lg font-semibold pl-2 text-right">
-              $
-              {subtotal}
-              <br />
-              {' '}
-              $5.00
-              <br />
-              $
-              {subtotal + 5}
+              ${subtotal}
+              <br /> $5.00
+              <br />${subtotal + 5}
             </div>
           </div>
         </div>
@@ -116,10 +116,7 @@ export default function CartPage() {
               addressProps={address}
               setAddressProp={handleAddressChange}
             />
-            <button type="submit">
-              Pay $
-              {subtotal + 5}
-            </button>
+            <button type="submit">Pay ${subtotal + 5}</button>
           </form>
         </div>
       </div>

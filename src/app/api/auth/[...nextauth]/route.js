@@ -1,19 +1,19 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import bcrypt from 'bcryptjs';
-import GoogleProvider from 'next-auth/providers/google';
+/* eslint-disable no-param-reassign */
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import GoogleProvider from "next-auth/providers/google";
 
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
 // import clientPromise from '@/libs/mongoConnect';
 // import { User } from '../../../../models/User';
 
 const prisma = new PrismaClient();
 
 export const authOptions = {
-
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
 
   secret: process.env.NEXTAUTH_SECRET,
@@ -25,14 +25,14 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
         email: {
-          label: 'Email',
-          type: 'email',
-          placeholder: 'test@example.com',
+          label: "Email",
+          type: "email",
+          placeholder: "test@example.com",
         },
-        password: { label: 'Password', type: 'password' },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
         const email = credentials?.email;
@@ -41,7 +41,8 @@ export const authOptions = {
         const user = await prisma.user.findUnique({
           where: { email },
         });
-        const passwordOk = user && (await bcrypt.compare(password, user.password));
+        const passwordOk =
+          user && (await bcrypt.compare(password, user.password));
         if (passwordOk) {
           return user;
         }
@@ -70,7 +71,6 @@ export const authOptions = {
       return token;
     },
   },
-
 };
 
 const handler = NextAuth(authOptions);

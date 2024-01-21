@@ -1,4 +1,5 @@
-const { default: SectionHeaders } = require('./SectionHeaders');
+/* eslint-disable react/no-unescaped-entities */
+const { default: SectionHeaders } = require("./SectionHeaders");
 
 export default function Hero() {
   return (

@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 // import mongoose from "mongoose";
 
 // export async function POST(req) {
@@ -15,7 +15,8 @@ import { PrismaClient } from '@prisma/client';
 //   return Response.json(true);
 // }
 
-async function GET() {
+// eslint-disable-next-line import/prefer-default-export
+export async function GET() {
   const prisma = new PrismaClient();
 
   const allItems = await prisma.item.findMany({
@@ -34,5 +35,3 @@ async function GET() {
 //   await MenuItem.deleteOne({ _id });
 //   return Response.json(true);
 // }
-
-export default GET;

@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useProfile } from '../UseProfile';
-import AddressInputs from '@/components/layout/AddressInputs';
+import { useState } from "react";
+import AddressInputs from "@/components/layout/AddressInputs";
+import useProfile from "../UseProfile";
 
 export default function UserForm({ user, onSave }) {
-  const [userName, setUserName] = useState(user?.name || '');
-  const [image, setImage] = useState(user?.image || '');
-  const [phone, setPhone] = useState(user?.phone || '');
-  const [roomNumber, setRoomNumber] = useState(user?.roomNumber || '');
-  const [dorm, setDorm] = useState(user?.dorm || '');
+  const [userName, setUserName] = useState(user?.name || "");
+  const [image, setImage] = useState(user?.image || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [roomNumber, setRoomNumber] = useState(user?.roomNumber || "");
+  const [dorm, setDorm] = useState(user?.dorm || "");
   const [admin, setAdmin] = useState(user?.isAdmin || false);
   const [dasher, setDasher] = useState(user?.isDasher || false);
   const { data: loggedInUserData } = useProfile();
 
-  console.log('users', user);
+  console.log("users", user);
   function handleAddressChange(propName, value) {
-    if (propName === 'dorm') setDorm(value);
-    if (propName === 'roomNumber') setRoomNumber(value);
-    if (propName === 'phone') setPhone(value);
+    if (propName === "dorm") setDorm(value);
+    if (propName === "roomNumber") setRoomNumber(value);
+    if (propName === "phone") setPhone(value);
   }
 
   return (
@@ -32,7 +32,13 @@ export default function UserForm({ user, onSave }) {
         className="grow"
         onSubmit={(ev) => {
           onSave(ev, {
-            name: userName, image, phone, admin, roomNumber, dorm, dasher,
+            name: userName,
+            image,
+            phone,
+            admin,
+            roomNumber,
+            dorm,
+            dasher,
           });
         }}
       >
@@ -44,18 +50,14 @@ export default function UserForm({ user, onSave }) {
           onChange={(ev) => setUserName(ev.target.value)}
         />
         <label>Email</label>
-        <input
-          type="email"
-          disabled
-          value={user.email}
-          placeholder="email"
-        />
+        <input type="email" disabled value={user.email} placeholder="email" />
         <AddressInputs
           addressProps={{
             phone,
             roomNumber,
             dorm,
           }}
+          // eslint-disable-next-line react/jsx-no-bind
           setAddressProp={handleAddressChange}
         />
         {loggedInUserData.isAdmin && (

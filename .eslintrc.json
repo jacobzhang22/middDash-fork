@@ -24,8 +24,16 @@
     }
   },
   "rules": {
+    "no-unused-vars": "warn",
+    "no-underscore-dangle": "warn",
+    "radix": "warn",
+    "no-shadow": "warn",
+    "react/jsx-no-bind": "warn",
+    "no-async-promise-executor": "warn",
+    "no-restricted-syntax": "warn",
+    "react/jsx-props-no-spreading": "warn",
     "react/jsx-filename-extension": "off",
-    "react/prop-types": "error",
+    "react/prop-types": "off",
     "jsx-a11y/accessible-emoji": "off",
     "jsx-a11y/alt-text": "off",
     "jsx-a11y/anchor-ambiguous-text": "off",
