@@ -9,14 +9,17 @@ import SectionHeaders from "@/components/layout/SectionHeaders";
 import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
 import useProfile from "@/components/UseProfile";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
+  const router = useRouter();
   const { cartProducts, removeCartProduct } = useContext(CartContext);
   const [address, setAddress] = useState({
     phone: "",
     roomNumber: "",
     dorm: "",
   });
+  const [invalidSubmittion, setInvalidSubmittion] = useState(false);
   const { data: profileData } = useProfile();
 
   useEffect(() => {
@@ -41,6 +44,21 @@ export default function CartPage() {
   }
 
   async function proceedToCheckout(ev) {
+    setInvalidSubmittion(false);
+    ev.preventDefault();
+    if (address.phone === "") {
+      setInvalidSubmittion("Please enter your phone number");
+      return;
+    }
+    if (address.roomNumber === "") {
+      setInvalidSubmittion("Please enter your room number");
+      return;
+    }
+    if (address.dorm === "") {
+      setInvalidSubmittion("Please enter your dorm");
+      return;
+    }
+
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -50,6 +68,11 @@ export default function CartPage() {
       }),
     });
     const { data } = await response.json();
+    if (data.id) {
+      router.push(`/orders/${data.id}`);
+    } else {
+      setInvalidSubmittion("something went wrong");
+    }
 
     console.log("data", data);
   }
@@ -116,7 +139,16 @@ export default function CartPage() {
               addressProps={address}
               setAddressProp={handleAddressChange}
             />
-            <button type="submit">Pay ${subtotal + 5}</button>
+            <div className="py-4">
+              When you submit your order, your order will be sent to all
+              available dashers. If a dasher chooses to accept your request, you
+              will be notified with the dashers Venmo, where you must send the
+              requested total.
+            </div>
+            <button type="submit">I will pay ${subtotal + 5}</button>
+            {invalidSubmittion && (
+              <div className="text-center pt-4">{invalidSubmittion} </div>
+            )}
           </form>
         </div>
       </div>
