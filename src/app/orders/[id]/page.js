@@ -101,6 +101,11 @@ export default function IndividualOrder() {
             </div>
           </div>
         </div>
+        {data.isDasher ? (
+          <DasherOrderPage order={order} id={id} />
+        ) : (
+          <UserOrderPage order={order} />
+        )}
       </section>
     );
   }

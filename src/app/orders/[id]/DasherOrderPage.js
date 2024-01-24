@@ -5,54 +5,42 @@ import SectionHeaders from "@/components/layout/SectionHeaders";
 
 import { useEffect, useState } from "react";
 
-export default function DasherOrderPage({ order }) {
-  const [orderInfo, setOrderInfo] = useState();
+export default function DasherOrderPage({ order, id }) {
+  console.log("dasher order page has", order);
+  const [checked, setChecked] = useState();
 
+  useEffect(() => {
+    setChecked(order.paid);
+  }, [order]);
+
+  const setPaid = (val) => {
+    fetch(`/api/orders/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ paid: val }),
+    }).then((res) => {
+      res.json().then((responseData) => {
+        // console.log("respon", responseData.order);
+        setChecked(responseData.order.paid);
+        // setOrder(responseData.order);
+      });
+    });
+  };
   if (order) {
     return (
       <section className="mt-8">
-        <div>
-          <div className="text-center">
-            <SectionHeaders mainHeader={`Order for ${order.user.name}`} />
-          </div>
-        </div>
-        <div className="flex flex-col justify-center items-center  md:flex-row">
-          <div className="w-[50%] p-5 ">
-            <div className="text-center">
-              <SectionHeaders subHeader="Items" />
-            </div>
-            {order.items.map((item) => (
-              <div
-                className="flex items-center gap-4 border-b py-4"
-                key={item.id}
-              >
-                <div className="w-24">
-                  {/* <Image */}
-                  {/*   src={product.image} */}
-                  {/*   alt={""} */}
-                  {/*   width={240} */}
-                  {/*   height={240} */}
-                  {/* /> */}
-                </div>
-                <div className="grow">
-                  <h3 className="font-semibold">{item.name}</h3>
-                </div>
-                <div className="text-lg font-semibold">${item.price}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="w-[50%] p-5 ">
-            <div className="text-center">
-              <SectionHeaders subHeader="Delivery Information" />
-            </div>
-            <div>
-              From: {order.location.name}
-              <br />
-              To: {order.destinationDorm} - {order.destinationRoom}
-            </div>
-          </div>
-        </div>
+        Dasher name: {order.dasher ? order.dasher.name : "NO DASHER"}
+        <br />
+        Paid:
+        {checked !== undefined && (
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={(e) => {
+              setPaid(!checked);
+              setChecked(!checked);
+            }}
+          />
+        )}
       </section>
     );
   }

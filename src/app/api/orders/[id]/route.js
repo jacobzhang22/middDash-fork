@@ -37,6 +37,34 @@ import UserInfo from "@/models/UserInfo";
 //   prisma.$disconnect();
 //   return Response.json({ item: "error" });
 // }
+//
+export async function PATCH(req, context) {
+  const { id } = context.params;
+
+  const body = await req.json();
+  const prisma = new PrismaClient();
+  const order = await prisma.order.update({
+    where: { id },
+    data: {
+      paid: body.paid,
+    },
+    select: {
+      userId: true,
+      locationId: true,
+      price: true,
+      location: true,
+      items: true,
+      destinationDorm: true,
+      destinationRoom: true,
+      phone: true,
+      user: true,
+      paid: true,
+    },
+  });
+  prisma.$disconnect();
+
+  return Response.json({ order });
+}
 
 export async function GET(req, context) {
   const { id } = context.params;
@@ -57,6 +85,8 @@ export async function GET(req, context) {
       destinationRoom: true,
       phone: true,
       user: true,
+      paid: true,
+      dasher: true,
     },
   });
   prisma.$disconnect();
