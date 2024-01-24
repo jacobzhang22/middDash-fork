@@ -54,28 +54,6 @@ export default function IndividualOrder() {
     }
   }, [order]);
 
-  // async function handleFormSubmit(ev, data) {
-  //   console.log("submitting");
-  //   ev.preventDefault();
-  //   // eslint-disable-next-line no-param-reassign
-  //   data = { ...data, id };
-  //   const response = await fetch(`/api/menu-items/${id}`, {
-  //     method: "PUT",
-  //     body: JSON.stringify(data),
-  //     headers: { "Content-Type": "application/json" },
-  //   });
-  //   const parsedData = await response.json();
-  //   setMenuItem(parsedData.item);
-
-  //   // await toast.promise(savingPromise, {
-  //   //   loading: "Saving item",
-  //   //   success: "Saved",
-  //   //   error: "Error",
-  //   // });
-
-  //   // setRedirectToItems(true);
-  // }
-
   if (loading) {
     return "Loading user info...";
   }

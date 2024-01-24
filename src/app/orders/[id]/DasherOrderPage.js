@@ -57,16 +57,16 @@ export default function DasherOrderPage({ order, id, update }) {
             />
           )}
         </div>
-        <div>
+        <div className="w-full flex flex-col justify-center items-center ">
           Status:
           <div className="flex flex-row text-center ">
             <div
-              className={` flex flex-col items-center  ${order.OrderStatus[0].orderedAt ? "bg-green-50" : "bg-gray-50"}`}
+              className={` flex flex-col items-center border-r-2 border-black p-2 ${order.OrderStatus[0].orderedAt ? "bg-green-50" : "bg-gray-50"}`}
             >
               Ordered:
               <br />
               {order.OrderStatus[0].orderedAt ? (
-                new Date(order.OrderStatus[0].orderedAt).toString()
+                new Date(order.OrderStatus[0].orderedAt).toLocaleString()
               ) : (
                 <div
                   className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
@@ -79,12 +79,12 @@ export default function DasherOrderPage({ order, id, update }) {
             </div>
 
             <div
-              className={` flex flex-col items-center ${order.OrderStatus[0].acceptedAt ? "bg-green-50" : "bg-gray-50"}`}
+              className={` flex flex-col items-center border-r-2 border-black p-2 ${order.OrderStatus[0].acceptedAt ? "bg-green-50" : "bg-gray-50"}`}
             >
               Accepted:
               <br />
               {order.OrderStatus[0].acceptedAt ? (
-                new Date(order.OrderStatus[0].acceptedAt).toString()
+                new Date(order.OrderStatus[0].acceptedAt).toLocaleString()
               ) : (
                 <div
                   className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
@@ -97,12 +97,12 @@ export default function DasherOrderPage({ order, id, update }) {
             </div>
 
             <div
-              className={` flex flex-col items-center ${order.OrderStatus[0].placedAt ? "bg-green-50" : "bg-gray-50"}`}
+              className={` flex flex-col items-center border-r-2 border-black p-2 ${order.OrderStatus[0].placedAt ? "bg-green-50" : "bg-gray-50"}`}
             >
               Placed :
               <br />
               {order.OrderStatus[0].placedAt ? (
-                new Date(order.OrderStatus[0].placedAt).toString()
+                new Date(order.OrderStatus[0].placedAt).toLocaleString()
               ) : (
                 <div
                   className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
@@ -115,12 +115,12 @@ export default function DasherOrderPage({ order, id, update }) {
             </div>
 
             <div
-              className={` flex flex-col items-center ${order.OrderStatus[0].pickedUpAt ? "bg-green-50" : "bg-gray-50"}`}
+              className={` flex flex-col items-center border-r-2 border-black p-2 ${order.OrderStatus[0].pickedUpAt ? "bg-green-50" : "bg-gray-50"}`}
             >
               Picked Up:
               <br />
               {order.OrderStatus[0].pickedUpAt ? (
-                new Date(order.OrderStatus[0].pickedUpAt).toString()
+                new Date(order.OrderStatus[0].pickedUpAt).toLocaleString()
               ) : (
                 <div
                   className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
@@ -133,12 +133,12 @@ export default function DasherOrderPage({ order, id, update }) {
             </div>
 
             <div
-              className={` flex flex-col items-center ${order.OrderStatus[0].deliveredAt ? "bg-green-50" : "bg-gray-50"}`}
+              className={` flex flex-col items-center p-2 ${order.OrderStatus[0].deliveredAt ? "bg-green-50" : "bg-gray-50"}`}
             >
               Delivered:
               <br />
               {order.OrderStatus[0].deliveredAt ? (
-                new Date(order.OrderStatus[0].deliveredAt).toString()
+                new Date(order.OrderStatus[0].deliveredAt).toLocaleString()
               ) : (
                 <div
                   className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
