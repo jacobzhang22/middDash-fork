@@ -43,27 +43,45 @@ export async function PATCH(req, context) {
 
   const body = await req.json();
   const prisma = new PrismaClient();
-  const order = await prisma.order.update({
-    where: { id },
-    data: {
-      paid: body.paid,
-    },
-    select: {
-      userId: true,
-      locationId: true,
-      price: true,
-      location: true,
-      items: true,
-      destinationDorm: true,
-      destinationRoom: true,
-      phone: true,
-      user: true,
-      paid: true,
-    },
-  });
-  prisma.$disconnect();
 
-  return Response.json({ order });
+  // for updating an orders paid value
+  if (body.paid) {
+    const order = await prisma.order.update({
+      where: { id },
+      data: {
+        paid: body.paid,
+      },
+      select: {
+        userId: true,
+        locationId: true,
+        price: true,
+        location: true,
+        items: true,
+        destinationDorm: true,
+        destinationRoom: true,
+        phone: true,
+        user: true,
+        paid: true,
+        OrderStatus: true,
+      },
+    });
+    prisma.$disconnect();
+
+    return Response.json({ order });
+  }
+  // for updating the status of an item
+  if (body.statusId) {
+    const data = {};
+
+    data[body.type] = new Date();
+    const status = await prisma.OrderStatus.update({
+      where: { id: body.statusId },
+      data: { ...data },
+    });
+    prisma.$disconnect();
+
+    return Response.json({ status });
+  }
 }
 
 export async function GET(req, context) {
@@ -87,6 +105,7 @@ export async function GET(req, context) {
       user: true,
       paid: true,
       dasher: true,
+      OrderStatus: true,
     },
   });
   prisma.$disconnect();

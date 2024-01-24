@@ -1,6 +1,7 @@
 "use client";
 
-import { redirect, useParams } from "next/navigation";
+import { useRouter, useParams, refresh } from "next/navigation";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -15,7 +16,9 @@ import UserOrderPage from "./UserOrderPage.js";
 
 export default function IndividualOrder() {
   const { id } = useParams();
+  const router = useRouter();
   const [order, setOrder] = useState();
+  const [orderStatus, setOrderStatus] = useState();
   const { loading, data } = useProfile();
 
   useEffect(() => {
@@ -26,6 +29,30 @@ export default function IndividualOrder() {
       });
     });
   }, []);
+
+  const update = () => {
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    if (order) {
+      if (order.OrderStatus[0].orderedAt) {
+        setOrderStatus("Ordered");
+      }
+      if (order.OrderStatus[0].acceptedAt) {
+        setOrderStatus("Accepted");
+      }
+      if (order.OrderStatus[0].placedAt) {
+        setOrderStatus("Placed");
+      }
+      if (order.OrderStatus[0].pickedUpAt) {
+        setOrderStatus("Picked Up");
+      }
+      if (order.OrderStatus[0].deliveredAt) {
+        setOrderStatus("Delivered");
+      }
+    }
+  }, [order]);
 
   // async function handleFormSubmit(ev, data) {
   //   console.log("submitting");
@@ -62,6 +89,7 @@ export default function IndividualOrder() {
         <div>
           <div className="text-center">
             <SectionHeaders mainHeader={`Order for ${order.user.name}`} />
+            <span> Current status: {orderStatus} </span>
           </div>
         </div>
         <div className="flex flex-col justify-center items-center  md:flex-row">
@@ -102,7 +130,7 @@ export default function IndividualOrder() {
           </div>
         </div>
         {data.isDasher ? (
-          <DasherOrderPage order={order} id={id} />
+          <DasherOrderPage order={order} id={id} update={() => update()} />
         ) : (
           <UserOrderPage order={order} />
         )}
