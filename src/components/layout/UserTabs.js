@@ -33,6 +33,9 @@ export default function UserTabs({ isAdmin }) {
           <Link className={path === '/orders' ? 'active' : ''} href="/orders">
             Orders
           </Link>
+          <Link className={path === '/reports-admin-view' ? 'active' : ''} href="/reports-admin-view">
+            Reports
+          </Link>
         </>
       )}
     </div>
