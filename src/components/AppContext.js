@@ -6,7 +6,7 @@ import { createContext, useEffect, useState } from "react";
 export const CartContext = createContext({});
 
 export function cartProductPrice(cartProduct) {
-  const price = parseInt(cartProduct.price);
+  const price = parseInt(cartProduct.price, 10);
   return price;
 }
 
@@ -20,9 +20,9 @@ export function AppProvider({ children }) {
     }
   }, []);
 
-  function saveCartProductsToLocalStorage(cartProducts) {
+  function saveCartProductsToLocalStorage(newCartProducts) {
     if (ls) {
-      ls.setItem("cart", JSON.stringify(cartProducts));
+      ls.setItem("cart", JSON.stringify(newCartProducts));
     }
   }
 
@@ -50,6 +50,14 @@ export function AppProvider({ children }) {
     });
   }
 
+  function isValidCartProduct(product) {
+    if (cartProducts.length === 0) {
+      return true;
+    }
+    // Return true if product is from same location as other products in cart
+    return cartProducts[0].locationId === product.locationId;
+  }
+
   return (
     <SessionProvider>
       <CartContext.Provider
@@ -57,6 +65,7 @@ export function AppProvider({ children }) {
         value={{
           cartProducts,
           setCartProducts,
+          isValidCartProduct,
           addToCart,
           removeCartProduct,
           clearCart,

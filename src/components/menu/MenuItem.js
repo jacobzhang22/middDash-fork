@@ -1,16 +1,22 @@
-import { useContext } from 'react';
-import Image from 'next/image';
-import { CartContext } from '@/components/AppContext';
+import { useContext, useState } from "react";
+import Image from "next/image";
+import { CartContext } from "@/components/AppContext";
 
 export default function MenuItem(menuItem) {
-  const {
-    image, name, description, price,
-  } = menuItem;
+  const { image, name, description, price } = menuItem;
   const { addToCart } = useContext(CartContext);
+  const { isValidCartProduct } = useContext(CartContext);
+  const [cartErrorMessage, setCartErrorMessage] = useState(null);
 
   function handleAddToCartButtonClick() {
-    console.log('adding to car');
-    addToCart(menuItem);
+    if (isValidCartProduct(menuItem)) {
+      addToCart(menuItem);
+      setCartErrorMessage(null);
+    } else {
+      setCartErrorMessage(
+        "Invalid product. Please select from the same location.",
+      );
+    }
   }
 
   return (
@@ -19,7 +25,7 @@ export default function MenuItem(menuItem) {
       <h4 className="font-semibold text-xl my-3">{name}</h4>
       <p className="text-gray-500 text-sm line-clamp-3">{description}</p>
       <Image
-        src={image || '/midd_panther1.png'}
+        src={image || "/midd_panther1.png"}
         width={40}
         height={200}
         className="max-h-auto max-h-24 block mx-auto"
@@ -31,11 +37,11 @@ export default function MenuItem(menuItem) {
             className="primary sticky bottom-2 cursor-pointer border-black border-2 rounded-[10px] "
             onClick={handleAddToCartButtonClick}
           >
-            Add to cart $
-            {price}
+            Add to cart ${price}
           </div>
         </div>
       </div>
+      {cartErrorMessage && <p className="text-red-500">{cartErrorMessage}</p>}
     </div>
   );
 }
