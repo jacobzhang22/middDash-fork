@@ -47,13 +47,7 @@ export default function ReportsPage() {
         return response.json();
       })
       .then(() => {
-        const updatedReports = reports.map((report) =>
-          report.id === reportId
-            ? { ...report, isResolved: !currentStatus }
-            : report
-        );
-        updatedReports.sort((a, b) => a.isResolved - b.isResolved);
-        setReports(updatedReports);
+        fetchReports(); // Refetch reports after successful update
         toast.success(
           `Report ${currentStatus ? "marked as unresolved" : "marked as resolved"}`
         );
