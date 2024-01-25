@@ -41,7 +41,20 @@ export async function GET(req) {
   }
 
   try {
-    const reports = await prisma.report.findMany();
+    //const reports = await prisma.report.findMany();
+
+    const reports = await prisma.report.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+            phone: true,
+          },
+        },
+      },
+    });
+
     await prisma.$disconnect();
     return Response.json({ reports });
   } catch (error) {

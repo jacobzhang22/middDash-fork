@@ -47,7 +47,7 @@ export default function ReportsPage() {
         return response.json();
       })
       .then(() => {
-        fetchReports(); // Refetch reports after successful update
+        fetchReports();
         toast.success(
           `Report ${currentStatus ? "marked as unresolved" : "marked as resolved"}`
         );
@@ -93,10 +93,17 @@ export default function ReportsPage() {
                   <strong>Content:</strong> {report.content}
                 </p>
                 <p>
-                  <strong>User ID:</strong> {report.userId}
+                  <strong>Reported by:</strong> {report.user?.name}
                 </p>
                 <p>
-                  <strong>Date Created:</strong> {formatDate(report.createdAt)}
+                  <strong>Email:</strong> {report.user?.email}
+                </p>
+                <p>
+                  <strong>Phone Number:</strong> {report.user?.phone}
+                </p>
+                <p>
+                  <strong>Report Created:</strong>{" "}
+                  {formatDate(report.createdAt)}
                 </p>
               </div>
               <div className="mt-4 flex gap-1">
