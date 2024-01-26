@@ -32,10 +32,7 @@ export default function Hero() {
           </Link>
         </div>
       </div>
-      <div
-        className="relative flex justify-center items-center"
-        style={{ height: "400px" }}
-      >
+      <div className="relative flex justify-center items-center h-[400px]">
         <Image
           src="/midd_panther2.png"
           alt="panther"
