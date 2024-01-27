@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import Right from '../icons/Right';
+import Image from "next/image";
+import Link from "next/link";
+import Right from "../icons/Right";
 
 export default function Hero() {
   return (
@@ -25,17 +25,14 @@ export default function Hero() {
           </Link>
           <Link
             className="flex items-center border-0 uppercase gap-2 py-2 text-gray-600 font-semibold w-full "
-            href="/#about"
+            href="/#get-started"
           >
             Learn more
             <Right />
           </Link>
         </div>
       </div>
-      <div
-        className="relative flex justify-center items-center"
-        style={{ height: '400px' }}
-      >
+      <div className="relative flex justify-center items-center h-[400px]">
         <Image
           src="/midd_panther2.png"
           alt="panther"
