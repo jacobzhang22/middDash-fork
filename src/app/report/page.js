@@ -1,19 +1,18 @@
 "use client";
+
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 export default function Report() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const { data: session, status } = useSession();
 
-
-
   async function handleReportSubmit(ev) {
     ev.preventDefault();
     const data = { title, content };
-    
+
     const savingPromise = new Promise(async (resolve, reject) => {
       const response = await fetch("/api/report", {
         method: "POST",
@@ -25,16 +24,13 @@ export default function Report() {
         resolve();
         setTitle("");
         setContent("");
-      }
-      else reject();
-
+      } else reject();
 
       await toast.promise(savingPromise, {
-        loading: 'Sending...',
-        success: 'Report Submitted!',
-        error: 'Error',
+        loading: "Sending...",
+        success: "Report Submitted!",
+        error: "Error",
       });
-
     });
   }
 

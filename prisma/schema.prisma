@@ -7,17 +7,33 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+model OrderStatus {
+  id          String    @id @default(cuid()) @map("_id")
+  order       Order     @relation(fields: [orderId], references: [id])
+  orderedAt   DateTime  @default(now())
+  acceptedAt  DateTime?
+  placedAt    DateTime?
+  pickedUpAt  DateTime?
+  deliveredAt DateTime?
+
+  orderId String
+}
+
 model Order {
-  id         String   @id @default(cuid()) @map("_id")
-  userId     String   
-  locationId String
-  price      Int      @default(5)
-  location   Location @relation(fields: [locationId], references: [id])
-  user       User     @relation(fields: [userId], references: [id])
-  items      Item[]   @relation("ItemToOrder")
-  destinationDorm     String   
-  destinationRoom     String   
-  phone     String   
+  id              String        @id @default(cuid()) @map("_id")
+  userId          String
+  locationId      String
+  price           Int           @default(5)
+  location        Location      @relation(fields: [locationId], references: [id])
+  user            User          @relation(fields: [userId], references: [id])
+  items           Item[]        @relation("ItemToOrder")
+  destinationDorm String
+  destinationRoom String
+  phone           String
+  paid            Boolean       @default(false)
+  dasherId        String?
+  dasher          User?         @relation("DasherToOrder", fields: [dasherId], references: [id])
+  OrderStatus     OrderStatus[]
 }
 
 model Location {
@@ -70,24 +86,26 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  isDasher      Boolean   @default(false)
-	dasherNotifications Boolean   @default(false)
-  isAdmin       Boolean   @default(false)
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  password      String?
-  dorm          String?
-  phone         String?   @unique
-  roomNumber    String?
-  accounts      Account[]
-  orders        Order[]
-  sessions      Session[]
-  reports       Report[]
+  id                  String    @id @default(cuid())
+  name                String?
+  email               String?   @unique
+  isDasher            Boolean   @default(false)
+  dasherNotifications Boolean   @default(false)
+  isAdmin             Boolean   @default(false)
+  emailVerified       DateTime?
+  image               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  password            String?
+  dorm                String?
+  phone               String?   @unique
+  roomNumber          String?
+  accounts            Account[]
+  orders              Order[]
+  sessions            Session[]
+  venmo               String?
+  reports             Report[]
+  dashedOrders        Order[]   @relation("DasherToOrder")
 }
 
 model VerificationRequest {
@@ -107,6 +125,7 @@ model Report {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  isResolved Boolean @default(false)
   
   userId    String
   user      User     @relation(fields: [userId], references: [id])

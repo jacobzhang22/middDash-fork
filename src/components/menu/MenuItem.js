@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import { CartContext } from "@/components/AppContext";
 
 export default function MenuItem(menuItem) {
@@ -12,6 +13,7 @@ export default function MenuItem(menuItem) {
     if (isValidCartProduct(menuItem)) {
       addToCart(menuItem);
       setCartErrorMessage(null);
+      toast.success(`${name} added to cart!`);
     } else {
       setCartErrorMessage(
         "Invalid product. Please select from the same location.",
@@ -21,7 +23,6 @@ export default function MenuItem(menuItem) {
 
   return (
     <div className="bg-gray-200 p-4 rounded-lg text-center group hover:bg-white hover:shadow-md hover:shadow-black/25 transition-all w-[250px]">
-      <div className="text-center" />
       <h4 className="font-semibold text-xl my-3">{name}</h4>
       <p className="text-gray-500 text-sm line-clamp-3">{description}</p>
       <Image
@@ -29,7 +30,7 @@ export default function MenuItem(menuItem) {
         width={40}
         height={200}
         className="max-h-auto max-h-24 block mx-auto"
-        alt="pizza"
+        alt={name}
       />
       <div className="flying-button-parent mt-4">
         <div targetTop="5%" targetLeft="95%" src={image}>

@@ -35,6 +35,9 @@ export async function POST(req, res) {
       destinationDorm: address.dorm,
       destinationRoom: address.roomNumber,
       phone: address.phone,
+      OrderStatus: {
+        create: [{ orderedAt: new Date() }],
+      },
     },
   });
 
