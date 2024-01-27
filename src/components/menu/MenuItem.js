@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { CartContext } from "@/components/AppContext";
@@ -6,10 +6,19 @@ import { CartContext } from "@/components/AppContext";
 export default function MenuItem(menuItem) {
   const { image, name, description, price } = menuItem;
   const { addToCart } = useContext(CartContext);
+  const { isValidCartProduct } = useContext(CartContext);
+  const [cartErrorMessage, setCartErrorMessage] = useState(null);
 
   function handleAddToCartButtonClick() {
-    addToCart(menuItem);
-    toast.success(`${name} added to cart!`);
+    if (isValidCartProduct(menuItem)) {
+      addToCart(menuItem);
+      setCartErrorMessage(null);
+      toast.success(`${name} added to cart!`);
+    } else {
+      setCartErrorMessage(
+        "Invalid product. Please select from the same location.",
+      );
+    }
   }
 
   return (
@@ -23,14 +32,17 @@ export default function MenuItem(menuItem) {
         className="max-h-auto max-h-24 block mx-auto"
         alt={name}
       />
-      <div className="mt-4">
-        <div
-          className="primary sticky bottom-2 cursor-pointer border-black border-2 rounded-[10px]"
-          onClick={handleAddToCartButtonClick}
-        >
-          Add to cart ${price}
+      <div className="flying-button-parent mt-4">
+        <div targetTop="5%" targetLeft="95%" src={image}>
+          <div
+            className="primary sticky bottom-2 cursor-pointer border-black border-2 rounded-[10px] "
+            onClick={handleAddToCartButtonClick}
+          >
+            Add to cart ${price}
+          </div>
         </div>
       </div>
+      {cartErrorMessage && <p className="text-red-500">{cartErrorMessage}</p>}
     </div>
   );
 }

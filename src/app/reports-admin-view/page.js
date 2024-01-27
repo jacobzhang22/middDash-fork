@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import UserTabs from "@/components/layout/UserTabs";
@@ -49,7 +50,7 @@ export default function ReportsPage() {
       .then(() => {
         fetchReports();
         toast.success(
-          `Report ${currentStatus ? "marked as unresolved" : "marked as resolved"}`
+          `Report ${currentStatus ? "marked as unresolved" : "marked as resolved"}`,
         );
       })
       .catch((error) => {
@@ -76,6 +77,7 @@ export default function ReportsPage() {
       <UserTabs isAdmin={profileData.isAdmin} />
       <div>
         <h2 className="mt-8 text-lg text-gray-500">Reports:</h2>
+        {/* eslint-disable-next-line no-nested-ternary */}
         {error ? (
           <p>{error}</p>
         ) : reports?.length > 0 ? (
