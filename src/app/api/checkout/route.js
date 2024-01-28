@@ -62,11 +62,12 @@ export async function POST(req, res) {
     },
   });
 
-  const mailOptions = {
-    from: "midddevclub@gmail.com",
-    to: activeDashers.map((dasher) => dasher.email),
-    subject: "New Order",
-    html: `
+  if (activeDashers.length > 0) {
+    const mailOptions = {
+      from: "midddevclub@gmail.com",
+      to: activeDashers.map((dasher) => dasher.email),
+      subject: "New Order",
+      html: `
 		<div>
 		New order:
 		<br/>
@@ -77,35 +78,17 @@ export async function POST(req, res) {
 			Items: ${cartProducts.map((prod) => `<span> ${prod.name} </span>`).join(", ")}
 		</div>
 		`,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(`Email sent: ${info.response}`);
-    }
-  });
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(`Email sent: ${info.response}`);
+      }
+    });
+  }
 
   prisma.$disconnect();
 
   return new NextResponse(JSON.stringify({ data: order }), { status: 200 });
-
-  //   const stripeSession = await stripe.checkout.sessions.create({
-  //     line_items: [],
-  //     mode: "payment",
-  //     customer_email: "",
-  //     success_url: "",
-  //     cancel_url: "",
-  //     metadata: { orderId: null },
-  //     shipping_options: [
-  //       {
-  //         shipping_rate_data: {
-  //           display_name: "Delivery fee",
-  //           type: "fixed_amount",
-  //           fixed_amount: { amount: 500, currency: "USD" },
-  //         },
-  //       },
-  //     ],
-  //   });
 }

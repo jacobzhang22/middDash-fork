@@ -8,10 +8,12 @@ import { CartContext, cartProductPrice } from "@/components/AppContext";
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
+import { useRouter } from "next/navigation";
 import useProfile from "@/components/UseProfile";
 
 export default function CartPage() {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
+  const router = useRouter();
   const [address, setAddress] = useState({
     phone: "",
     roomNumber: "",
@@ -54,6 +56,9 @@ export default function CartPage() {
       }),
     });
     const { data } = await response.json();
+    if (data) {
+      router.push(`/orders/${data.id}`);
+    }
     // handle the checkout data as needed
   }
 
