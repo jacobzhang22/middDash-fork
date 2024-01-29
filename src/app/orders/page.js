@@ -1,13 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import useProfile from "@/components/UseProfile";
-import Right from "@/components/icons/Right";
 import UserTabs from "@/components/layout/UserTabs";
-import SectionHeaders from "@/components/layout/SectionHeaders";
-import MenuItem from "@/components/menu/MenuItem";
 
 export default function MenuItemsPage() {
   const { loading, data } = useProfile();
@@ -16,7 +12,6 @@ export default function MenuItemsPage() {
   useEffect(() => {
     fetch("/api/orders").then((res) => {
       res.json().then((newOrders) => {
-        console.log("new ordw", newOrders);
         setOrders(newOrders.orders);
       });
     });
