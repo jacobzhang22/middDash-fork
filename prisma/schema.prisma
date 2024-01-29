@@ -2,9 +2,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource db {
+//  provider = "sqlite"
+//  url      = "file:./dev.db"
+// }
+
+
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = "postgres://jjberdikxrovzo:a96798b51f118b98c68cef3c700c80af1f9d824471143073b15cd2011de271a4@ec2-44-215-1-253.compute-1.amazonaws.com:5432/d4086uq9f4cql5"
+	  shadowDatabaseUrl = "postgres://sxnbddilzhkfoq:17f63a35dee9c75955285846488dd5b8448f863041be236c88e2757d64e80889@ec2-44-206-204-65.compute-1.amazonaws.com:5432/d989j48o7qd6ij"
+ 
+
 }
 
 model OrderStatus {
