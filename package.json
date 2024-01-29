@@ -28,9 +28,6 @@
     "uniqid": "^5.4.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.5",
-    "@types/react": "18.2.45",
-    "@types/uniqid": "^5.3.4",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
