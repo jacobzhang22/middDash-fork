@@ -10,15 +10,20 @@ export default function Header() {
   const session = useSession();
   const status = session?.status;
   const userData = session.data?.user;
-  let userName = userData?.name || userData?.email;
+  const [userName, setUserName] = useState(userData?.name || userData?.email);
   const { cartProducts } = useContext(CartContext);
 
-  if (userName && userName.includes("")) {
-    // eslint-disable-next-line prefer-destructuring
-    userName = userName.split(" ")[0];
-  }
-
-  // useEffect(()=> {console.log("sesh", session)},[])
+  useEffect(() => {
+    if (userData) {
+      if (userData?.name && userData.name.includes(" ")) {
+        // eslint-disable-next-line prefer-destructuring
+        setUserName(userData.name.split(" ")[0]);
+      } else {
+        // eslint-disable-next-line prefer-destructuring
+        setUserName(userData.email.split("@")[0]);
+      }
+    }
+  }, [userData]);
 
   return (
     <header className="flex items-center justify-between">
