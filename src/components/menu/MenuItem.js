@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { CartContext } from "@/components/AppContext";
@@ -7,17 +7,13 @@ export default function MenuItem(menuItem) {
   const { image, name, description, price } = menuItem;
   const { addToCart } = useContext(CartContext);
   const { isValidCartProduct } = useContext(CartContext);
-  const [cartErrorMessage, setCartErrorMessage] = useState(null);
 
   function handleAddToCartButtonClick() {
     if (isValidCartProduct(menuItem)) {
       addToCart(menuItem);
-      setCartErrorMessage(null);
       toast.success(`${name} added to cart!`);
     } else {
-      setCartErrorMessage(
-        "Invalid product. Please select from the same location.",
-      );
+      toast.error(`Cannot add ${name}!\nPlease select from the same location.`);
     }
   }
 
@@ -42,7 +38,6 @@ export default function MenuItem(menuItem) {
           </div>
         </div>
       </div>
-      {cartErrorMessage && <p className="text-red-500">{cartErrorMessage}</p>}
     </div>
   );
 }
