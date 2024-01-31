@@ -26,35 +26,38 @@ export default function UsersPage() {
   // }
 
   return (
-    <section className="max-w-2xl mx-auto mt-8">
+    <section className=" max-w-2xl mx-auto mt-8">
       <UserTabs isAdmin />
       <div className="mt-8">
         {users?.length > 0 &&
           users.map((user) => (
             <div
               key={user.id}
-              className="bg-gray-100 rounded-lg mb-2 p-1 px-4 flex items-center gap-4"
+              className="bg-gray-100 rounded-lg mb-2 p-1 pl-4 md:inline-grid md:grid-cols-8 items-center w-full flex flex-col justify-center gap-2 md:gap-0  "
             >
-              <div className=" flex flex-col md:flex-row space-y-2 space-x-0 md:space-x-2 md:space-y-0 items-center ">
-                <span className="whitespace-nowrap">
-                  {user.name ? user.name : "No Name"}
-                </span>
-                <div>
-                  <span className="text-gray-500">{user.email}</span>
-                </div>
-                <div>
-                  {!!user.isAdmin && (
-                    <span className="bg-[#fff71c] rounded-lg p-2">ADMIN</span>
-                  )}
-                  {!!user.isDasher && (
-                    <span className="bg-[#5e6df2] rounded-lg p-2">DASHER</span>
-                  )}
-                </div>
-                <Link className="button" href={`/users/${user.id}`}>
+              <span className="whitespace-nowrap col-span-2 w-[200px] md:text-left text-center ">
+                {user.name ? user.name : "No Name"}
+              </span>
+
+              <span className=" text-gray-500 col-span-3 ">{user.email}</span>
+
+              <span className=" px-1 col-span-1 ">
+                {!!user.isAdmin && (
+                  <span className="bg-[#fff71c] rounded-lg p-2  ">ADMIN</span>
+                )}
+              </span>
+
+              <span className=" px-1 col-span-1 ">
+                {!!user.isDasher && (
+                  <span className="bg-[#5e6df2] rounded-lg p-2 ">DASHER</span>
+                )}
+              </span>
+
+              <span className=" pl-1 col-span-1 ">
+                <Link className="button  " href={`/users/${user.id}`}>
                   Edit
                 </Link>
-              </div>
-              <div />
+              </span>
             </div>
           ))}
       </div>
