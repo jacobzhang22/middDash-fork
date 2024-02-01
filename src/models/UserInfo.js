@@ -1,4 +1,4 @@
-const { Schema, models, model } = require("mongoose");
+const { Schema, models, model } = require('mongoose');
 
 const UserInfoSchema = new Schema(
   {
@@ -8,7 +8,9 @@ const UserInfoSchema = new Schema(
     dorm: { type: String },
     admin: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-export const UserInfo = models?.UserInfo || model("UserInfo", UserInfoSchema);
+const UserInfo = models?.UserInfo || model('UserInfo', UserInfoSchema);
+
+export default UserInfo;

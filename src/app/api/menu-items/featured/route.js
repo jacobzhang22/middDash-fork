@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 // import mongoose from "mongoose";
 
 // export async function POST(req) {
@@ -15,14 +15,15 @@ import { PrismaClient } from '@prisma/client'
 //   return Response.json(true);
 // }
 
+// eslint-disable-next-line import/prefer-default-export
 export async function GET() {
-	const prisma = new PrismaClient()
+  const prisma = new PrismaClient();
 
-	const allItems = await prisma.item.findMany({
-		where: {featured: true}
-	})
+  const allItems = await prisma.item.findMany({
+    where: { featured: true },
+  });
 
-	await prisma.$disconnect()
+  await prisma.$disconnect();
   // mongoose.connect(process.env.MONGO_URL);
   return Response.json(allItems);
 }

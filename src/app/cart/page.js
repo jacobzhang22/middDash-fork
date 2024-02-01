@@ -1,39 +1,52 @@
+/* eslint-disable */
+
 "use client";
-import { CartContext, cartProductPrice } from "@/components/AppContext";
-import SectionHeaders from "@/components/layout/SectionHeaders";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { CartContext, cartProductPrice } from "@/components/AppContext";
+import SectionHeaders from "@/components/layout/SectionHeaders";
 import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
-import { useProfile } from "@/components/UseProfile";
+import { useRouter } from "next/navigation";
+import useProfile from "@/components/UseProfile";
 
 export default function CartPage() {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
-  const [address, setAddress] = useState({});
+  const router = useRouter();
+  const [address, setAddress] = useState({
+    phone: "",
+    roomNumber: "",
+    dorm: "",
+  });
   const { data: profileData } = useProfile();
 
   useEffect(() => {
     if (profileData?.roomNumber) {
       const { phone, roomNumber, dorm } = profileData;
-      const addressFromProfile = { phone, roomNumber, dorm };
-      setAddress(addressFromProfile);
+      setAddress({ phone, roomNumber, dorm });
     }
   }, [profileData]);
 
-  //calculate item cost
+  function handleRemoveFromCart(index) {
+    removeCartProduct(index);
+    toast.success("Item removed from cart");
+  }
+
   let subtotal = 0;
   for (const p of cartProducts) {
-		console.log(parseInt(p.price))
     subtotal += cartProductPrice(p);
   }
 
   function handleAddressChange(propName, value) {
-    setAddress((prevAddress) => {
-      ({ ...prevAddress, [propName]: value });
-    });
+    setAddress((prevAddress) => ({
+      ...prevAddress,
+      [propName]: value,
+    }));
   }
 
   async function proceedToCheckout(ev) {
+    ev.preventDefault();
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -42,8 +55,11 @@ export default function CartPage() {
         cartProducts,
       }),
     });
-    const link = await response.json();
-    window.location = link;
+    const { data } = await response.json();
+    if (data) {
+      router.push(`/orders/${data.id}`);
+    }
+    // handle the checkout data as needed
   }
 
   return (
@@ -58,14 +74,13 @@ export default function CartPage() {
           )}
           {cartProducts?.length > 0 &&
             cartProducts.map((product, index) => (
-              <div className="flex items-center gap-4 border-b py-4" key = {index}>
+              <div
+                className="flex items-center gap-4 border-b py-4"
+                key={index}
+              >
+                {/* Image component can be uncommented and used as needed */}
                 <div className="w-24">
-                  {/* <Image */}
-                  {/*   src={product.image} */}
-                  {/*   alt={""} */}
-                  {/*   width={240} */}
-                  {/*   height={240} */}
-                  {/* /> */}
+                  {/* <Image src={product.image} alt={product.name} width={240} height={240} /> */}
                 </div>
                 <div className="grow">
                   <h3 className="font-semibold">{product.name}</h3>
@@ -77,7 +92,7 @@ export default function CartPage() {
                   <button
                     className="p-2"
                     type="button"
-                    onClick={() => removeCartProduct(index)}
+                    onClick={() => handleRemoveFromCart(index)}
                   >
                     <Trash />
                   </button>
@@ -87,12 +102,15 @@ export default function CartPage() {
           <div className="py-2 pr-16 flex justify-end items-center">
             <div className="text-gray-500">
               Subtotal:
-              <br /> Delivery:
-              <br /> Total:
+              <br />
+              Delivery:
+              <br />
+              Total:
             </div>
             <div className="text-lg font-semibold pl-2 text-right">
               ${subtotal}
-              <br /> $5.00
+              <br />
+              $5.00
               <br />${subtotal + 5}
             </div>
           </div>

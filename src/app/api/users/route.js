@@ -1,8 +1,16 @@
-import mongoose from "mongoose";
-import { User } from "@/models/User";
+import { PrismaClient } from "@prisma/client";
 
+// eslint-disable-next-line import/prefer-default-export
 export async function GET() {
-  mongoose.connect(process.env.MONGO_URL);
-  const users = await User.find();
-  return Response.json(users);
+  const prisma = new PrismaClient();
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      isDasher: true,
+      isAdmin: true,
+      name: true,
+    },
+  });
+  prisma.$disconnect();
+  return Response.json({ users });
 }

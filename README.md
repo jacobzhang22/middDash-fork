@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Home of MiddDash
 
-## Getting Started
+Helpful commands:
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Prisma
+When you modify the database schema, run the migration on the database (to save the changes to the model and db):
+```shell
+npx prisma migrate dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To view the database models and data:
+```shell
+npx prisma studio
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Database Issues:
+Delete the database:
+```shell
+rm prisma/dev.db
+```
+Re-run migrations:
+```shell
+npx prisma migrate dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Seed the database:
+```shell
+npx prisma db seed prisma/seeds/locationsAndItems.ts   
+```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+# Git
+Making a new branch:
+```shell
+git checkout -b branchName
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Staging all changes in all files (execpt those ignored by the .gitignore):
+```shell
+git add .
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Committting all the changes with a message:
+```shell
+git commit -m "message here" 
+```
 
-## Deploy on Vercel
+Pushing all your changes to github on your currentBranch
+```shell
+git push origin branchName
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+

@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models } from 'mongoose';
 
 const MenuItemsPage = new Schema(
   {
@@ -8,7 +8,9 @@ const MenuItemsPage = new Schema(
     category: { type: mongoose.Types.ObjectId, required: false },
     basePrice: { type: Number },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-export const MenuItem = models?.MenuItem || model("MenuItem", MenuItemsPage);
+const MenuItem = models?.MenuItem || model('MenuItem', MenuItemsPage);
+
+export default MenuItem;

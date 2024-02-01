@@ -1,6 +1,7 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import uniqid from "uniqid";
 
+// eslint-disable-next-line import/prefer-default-export
 export async function POST(req) {
   const data = await req.formData();
   if (data.get("file")) {
@@ -16,7 +17,7 @@ export async function POST(req) {
     });
 
     const ext = file.name.split(".").slice(-1)[0];
-    const newFileName = uniqid() + "." + ext;
+    const newFileName = `${uniqid()}.${ext}`;
 
     const chunks = [];
     for await (const chunk of file.stream()) {
@@ -32,10 +33,10 @@ export async function POST(req) {
         ACL: "public-read",
         ContentType: file.type,
         Body: buffer,
-      })
+      }),
     );
 
-    const link = "https://" + bucket + ".s3.amazonaws.com/" + newFileName;
+    const link = `https://${bucket}.s3.amazonaws.com/${newFileName}`;
 
     return Response.json(link);
   }

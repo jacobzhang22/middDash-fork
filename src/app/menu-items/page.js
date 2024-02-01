@@ -1,19 +1,23 @@
 "use client";
-import { useProfile } from "@/components/UseProfile";
+
+import useProfile from "@/components/UseProfile";
 import Right from "@/components/icons/Right";
 import UserTabs from "@/components/layout/UserTabs";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import SectionHeaders from "@/components/layout/SectionHeaders";
+import MenuItem from "@/components/menu/MenuItem";
+import NewMenuItem from "@/components/menu/NewMenuItem";
 
 export default function MenuItemsPage() {
   const { loading, data } = useProfile();
-  const [menuItems, setMenuItems] = useState([]);
+  const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    fetch("/api/menu-items").then((res) => {
-      res.json().then((menuItems) => {
-        setMenuItems(menuItems);
+    fetch("/api/locations?items=true").then((res) => {
+      res.json().then((newLocations) => {
+        setLocations(newLocations);
       });
     });
   }, []);
@@ -22,41 +26,46 @@ export default function MenuItemsPage() {
     return "Loading user info...";
   }
 
-  if (!data.admin) {
+  if (!data.isAdmin) {
     return "Not an admin.";
   }
 
   return (
     <section className="mt-8 max-w-2xl mx-auto">
-      <UserTabs isAdmin={true} />
+      <UserTabs isAdmin />
       <div className="mt-8">
-        <Link className="button flex" href={"/menu-items/new"}>
+        <Link className="button flex" href="/menu-items/new">
           <span>Create new menu item</span>
           <Right />
         </Link>
       </div>
       <div>
         <h2 className="text-sm text-gray-500 mt-8">Edit menu items:</h2>
-        <div className="grid grid-cols-3 gap-2">
-          {menuItems?.length > 0 &&
-            menuItems.map((item) => (
-              <Link
-                href={"/menu-items/edit/" + item._id}
-                className="bg-gray-300 rounded-lg p-4"
-              >
-                <div className="relative">
-                  <Image
-                    className="rounded-md"
-                    src={item.image}
-                    alt={""}
-                    width={200}
-                    height={200}
-                  />
+        {locations.length > 0 &&
+          locations.map((location) => (
+            <div key={location.id}>
+              <div className="text-center">
+                <SectionHeaders mainHeader={location.name} />
+              </div>
+              <div className="flex flex-row justify-center items-stretch gap-4 mt-6 mb-12">
+                {location.items.map((item) => (
+                  <div key={item.key}>
+                    <Link href={`/menu-items/edit/${item.id}`}>
+                      <MenuItem {...item} />
+                    </Link>
+                  </div>
+                ))}
+                <div className="">
+                  <Link
+                    href={`/menu-items/new?location=${location.id}`}
+                    className=" h-full "
+                  >
+                    <NewMenuItem />
+                  </Link>
                 </div>
-                <div className="text-center">{item.name}</div>
-              </Link>
-            ))}
-        </div>
+              </div>
+            </div>
+          ))}
       </div>
     </section>
   );

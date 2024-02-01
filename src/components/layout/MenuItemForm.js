@@ -1,26 +1,42 @@
 import EditableImage from "@/components/layout/EditableImage";
 import { useEffect, useState } from "react";
+import DeleteButton from "@/components/DeleteButton";
+import { useSearchParams } from "next/navigation";
 
-export default function MenuItemForm({ onSubmit, menuItem }) {
+export default function MenuItemForm({ onSubmit, menuItem, onDelete }) {
   const [image, setImage] = useState(menuItem?.image || "");
   const [name, setName] = useState(menuItem?.name || "");
   const [description, setDescription] = useState(menuItem?.description || "");
-  const [basePrice, setBasePrice] = useState(menuItem?.basePrice || "");
+  const [price, setPrice] = useState(menuItem?.price || "");
   const [categories, setCategories] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [location, setLocation] = useState(menuItem?.locationId || "");
   const [category, setCategory] = useState(menuItem?.category || "");
 
   useEffect(() => {
-    fetch("/api/categories").then((res) => {
-      res.json().then((categories) => {
-        setCategories(categories);
+    console.log("menuItem", menuItem);
+    fetch("/api/locations").then((res) => {
+      res.json().then((newLocations) => {
+        setLocations(newLocations);
+        if (location === "") {
+          setLocation(newLocations[0].id);
+        }
+        console.log("new locations", newLocations);
       });
     });
-  }, []);
+  }, [menuItem]);
+
+  const searchParams = useSearchParams();
+
+  const paramLoc = searchParams.get("location");
+  useEffect(() => {
+    setLocation(paramLoc);
+  }, [paramLoc]);
 
   return (
     <form
       onSubmit={(ev) =>
-        onSubmit(ev, { image, name, description, basePrice, category })
+        onSubmit(ev, { image, name, description, price, location })
       }
       className="mt-8 max-w-2xl mx-auto"
     >
@@ -38,27 +54,36 @@ export default function MenuItemForm({ onSubmit, menuItem }) {
             value={name}
             onChange={(ev) => setName(ev.target.value)}
           />
+
+          <label>Location</label>
+          <select
+            value={location}
+            onChange={(ev) => setLocation(ev.target.value)}
+          >
+            {locations?.length > 0 &&
+              locations.map((l) => (
+                <option key={l.id} value={l.id}>
+                  {l.name}
+                </option>
+              ))}
+          </select>
+
           <label>Description</label>
           <input
             type="text"
             value={description}
             onChange={(ev) => setDescription(ev.target.value)}
           />
-          <label>Category</label>
-          <select
-            value={category}
-            onChange={(ev) => setCategory(ev.target.value)}
-          >
-            {categories?.length > 0 &&
-              categories.map((c) => <option value={c._id}>{c.name}</option>)}
-          </select>
-          <label>Price</label>
+          <label>Price ($) </label>
           <input
             type="text"
-            value={basePrice}
-            onChange={(ev) => setBasePrice(ev.target.value)}
+            value={price}
+            onChange={(ev) => setPrice(ev.target.value)}
           />
           <button type="submit">Save</button>
+          <div className="mt-2">
+            <DeleteButton label="Delete this menu item" onDelete={onDelete} />
+          </div>
         </div>
       </div>
     </form>

@@ -16,20 +16,23 @@ export default function Hero() {
           delivered in under 15 minutes!
         </p>
         <div className="flex justify-center items-center gap-4 text-sm">
-          <Link className="flex justify-center bg-primary uppercase items-center gap-2 text-white px-4 py-2 rounded-full cursor-pointer w-full " href = "/menu">
+          <Link
+            className="flex justify-center bg-primary uppercase items-center gap-2 text-white px-4 py-2 rounded-full cursor-pointer w-full "
+            href="/menu"
+          >
             Order now
             <Right />
           </Link>
-          <Link className="flex items-center border-0 gap-2 py-2 text-gray-600 font-semibold w-full " href = "/#about">
+          <Link
+            className="flex items-center border-0 uppercase gap-2 py-2 text-gray-600 font-semibold w-full "
+            href="/#get-started"
+          >
             Learn more
             <Right />
           </Link>
         </div>
       </div>
-      <div
-        className="relative flex justify-center items-center"
-        style={{ height: "400px" }}
-      >
+      <div className="relative flex justify-center items-center h-[400px]">
         <Image
           src="/midd_panther2.png"
           alt="panther"
