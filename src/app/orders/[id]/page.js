@@ -34,6 +34,20 @@ export default function IndividualOrder() {
     window.location.reload();
   };
 
+  const acceptOrder = () => {
+    fetch(`/api/orders/${id}/dasher`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        dasher: data.id,
+      }),
+    }).then((res) => {
+      res.json().then((responseData) => {
+        console.log("responseData", responseData.order);
+        setOrder(responseData.order);
+      });
+    });
+  };
+
   useEffect(() => {
     if (order) {
       if (order.OrderStatus[0].orderedAt) {
@@ -68,6 +82,17 @@ export default function IndividualOrder() {
           <div className="text-center">
             <SectionHeaders mainHeader={`Order for ${order.user.name}`} />
             <span> Current status: {orderStatus} </span>
+            <br />
+            {data.isDasher && !order.dasher ? (
+              <div
+                className="text-primary cursor-pointer "
+                onClick={() => acceptOrder()}
+              >
+                ACCEPT
+              </div>
+            ) : (
+              <> </>
+            )}
           </div>
         </div>
         <div className="flex flex-col justify-center items-center  md:flex-row">

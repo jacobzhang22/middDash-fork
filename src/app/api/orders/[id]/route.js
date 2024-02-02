@@ -63,6 +63,8 @@ export async function PATCH(req, context) {
         user: true,
         paid: true,
         OrderStatus: true,
+        dasher: true,
+        dasherId: true,
       },
     });
     prisma.$disconnect();
