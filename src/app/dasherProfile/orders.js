@@ -1,21 +1,23 @@
-'use client'
-import {useState} from 'react'
+"use client";
 
-export default function Order({orderId, orderName, orderLocation, orderTime, orderItems}){
-    const[name, setName] = useState(orderName)
-    const[location, setLocation] = useState(orderLocation)
-    const[timestamp, setTimestamp] = useState(orderTime)
-    const[items, setItems] = useState(orderItems)
-    const [id, setId] = useState(orderId)
+import { useState } from "react";
+import Link from "next/link";
 
-
-    return (
-        <div className = 'text-center text-2xl'>
-            {name}
-            {location}
-            {timestamp}
-            {items} 
-        </div>
-
-    )
+export default function Order({ info }) {
+  console.log(info);
+  return (
+    <Link
+      className=" bg-gray-100 rounded-lg mb-2 p-1 pl-4 flex w-full gap-4 hover:p-3 "
+      href={`/orders/${info.id}`}
+    >
+      <span>${info.price}</span>
+      <span className="">
+        {info.location.name} {`->`} {info.destinationDorm}
+      </span>
+      <span className="">
+        {new Date(info.OrderStatus[0].orderedAt).toLocaleTimeString()} -{" "}
+        {new Date(info.OrderStatus[0].orderedAt).toLocaleDateString()}
+      </span>
+    </Link>
+  );
 }

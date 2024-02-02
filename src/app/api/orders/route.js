@@ -1,9 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
 // eslint-disable-next-line import/prefer-default-export
-export async function GET() {
+export async function GET(req) {
   const prisma = new PrismaClient();
-  const orders = await prisma.order.findMany({
+
+  const type = await req.nextUrl.searchParams.get("type");
+
+  let orders = await prisma.order.findMany({
     where: {
       active: true,
     },
@@ -20,5 +23,9 @@ export async function GET() {
     },
   });
   prisma.$disconnect();
+
+  if (type === "available") {
+    orders = orders.filter((order) => order.dasher === null);
+  }
   return Response.json({ orders });
 }
