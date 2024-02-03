@@ -19,7 +19,14 @@ export default function CartPage() {
     roomNumber: "",
     dorm: "",
   });
+  const [instructions, setInstructions] = useState("");
   const { data: profileData } = useProfile();
+
+  const test2 = () => {
+    console.log(instructions);
+  };
+
+  useEffect(test2, [instructions]);
 
   useEffect(() => {
     if (profileData?.roomNumber) {
@@ -53,6 +60,7 @@ export default function CartPage() {
       body: JSON.stringify({
         address,
         cartProducts,
+        instructions,
       }),
     });
     const { data } = await response.json();
@@ -114,6 +122,11 @@ export default function CartPage() {
               <br />${subtotal + 5}
             </div>
           </div>
+          <textarea
+            placeholder="Special Instructions"
+            value={instructions}
+            onChange={(ev) => setInstructions(ev.target.value)}
+          ></textarea>
         </div>
         <div className="bg-gray-100 p-4 rounded-lg">
           <h2>Checkout</h2>

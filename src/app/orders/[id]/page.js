@@ -105,6 +105,7 @@ export default function IndividualOrder() {
               <br />
               To: {order.destinationDorm} - {order.destinationRoom}
             </div>
+            <div>{order.specialInstructions}</div>
           </div>
         </div>
         {data.isDasher ? (

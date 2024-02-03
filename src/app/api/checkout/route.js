@@ -14,7 +14,7 @@ export async function POST(req, res) {
   console.log("session", session);
 
   const prisma = new PrismaClient();
-  const { cartProducts, address } = await req.json();
+  const { cartProducts, address, instructions } = await req.json();
   console.log("cart", cartProducts);
 
   // should really pull from db instead of post to avoid spoofing
@@ -38,6 +38,7 @@ export async function POST(req, res) {
       OrderStatus: {
         create: [{ orderedAt: new Date() }],
       },
+      specialInstructions: instructions,
     },
   });
 
