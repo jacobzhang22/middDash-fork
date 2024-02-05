@@ -7,6 +7,8 @@ import Header from "../components/layout/Header";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "MIDD-DASH",
   description: "Have Middlebury food products delivered directly to your room!",
