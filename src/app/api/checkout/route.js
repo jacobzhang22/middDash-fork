@@ -23,6 +23,7 @@ export async function POST(req, res) {
 
   const order = await prisma.order.create({
     data: {
+      isActive: true,
       userId: session.user.id,
       locationId: cartProducts[0].locationId,
       price: totalPrice,
