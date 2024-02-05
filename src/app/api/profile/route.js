@@ -64,6 +64,7 @@ export async function GET(req) {
       phone: true,
       dorm: true,
       roomNumber: true,
+      dasherNotifications: true,
     },
   });
   prisma.$disconnect();

@@ -63,8 +63,65 @@ export async function GET(req, context) {
       phone: true,
       dorm: true,
       roomNumber: true,
+      dasherNotifications: true,
     },
   });
-  // prisma.$disconnect()
+  prisma.$disconnect();
   return Response.json({ user });
+}
+
+export async function PATCH(req, context) {
+  const session = await getServerSession(authOptions);
+  const { id } = context.params;
+  if (id !== session.user.id) {
+    return Response.status(400);
+  }
+
+  const prisma = new PrismaClient();
+
+  let dasher = await prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      isDasher: true,
+      isAdmin: true,
+      name: true,
+      phone: true,
+      dorm: true,
+      roomNumber: true,
+      dasherNotifications: true,
+    },
+  });
+
+  if (dasher.isDasher !== true) {
+    prisma.$disconnect();
+    return Response.json({ dasher });
+  }
+
+  const modType = await req.nextUrl.searchParams.get("modify");
+  const body = await req.json();
+
+  if (modType === "notifications") {
+    console.log("updating");
+
+    dasher = await prisma.user.update({
+      where: { id },
+      data: {
+        dasherNotifications: body.notifications,
+      },
+      select: {
+        id: true,
+        isDasher: true,
+        isAdmin: true,
+        name: true,
+        phone: true,
+        dorm: true,
+        roomNumber: true,
+        dasherNotifications: true,
+      },
+    });
+  }
+
+  prisma.$disconnect();
+  return Response.json({ dasher });
 }
