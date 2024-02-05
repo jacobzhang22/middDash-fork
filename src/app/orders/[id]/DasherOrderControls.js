@@ -5,7 +5,7 @@ import SectionHeaders from "@/components/layout/SectionHeaders";
 
 import { useEffect, useState } from "react";
 
-export default function DasherOrderPage({ order, id, update }) {
+export default function DasherOrderPage({ order, id, update, admin }) {
   console.log("dasher order page has", order);
   const [checked, setChecked] = useState();
 
@@ -44,12 +44,13 @@ export default function DasherOrderPage({ order, id, update }) {
       <section className="mt-8">
         Dasher name: {order.dasher ? order.dasher.name : "NO DASHER"}
         <br />
-        <div>
-          Paid:
+        <div className="items-center flex-row flex gap-2">
+          Paid (marked by dasher):{" "}
           {checked !== undefined && (
             <input
               type="checkbox"
               checked={checked}
+              disabled={!admin}
               onChange={(e) => {
                 setPaid(!checked);
                 setChecked(!checked);
@@ -83,17 +84,17 @@ export default function DasherOrderPage({ order, id, update }) {
             >
               Accepted:
               <br />
-              {order.OrderStatus[0].acceptedAt ? (
-                new Date(order.OrderStatus[0].acceptedAt).toLocaleString()
-              ) : (
-                <div
-                  className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
-                  onClick={() => setStatus("acceptedAt")}
-                >
-                  {" "}
-                  Now{" "}
-                </div>
-              )}
+              {order.OrderStatus[0].acceptedAt
+                ? new Date(order.OrderStatus[0].acceptedAt).toLocaleString()
+                : admin && (
+                    <div
+                      className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
+                      onClick={() => setStatus("acceptedAt")}
+                    >
+                      {" "}
+                      Now{" "}
+                    </div>
+                  )}
             </div>
 
             <div
@@ -101,17 +102,17 @@ export default function DasherOrderPage({ order, id, update }) {
             >
               Placed :
               <br />
-              {order.OrderStatus[0].placedAt ? (
-                new Date(order.OrderStatus[0].placedAt).toLocaleString()
-              ) : (
-                <div
-                  className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
-                  onClick={() => setStatus("placedAt")}
-                >
-                  {" "}
-                  Now{" "}
-                </div>
-              )}
+              {order.OrderStatus[0].placedAt
+                ? new Date(order.OrderStatus[0].placedAt).toLocaleString()
+                : admin && (
+                    <div
+                      className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
+                      onClick={() => setStatus("placedAt")}
+                    >
+                      {" "}
+                      Now{" "}
+                    </div>
+                  )}
             </div>
 
             <div
@@ -119,17 +120,17 @@ export default function DasherOrderPage({ order, id, update }) {
             >
               Picked Up:
               <br />
-              {order.OrderStatus[0].pickedUpAt ? (
-                new Date(order.OrderStatus[0].pickedUpAt).toLocaleString()
-              ) : (
-                <div
-                  className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
-                  onClick={() => setStatus("pickedUpAt")}
-                >
-                  {" "}
-                  Now{" "}
-                </div>
-              )}
+              {order.OrderStatus[0].pickedUpAt
+                ? new Date(order.OrderStatus[0].pickedUpAt).toLocaleString()
+                : admin && (
+                    <div
+                      className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
+                      onClick={() => setStatus("pickedUpAt")}
+                    >
+                      {" "}
+                      Now{" "}
+                    </div>
+                  )}
             </div>
 
             <div
@@ -137,17 +138,17 @@ export default function DasherOrderPage({ order, id, update }) {
             >
               Delivered:
               <br />
-              {order.OrderStatus[0].deliveredAt ? (
-                new Date(order.OrderStatus[0].deliveredAt).toLocaleString()
-              ) : (
-                <div
-                  className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
-                  onClick={() => setStatus("deliveredAt")}
-                >
-                  {" "}
-                  Now{" "}
-                </div>
-              )}
+              {order.OrderStatus[0].deliveredAt
+                ? new Date(order.OrderStatus[0].deliveredAt).toLocaleString()
+                : admin && (
+                    <div
+                      className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
+                      onClick={() => setStatus("deliveredAt")}
+                    >
+                      {" "}
+                      Now{" "}
+                    </div>
+                  )}
             </div>
           </div>
         </div>
