@@ -148,7 +148,7 @@ export default function IndividualOrder() {
           order={order}
           id={id}
           update={() => update()}
-          admin={data.isAdmin}
+          admin={data.isAdmin || data.isDasher}
         />
       </section>
     );
