@@ -34,7 +34,7 @@ model Order {
   dasherId        String?
   dasher          User?         @relation("DasherToOrder", fields: [dasherId], references: [id])
   OrderStatus     OrderStatus[]
-  active    			Boolean 			@default(true) 
+  isActive    			Boolean 			@default(true) 
 }
 
 model Location {
