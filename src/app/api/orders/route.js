@@ -7,9 +7,6 @@ export async function GET(req) {
   const type = await req.nextUrl.searchParams.get("type");
 
   let orders = await prisma.order.findMany({
-    where: {
-      active: true,
-    },
     select: {
       id: true,
       location: true,
@@ -20,8 +17,11 @@ export async function GET(req) {
       dasher: true,
       OrderStatus: true,
       price: true,
+      active: true,
     },
   });
+
+  orders = orders.filter((order) => order.active === true);
   prisma.$disconnect();
 
   if (type === "available") {
