@@ -11,20 +11,15 @@ import { authOptions } from "../auth/[...nextauth]/route";
 export async function POST(req, res) {
   // mongoose.connect(process.env.MONGO_URL);
   const session = await getServerSession(authOptions);
-  console.log("session", session);
 
   const prisma = new PrismaClient();
   const { cartProducts, address } = await req.json();
-  console.log("cart", cartProducts);
 
   // should really pull from db instead of post to avoid spoofing
   const totalPrice = cartProducts.reduce(
     (accumulator, currentValue) => accumulator + currentValue.price,
     0,
   );
-
-  console.log("total price", totalPrice);
-  console.log("address", address);
 
   const order = await prisma.order.create({
     data: {
@@ -76,6 +71,8 @@ export async function POST(req, res) {
 			To: ${order.destinationDorm}
 			<br/>
 			Items: ${cartProducts.map((prod) => `<span> ${prod.name} </span>`).join(", ")}
+			<br/>
+			<a href = "${process.env.NEXTAUTH_URL}/orders/${order.id}">View Order</a>
 		</div>
 		`,
     };

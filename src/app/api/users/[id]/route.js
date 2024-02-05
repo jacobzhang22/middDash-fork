@@ -102,8 +102,6 @@ export async function PATCH(req, context) {
   const body = await req.json();
 
   if (modType === "notifications") {
-    console.log("updating");
-
     dasher = await prisma.user.update({
       where: { id },
       data: {
