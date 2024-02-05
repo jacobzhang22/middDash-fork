@@ -8,7 +8,7 @@ generator client {
 // }
 
 
-datasource db {
+datasource db2 {
   provider = "postgresql"
   url      = "postgres://vbsozsbbkwmvrg:aab0d389433b9d066b24ade8808ed2efabf7e8740d954b85cd2a95a6a7495873@ec2-54-235-75-25.compute-1.amazonaws.com:5432/dcj1uuk8n9f144"
 	  shadowDatabaseUrl = "postgres://jjberdikxrovzo:a96798b51f118b98c68cef3c700c80af1f9d824471143073b15cd2011de271a4@ec2-44-215-1-253.compute-1.amazonaws.com:5432/d4086uq9f4cql5"
