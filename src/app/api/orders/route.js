@@ -17,11 +17,11 @@ export async function GET(req) {
       dasher: true,
       OrderStatus: true,
       price: true,
-      active: true,
+      isActive: true,
     },
   });
 
-  orders = orders.filter((order) => order.active === true);
+  orders = orders.filter((order) => order.isActive === true);
   prisma.$disconnect();
 
   if (type === "available") {
