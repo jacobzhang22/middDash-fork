@@ -2,11 +2,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource db2 {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("HEROKU_POSTGRESQL_ROSE_URL")
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
+
+// datasource db2 {
+//  provider          = "postgresql"
+//  url               = env("DATABASE_URL")
+//  shadowDatabaseUrl = env("HEROKU_POSTGRESQL_ROSE_URL")
+// }
 
 model OrderStatus {
   id          String    @id @default(cuid()) @map("_id")

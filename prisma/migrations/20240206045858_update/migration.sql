@@ -1,5 +1,0 @@
--- AlterTable
-ALTER TABLE "Order" ALTER COLUMN "isActive" DROP NOT NULL,
-ALTER COLUMN "isActive" SET DEFAULT false,
-ALTER COLUMN "isActiveTest" DROP NOT NULL,
-ALTER COLUMN "isActiveTest" SET DEFAULT false;
