@@ -63,6 +63,7 @@ export async function PATCH(req, context) {
         OrderStatus: true,
         dasher: true,
         dasherId: true,
+        isActive: true,
       },
     });
 
@@ -103,26 +104,56 @@ export async function GET(req, context) {
       paid: true,
       dasher: true,
       OrderStatus: true,
+      isActive: true,
     },
   });
 
   return Response.json({ order });
 }
 
-// export async function DELETE(req, context) {
-//   const prisma = new PrismaClient();
-//   const session = await getServerSession(authOptions);
-//   const targetItemId = context.params.id;
+// marks order as inactive
+export async function DELETE(req, context) {
+  const { id } = context.params;
+  // console.log("target id", id);
 
-//   // if the currnet user is an admin
-//   if (session.user.isAdmin) {
-//     const deletedItem = await prisma.item.delete({
-//       where: { id: targetItemId },
-//     });
+  const order = await prisma.order.update({
+    where: {
+      id,
+    },
+    data: {
+      isActive: false,
+    },
+    select: {
+      userId: true,
+      locationId: true,
+      price: true,
+      location: true,
+      items: true,
+      destinationDorm: true,
+      destinationRoom: true,
+      phone: true,
+      user: true,
+      paid: true,
+      dasher: true,
+      OrderStatus: true,
+      isActive: true,
+    },
+  });
 
-//     return Response.json({ status: "success" });
-//   }
+  return Response.json({ order });
+  //   const prisma = new PrismaClient();
+  //   const session = await getServerSession(authOptions);
+  //   const targetItemId = context.params.id;
 
-//   prisma.$disconnect();
-//   return Response.json({ user: "error" });
-// }
+  //   // if the currnet user is an admin
+  //   if (session.user.isAdmin) {
+  //     const deletedItem = await prisma.item.delete({
+  //       where: { id: targetItemId },
+  //     });
+
+  //     return Response.json({ status: "success" });
+  //   }
+
+  //   prisma.$disconnect();
+  //   return Response.json({ user: "error" });
+}

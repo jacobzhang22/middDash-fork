@@ -47,6 +47,17 @@ export default function IndividualOrder() {
     });
   };
 
+  const deleteOrder = () => {
+    fetch(`/api/orders/${id}`, {
+      method: "DELETE",
+    }).then((res) => {
+      res.json().then((responseData) => {
+        console.log("responseData", responseData.order);
+        setOrder(responseData.order);
+      });
+    });
+  };
+
   useEffect(() => {
     if (order) {
       if (order.OrderStatus[0].orderedAt) {
@@ -82,12 +93,29 @@ export default function IndividualOrder() {
             <SectionHeaders mainHeader={`Order for ${order.user.name}`} />
             <span> Current status: {orderStatus} </span>
             <br />
+            <span>
+              {" "}
+              {!order.isActive && (
+                <div className="text-[20px] font-bold ">CANCELLED</div>
+              )}{" "}
+            </span>
+            <br />
             {data.isDasher && !order.dasher ? (
               <div
                 className="text-primary cursor-pointer "
                 onClick={() => acceptOrder()}
               >
-                ACCEPT
+                ACCEPT ORDER
+              </div>
+            ) : (
+              <> </>
+            )}
+            {order.userId === data.id && order.isActive ? (
+              <div
+                className="text-primary cursor-pointer "
+                onClick={() => deleteOrder()}
+              >
+                CANCEL ORDER
               </div>
             ) : (
               <> </>
