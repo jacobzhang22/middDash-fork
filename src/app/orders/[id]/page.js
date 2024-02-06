@@ -92,7 +92,6 @@ export default function IndividualOrder() {
           <div className="text-center">
             <SectionHeaders mainHeader={`Order for ${order.user.name}`} />
             <span> Current status: {orderStatus} </span>
-            <br />
             <span>
               {" "}
               {!order.isActive && (

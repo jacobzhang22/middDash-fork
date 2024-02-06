@@ -1,42 +1,6 @@
 import prisma from "@/libs/prismaConnect";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import User from "@/models/User";
-import UserInfo from "@/models/UserInfo";
+import nodemailer from "nodemailer";
 
-// export async function PUT(req, context) {
-//   const prisma = new PrismaClient();
-//   const session = await getServerSession(authOptions);
-//   const targetItemId = context.params.id;
-
-//   // if the currnet user is an admin
-//   if (session.user.isAdmin) {
-//     const body = await req.json();
-//     console.log("body", body);
-
-//     const currentItem = await prisma.item.findUnique({
-//       where: { id: targetItemId },
-//     });
-
-//     const updatedItem = await prisma.item.update({
-//       where: { id: targetItemId },
-//       data: {
-//         name: body.name ? body.name : currentItem.name,
-//         price: body.price ? parseInt(body.price) : currentItem.price,
-//         location: {
-//           connect: {
-//             id: body.location,
-//           },
-//         },
-//       },
-//     });
-//     return Response.json({ item: updatedItem });
-//   }
-
-//   prisma.$disconnect();
-//   return Response.json({ item: "error" });
-// }
-//
 export async function PATCH(req, context) {
   const { id } = context.params;
 
@@ -85,7 +49,6 @@ export async function PATCH(req, context) {
 
 export async function GET(req, context) {
   const { id } = context.params;
-  // console.log("target id", id);
 
   const order = await prisma.order.findUnique({
     where: {
@@ -139,21 +102,39 @@ export async function DELETE(req, context) {
       isActive: true,
     },
   });
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "midddevclub@gmail.com",
+      pass: "ejuq wnnj iorg ggya",
+    },
+  });
+
+  const mailOptions = {
+    from: "midddevclub@gmail.com",
+    to: order.user.email,
+    subject: "Order Deleted",
+    html: `
+		<div>
+		Your order has been deleted
+		<br/>
+			From: ${order.location.name}
+			<br/>
+			To: ${order.destinationDorm}
+			<br/>
+			Items: ${order.items.map((prod) => `<span> ${prod.name} </span>`).join(", ")}
+			<br/>
+			<a href = "${process.env.NEXTAUTH_URL}/orders/${order.id}">View Order</a>
+		</div>
+		`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(`Email sent: ${info.response}`);
+    }
+  });
 
   return Response.json({ order });
-  //   const prisma = new PrismaClient();
-  //   const session = await getServerSession(authOptions);
-  //   const targetItemId = context.params.id;
-
-  //   // if the currnet user is an admin
-  //   if (session.user.isAdmin) {
-  //     const deletedItem = await prisma.item.delete({
-  //       where: { id: targetItemId },
-  //     });
-
-  //     return Response.json({ status: "success" });
-  //   }
-
-  //   prisma.$disconnect();
-  //   return Response.json({ user: "error" });
 }
