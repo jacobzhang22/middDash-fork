@@ -2,30 +2,21 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// datasource db {
-//  provider = "sqlite"
-//  url      = "file:./dev.db"
-// }
-
-
 datasource db2 {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-	shadowDatabaseUrl = env("HEROKU_POSTGRESQL_ROSE_URL")
- 
-
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("HEROKU_POSTGRESQL_ROSE_URL")
 }
 
 model OrderStatus {
   id          String    @id @default(cuid()) @map("_id")
-  order       Order     @relation(fields: [orderId], references: [id])
   orderedAt   DateTime  @default(now())
   acceptedAt  DateTime?
   placedAt    DateTime?
   pickedUpAt  DateTime?
   deliveredAt DateTime?
-
-  orderId String
+  orderId     String
+  order       Order     @relation(fields: [orderId], references: [id])
 }
 
 model Order {
@@ -33,17 +24,18 @@ model Order {
   userId          String
   locationId      String
   price           Int           @default(5)
-  location        Location      @relation(fields: [locationId], references: [id])
-  user            User          @relation(fields: [userId], references: [id])
-  items           Item[]        @relation("ItemToOrder")
   destinationDorm String
   destinationRoom String
   phone           String
   paid            Boolean       @default(false)
   dasherId        String?
+  isActive        Boolean       @default(true)
+  isActiveTest    Boolean       @default(true)
   dasher          User?         @relation("DasherToOrder", fields: [dasherId], references: [id])
+  location        Location      @relation(fields: [locationId], references: [id])
+  user            User          @relation(fields: [userId], references: [id])
   OrderStatus     OrderStatus[]
-  isActive    		Boolean 			@default(true) 
+  items           Item[]        @relation("ItemToOrder")
 }
 
 model Location {
@@ -110,12 +102,12 @@ model User {
   dorm                String?
   phone               String?   @unique
   roomNumber          String?
-  accounts            Account[]
-  orders              Order[]
-  sessions            Session[]
   venmo               String?
-  reports             Report[]
+  accounts            Account[]
   dashedOrders        Order[]   @relation("DasherToOrder")
+  orders              Order[]
+  reports             Report[]
+  sessions            Session[]
 }
 
 model VerificationRequest {
@@ -130,13 +122,12 @@ model VerificationRequest {
 }
 
 model Report {
-  id        String   @id @default(cuid()) @map("_id")
-  title     String
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isResolved Boolean @default(false)
-  
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  id         String   @id @default(cuid()) @map("_id")
+  title      String
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  isResolved Boolean  @default(false)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
 }

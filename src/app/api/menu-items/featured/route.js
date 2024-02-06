@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client/edge";
 // import mongoose from "mongoose";
 
 // export async function POST(req) {

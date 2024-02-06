@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client/edge";
 
 // eslint-disable-next-line import/prefer-default-export
 export async function GET() {

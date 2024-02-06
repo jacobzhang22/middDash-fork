@@ -22,7 +22,8 @@ CREATE TABLE "Order" (
     "phone" TEXT NOT NULL,
     "paid" BOOLEAN NOT NULL DEFAULT false,
     "dasherId" TEXT,
-    "active" BOOLEAN NOT NULL DEFAULT true,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "isActiveTest" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("_id")
 );
