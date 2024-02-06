@@ -1,15 +1,13 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
 // import { PrismaClient } from "@prisma/client/edge";
 
 export async function POST(req) {
-  const prisma = new PrismaClient();
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     console.error("Unauthorized");
-    await prisma.$disconnect();
     return Response.json({ error: "Unauthorized" }, 401);
   }
 
@@ -22,22 +20,18 @@ export async function POST(req) {
       },
     });
 
-    await prisma.$disconnect();
     return Response.json({ report });
   } catch (error) {
     console.error("Failed to create report", error);
-    await prisma.$disconnect();
     return Response.json({ error: error.message }, 500);
   }
 }
 
 export async function GET(req) {
-  const prisma = new PrismaClient();
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     console.error("Unauthorized");
-    await prisma.$disconnect();
     return Response.json({ error: "Unauthorized" }, 401);
   }
 
@@ -56,11 +50,9 @@ export async function GET(req) {
       },
     });
 
-    await prisma.$disconnect();
     return Response.json({ reports });
   } catch (error) {
     console.error("Failed to fetch reports", error);
-    await prisma.$disconnect();
     return Response.json({ error: error.message }, 500);
   }
 }

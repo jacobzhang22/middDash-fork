@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
+import prisma from "@/libs/prismaConnect";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import User from "@/models/User";
@@ -42,7 +41,6 @@ export async function PATCH(req, context) {
   const { id } = context.params;
 
   const body = await req.json();
-  const prisma = new PrismaClient();
 
   // for updating an orders paid value
   if (body.paid) {
@@ -67,7 +65,6 @@ export async function PATCH(req, context) {
         dasherId: true,
       },
     });
-    prisma.$disconnect();
 
     return Response.json({ order });
   }
@@ -80,7 +77,6 @@ export async function PATCH(req, context) {
       where: { id: body.statusId },
       data: { ...data },
     });
-    prisma.$disconnect();
 
     return Response.json({ status });
   }
@@ -90,7 +86,6 @@ export async function GET(req, context) {
   const { id } = context.params;
   // console.log("target id", id);
 
-  const prisma = new PrismaClient();
   const order = await prisma.order.findUnique({
     where: {
       id,
@@ -110,7 +105,6 @@ export async function GET(req, context) {
       OrderStatus: true,
     },
   });
-  prisma.$disconnect();
 
   return Response.json({ order });
 }

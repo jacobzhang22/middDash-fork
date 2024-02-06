@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
 // import { PrismaClient } from "@prisma/client/edge";
 
 // eslint-disable-next-line import/prefer-default-export
 export async function GET() {
-  const prisma = new PrismaClient();
   const users = await prisma.user.findMany({
     select: {
       id: true,
@@ -13,6 +13,5 @@ export async function GET() {
       name: true,
     },
   });
-  prisma.$disconnect();
   return Response.json({ users });
 }

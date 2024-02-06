@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import MenuItem from "../../../models/MenuItem";
 
 export async function POST(req, context) {
-  const prisma = new PrismaClient();
   const session = await getServerSession(authOptions);
 
   // if the currnet user is an admin
@@ -27,7 +26,6 @@ export async function POST(req, context) {
     return Response.json({ item: newItem });
   }
 
-  prisma.$disconnect();
   return Response.json({ item: "error" });
 }
 
@@ -39,15 +37,12 @@ export async function PUT(req) {
 }
 
 export async function GET() {
-  const prisma = new PrismaClient();
-
   const allItems = await prisma.location.findMany({
     include: {
       items: true,
     },
   });
 
-  await prisma.$disconnect();
   // mongoose.connect(process.env.MONGO_URL);
   return Response.json(allItems);
 }

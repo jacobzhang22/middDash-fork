@@ -1,9 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
 
 // eslint-disable-next-line import/prefer-default-export
 export async function GET(req) {
-  const prisma = new PrismaClient();
-
   const type = await req.nextUrl.searchParams.get("type");
 
   let orders = await prisma.order.findMany({
@@ -22,7 +20,6 @@ export async function GET(req) {
   });
 
   orders = orders.filter((order) => order.isActive === true);
-  prisma.$disconnect();
 
   if (type === "available") {
     orders = orders.filter((order) => order.dasher === null);

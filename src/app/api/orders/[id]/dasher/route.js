@@ -1,9 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
 
 // eslint-disable-next-line import/prefer-default-export
 export async function PATCH(req, context) {
-  const prisma = new PrismaClient();
-
   const { id } = context.params;
 
   const body = await req.json();
@@ -31,7 +29,6 @@ export async function PATCH(req, context) {
       dasherId: true,
     },
   });
-  prisma.$disconnect();
 
   return Response.json({ order });
 }

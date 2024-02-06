@@ -1,9 +1,8 @@
 /* eslint-disable */
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
 
 import { grilleImage, middXImage } from "./images/images";
 // import middXImage from "./images/middXImage.js"
-const prisma = new PrismaClient();
 async function main() {
   const grille = await prisma.location.upsert({
     where: { name: "Grille" },
@@ -50,11 +49,8 @@ async function main() {
   console.log({ grille, middX });
 }
 main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
+  .then(async () => {})
   .catch(async (e) => {
     console.error(e);
-    await prisma.$disconnect();
     process.exit(1);
   });

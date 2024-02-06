@@ -1,10 +1,11 @@
 // import mongoose from "mongoose";
 // const stripe = require("stripe")(process.env.STRIPE_SK);
 
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import nodemailer from "nodemailer";
+import prisma from "@/libs/prismaConnect";
 import { authOptions } from "../auth/[...nextauth]/route";
 
 // eslint-disable-next-line import/prefer-default-export
@@ -12,7 +13,6 @@ export async function POST(req, res) {
   // mongoose.connect(process.env.MONGO_URL);
   const session = await getServerSession(authOptions);
 
-  const prisma = new PrismaClient();
   const { cartProducts, address } = await req.json();
 
   // should really pull from db instead of post to avoid spoofing
@@ -85,8 +85,6 @@ export async function POST(req, res) {
       }
     });
   }
-
-  prisma.$disconnect();
 
   return new NextResponse(JSON.stringify({ data: order }), { status: 200 });
 }

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -6,7 +6,6 @@ import User from "@/models/User";
 import UserInfo from "@/models/UserInfo";
 
 export async function PUT(req, context) {
-  const prisma = new PrismaClient();
   const session = await getServerSession(authOptions);
   const targetItemId = context.params.id;
 
@@ -34,7 +33,6 @@ export async function PUT(req, context) {
     return Response.json({ item: updatedItem });
   }
 
-  prisma.$disconnect();
   return Response.json({ item: "error" });
 }
 
@@ -42,7 +40,6 @@ export async function GET(req, context) {
   const { id } = context.params;
   console.log("target id", id);
 
-  const prisma = new PrismaClient();
   const item = await prisma.item.findUnique({
     where: {
       id,
@@ -57,13 +54,11 @@ export async function GET(req, context) {
     // roomNumber: true
     // },
   });
-  prisma.$disconnect();
 
   return Response.json({ item });
 }
 
 export async function DELETE(req, context) {
-  const prisma = new PrismaClient();
   const session = await getServerSession(authOptions);
   const targetItemId = context.params.id;
 
@@ -76,6 +71,5 @@ export async function DELETE(req, context) {
     return Response.json({ status: "success" });
   }
 
-  prisma.$disconnect();
   return Response.json({ user: "error" });
 }

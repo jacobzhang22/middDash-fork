@@ -5,11 +5,11 @@ import bcrypt from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
 
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
 // import clientPromise from '@/libs/mongoConnect';
 // import { User } from '../../../../models/User';
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 export const authOptions = {
   session: {

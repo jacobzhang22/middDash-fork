@@ -1,13 +1,12 @@
 // import { User } from "../../../models/User";
 // import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
 
 // eslint-disable-next-line import/prefer-default-export
 export async function POST(req) {
   const body = await req.json();
 
-  const prisma = new PrismaClient();
   // mongoose.connect(
   //   "mongodb+srv://midd-dash:midddash23@cluster0.usnrwxk.mongodb.net/midd-dash"
   // );
@@ -28,6 +27,5 @@ export async function POST(req) {
     },
   });
 
-  prisma.$disconnect();
   return Response.json(createdUser);
 }

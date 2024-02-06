@@ -1,13 +1,11 @@
 // import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import prisma from "@/libs/prismaConnect";
 import User from "@/models/User";
 import UserInfo from "@/models/UserInfo";
-import { PrismaClient } from "@prisma/client";
-// import { PrismaClient } from "@prisma/client/edge";
 
 export async function PUT(req) {
-  const prisma = new PrismaClient();
   const session = await getServerSession(authOptions);
 
   console.log("session", session);
@@ -45,13 +43,11 @@ export async function PUT(req) {
       dorm: body.dorm ? body.dorm : currentUser.dorm,
     },
   });
-  prisma.$disconnect();
 
   return Response.json({ updatedUser });
 }
 
 export async function GET(req) {
-  const prisma = new PrismaClient();
   const session = await getServerSession(authOptions);
 
   // console.log("session", session)
@@ -68,7 +64,6 @@ export async function GET(req) {
       dasherNotifications: true,
     },
   });
-  prisma.$disconnect();
 
   return Response.json({ ...user });
 }

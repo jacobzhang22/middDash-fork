@@ -1,13 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-// import { PrismaClient } from "@prisma/client/edge";
-
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import prisma from "@/libs/prismaConnect";
 import User from "@/models/User";
 import UserInfo from "@/models/UserInfo";
 
 export async function PUT(req, context) {
-  const prisma = new PrismaClient();
   const session = await getServerSession(authOptions);
   const targetUserId = context.params.id;
 
@@ -43,15 +40,12 @@ export async function PUT(req, context) {
     return Response.json({ user: updatedUser });
   }
 
-  prisma.$disconnect();
   return Response.json({ user: "error" });
 }
 
 export async function GET(req, context) {
   const { id } = context.params;
-  console.log("target id", id);
 
-  const prisma = new PrismaClient();
   const user = await prisma.user.findUnique({
     where: {
       id,
@@ -67,7 +61,6 @@ export async function GET(req, context) {
       dasherNotifications: true,
     },
   });
-  prisma.$disconnect();
   return Response.json({ user });
 }
 
@@ -77,8 +70,6 @@ export async function PATCH(req, context) {
   if (id !== session.user.id) {
     return Response.status(400);
   }
-
-  const prisma = new PrismaClient();
 
   let dasher = await prisma.user.findUnique({
     where: { id },
@@ -95,7 +86,6 @@ export async function PATCH(req, context) {
   });
 
   if (dasher.isDasher !== true) {
-    prisma.$disconnect();
     return Response.json({ dasher });
   }
 
@@ -121,6 +111,5 @@ export async function PATCH(req, context) {
     });
   }
 
-  prisma.$disconnect();
   return Response.json({ dasher });
 }
