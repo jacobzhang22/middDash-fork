@@ -41,6 +41,7 @@ export async function PUT(req) {
       phone: body.phone ? body.phone : currentUser.phone,
       roomNumber: body.roomNumber ? body.roomNumber : currentUser.roomNumber,
       dorm: body.dorm ? body.dorm : currentUser.dorm,
+      venmo: body.venmo ? body.venmo : currentUser.venmo,
     },
   });
 
@@ -62,6 +63,7 @@ export async function GET(req) {
       dorm: true,
       roomNumber: true,
       dasherNotifications: true,
+      venmo: true,
     },
   });
 
