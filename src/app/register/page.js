@@ -86,6 +86,9 @@ export default function RegisterPage() {
           </Link>
         </div>
       </form>
+      <div className="text-center text-sm text-gray-900 font-semibold  mt-4">
+        NOTE : CURRENTLY ONLY ACCEPTING VENMO AS PAYMENT
+      </div>
     </section>
   );
 }
