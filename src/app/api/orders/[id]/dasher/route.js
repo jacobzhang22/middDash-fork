@@ -27,6 +27,7 @@ export async function PATCH(req, context) {
       OrderStatus: true,
       dasher: true,
       dasherId: true,
+      isActive: true,
     },
   });
 

@@ -20,6 +20,7 @@ async function main() {
       phone: "184-481-4818",
     },
     create: {
+      email: "admin@gmail.com",
       name: "Admin User 1",
       isDasher: false,
       dasherNotifications: false,
@@ -47,6 +48,7 @@ async function main() {
       phone: "10581810831",
     },
     create: {
+      email: "dasher@gmail.com",
       name: "Dasher User 1",
       isDasher: true,
       dasherNotifications: true,
@@ -67,18 +69,19 @@ async function main() {
       isDasher: false,
       dasherNotifications: false,
       isAdmin: false,
-      // password "dasher"
+      // password "reg"
       password: "$2a$10$PCDwPD7NYBeP42Uw1tvSUO9HjVdUUAZb9aZ5I/7BOyMs4tNmJ37OC",
       dorm: "chateau",
       roomNumber: "400",
       phone: "410841381",
     },
     create: {
+      email: "reg@gmail.com",
       name: "Normie User 1",
       isDasher: false,
       dasherNotifications: false,
       isAdmin: false,
-      // password "dasher"
+      // password "reg"
       password: "$2a$10$PCDwPD7NYBeP42Uw1tvSUO9HjVdUUAZb9aZ5I/7BOyMs4tNmJ37OC",
       dorm: "chateau",
       roomNumber: "400",

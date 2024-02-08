@@ -28,10 +28,10 @@ export default function MenuItemForm({ onSubmit, menuItem, onDelete }) {
 
   const searchParams = useSearchParams();
 
-  const paramLoc = searchParams.get("location");
-  useEffect(() => {
-    setLocation(paramLoc);
-  }, [paramLoc]);
+  // const paramLoc = searchParams.get("location");
+  // useEffect(() => {
+  //   setLocation(paramLoc);
+  // }, [paramLoc]);
 
   return (
     <form
