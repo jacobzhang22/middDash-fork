@@ -1,7 +1,4 @@
-/* eslint-disable */
-
 "use client";
-import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { CartContext, cartProductPrice } from "@/components/AppContext";
@@ -10,9 +7,11 @@ import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
 import { useRouter } from "next/navigation";
 import useProfile from "@/components/UseProfile";
+import PaymentPopup from "@/components/PaymentPopup";
 
 export default function CartPage() {
-  const { cartProducts, removeCartProduct } = useContext(CartContext);
+  const { cartProducts, removeCartProduct, clearCart } =
+    useContext(CartContext);
   const router = useRouter();
   const [address, setAddress] = useState({
     phone: "",
@@ -20,6 +19,7 @@ export default function CartPage() {
     dorm: "",
   });
   const { data: profileData } = useProfile();
+  const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
 
   useEffect(() => {
     if (profileData?.roomNumber) {
@@ -34,9 +34,9 @@ export default function CartPage() {
   }
 
   let subtotal = 0;
-  for (const p of cartProducts) {
+  cartProducts.forEach((p) => {
     subtotal += cartProductPrice(p);
-  }
+  });
 
   function handleAddressChange(propName, value) {
     setAddress((prevAddress) => ({
@@ -45,8 +45,14 @@ export default function CartPage() {
     }));
   }
 
-  async function proceedToCheckout(ev) {
+  function initiateCheckout(ev) {
     ev.preventDefault();
+    setShowCheckoutPopup(true);
+  }
+
+  async function confirmCheckout() {
+    setShowCheckoutPopup(false);
+
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -55,11 +61,15 @@ export default function CartPage() {
         cartProducts,
       }),
     });
+
     const { data } = await response.json();
     if (data) {
+      clearCart();
       router.push(`/orders/${data.id}`);
+      toast.success("Order submitted successfully!");
+    } else {
+      toast.error("Failed to submit order. Please try again.");
     }
-    // handle the checkout data as needed
   }
 
   return (
@@ -69,17 +79,16 @@ export default function CartPage() {
       </div>
       <div className="mt-8 grid gap-8 grid-cols-2">
         <div>
-          {cartProducts?.length === 0 && (
+          {cartProducts?.length === 0 ? (
             <div>No products in your shopping cart</div>
-          )}
-          {cartProducts?.length > 0 &&
+          ) : (
             cartProducts.map((product, index) => (
               <div
                 className="flex items-center gap-4 border-b py-4"
                 key={index}
               >
-                {/* Image component can be uncommented and used as needed */}
                 <div className="w-24">
+                  {/* Image component can be uncommented and used as needed */}
                   {/* <Image src={product.image} alt={product.name} width={240} height={240} /> */}
                 </div>
                 <div className="grow">
@@ -98,7 +107,8 @@ export default function CartPage() {
                   </button>
                 </div>
               </div>
-            ))}
+            ))
+          )}
           <div className="py-2 pr-16 flex justify-end items-center">
             <div className="text-gray-500">
               Subtotal:
@@ -111,21 +121,26 @@ export default function CartPage() {
               ${subtotal}
               <br />
               $5.00
-              <br />${subtotal + 5}
+              <br />${(subtotal = subtotal + 5)}
             </div>
           </div>
         </div>
         <div className="bg-gray-100 p-4 rounded-lg">
           <h2>Checkout</h2>
-          <form onSubmit={proceedToCheckout}>
+          <form onSubmit={initiateCheckout}>
             <AddressInputs
               addressProps={address}
               setAddressProp={handleAddressChange}
             />
-            <button type="submit">Submit Order</button>
+            <button type="submit" className="submit-order-button">
+              Submit Order
+            </button>
           </form>
         </div>
       </div>
+      {showCheckoutPopup && (
+        <PaymentPopup onConfirm={confirmCheckout} subtotal={subtotal} />
+      )}
     </section>
   );
 }
