@@ -10,7 +10,8 @@ import useProfile from "@/components/UseProfile";
 import PaymentPopup from "@/components/PaymentPopup";
 
 export default function CartPage() {
-  const { cartProducts, removeCartProduct } = useContext(CartContext);
+  const { cartProducts, removeCartProduct, clearCart } =
+    useContext(CartContext);
   const router = useRouter();
   const [address, setAddress] = useState({
     phone: "",
@@ -60,9 +61,14 @@ export default function CartPage() {
         cartProducts,
       }),
     });
+
     const { data } = await response.json();
     if (data) {
+      clearCart();
       router.push(`/orders/${data.id}`);
+      toast.success("Order submitted successfully!");
+    } else {
+      toast.error("Failed to submit order. Please try again.");
     }
   }
 
