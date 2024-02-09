@@ -16,8 +16,12 @@ export default function DasherPage() {
         <div>You are already a dasher</div>
       ) : (
         <div>
-          Apply to become a dasher
-          {data && <ApplicationForm data={data} />}
+          <div className="text-4xl text-gray-700 font-bold my-8 text-center">
+            Apply to become a dasher
+          </div>
+          <div className="max-w-[500px] mx-auto  ">
+            {data && <ApplicationForm data={data} />}
+          </div>
         </div>
       )}
     </div>
