@@ -34,7 +34,7 @@ export default function Header() {
         <Link href="/">Home</Link>
         <Link href="/menu">Menu</Link>
         <Link href="/#about">About</Link>
-        <Link href="/#contact">Contact</Link>
+        <Link href="/dash">Dash</Link>
         {userData && userData.isAdmin && <Link href="/admin">Admin</Link>}
       </nav>
       <nav className="flex items-center gap-4 text-gray-500 font-semibold">
