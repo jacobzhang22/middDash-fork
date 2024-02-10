@@ -67,6 +67,7 @@ model Application {
 	userId     String 
 	user       User     @relation(fields: [userId], references: [id], "ApplicationtoUser")
   createdAt  DateTime @default(now())
+	isApproved Boolean  @default(false)
 	active 		 Boolean  @default(true)
 }
 

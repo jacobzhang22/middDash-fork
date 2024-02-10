@@ -10,10 +10,21 @@ export default function DasherPage() {
   const { loading, data } = useProfile();
   const [orders, setOrders] = useState([]);
 
+  if (!data) {
+    return <>Loading</>;
+  }
   return (
     <div>
       {data && data.isDasher ? (
-        <div>You are already a dasher</div>
+        <div className="text-center pt-10">
+          You are an approved dasher.
+          <br />
+          To view available orders, please click
+          <Link href="/dash/active" className="text-blue-500">
+            {" "}
+            here{" "}
+          </Link>
+        </div>
       ) : (
         <div>
           <div className="text-4xl text-gray-700 font-bold my-8 text-center">

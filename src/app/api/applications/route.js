@@ -28,3 +28,20 @@ export async function POST(req) {
     return Response.json({ status: "failure", data: e });
   }
 }
+
+export async function GET(req) {
+  const applications = await prisma.application.findMany({
+    where: { active: true },
+    select: {
+      id: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return Response.json({ applications });
+}
