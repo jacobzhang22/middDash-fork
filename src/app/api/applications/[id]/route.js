@@ -54,7 +54,7 @@ export async function PATCH(req, context) {
       to: application.user.email,
       // bc testing
       // to: "aballo@middlebury.edu",
-      subject: "Application Approved",
+      subject: "Dasher Application Approved",
       html: `
 		<div>
 		Your application has been approved. We are excited to work with you.

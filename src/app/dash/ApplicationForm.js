@@ -55,7 +55,7 @@ export default function ApplicationForm({ data }) {
               <div> Email </div>
               <Field type="email" name="email" disabled />
               <ErrorMessage name="email" component="div" />
-              <div> Year </div>
+              <div> Grad Year </div>
               <Field type="text" name="year" />
               <ErrorMessage name="year" component="div" />
               <button type="submit" disabled={isSubmitting}>
