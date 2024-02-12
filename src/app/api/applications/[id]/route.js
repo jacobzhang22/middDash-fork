@@ -1,12 +1,12 @@
 // import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import nodemailer from "nodemailer";
+import { config } from "@/app/api/auth/auth";
 import prisma from "@/libs/prismaConnect";
 
 export async function PATCH(req, context) {
   const { id } = context.params;
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(config);
 
   if (!session.user.isAdmin) {
     return Response.json({

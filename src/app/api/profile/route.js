@@ -1,17 +1,12 @@
 // import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { config } from "@/app/api/auth/auth";
 import prisma from "@/libs/prismaConnect";
 import User from "@/models/User";
 import UserInfo from "@/models/UserInfo";
 
 export async function PUT(req) {
-  const session = await getServerSession(authOptions);
-
-  console.log("session", session);
-  if (session.user.isAdmin) {
-    console.log("have an admin");
-  }
+  const session = await getServerSession(config);
 
   const body = await req.json();
 
@@ -49,9 +44,9 @@ export async function PUT(req) {
 }
 
 export async function GET(req) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(config);
 
-  // console.log("session", session)
+  console.log("session", session);
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
     select: {
@@ -68,5 +63,5 @@ export async function GET(req) {
     },
   });
 
-  return Response.json({ ...user });
+  return Response.json({ user });
 }

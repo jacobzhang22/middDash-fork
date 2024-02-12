@@ -1,23 +1,13 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import Image from "next/image";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import UserTabs from "@/components/layout/UserTabs";
-import EditableImage from "@/components/layout/EditableImage";
-import UserForm from "@/components/layout/UserForm";
+import useProfile from "@/components/UseProfile";
 
 export default function ProfilePage() {
-  const session = useSession();
-
-  const [user, setUser] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [profileFetched, setProfileFetched] = useState(false);
+  const { loading, data } = useProfile();
   const [applications, setApplications] = useState();
-  const { data, status } = session;
 
   const fetchApplications = () => {
     fetch("/api/applications")
@@ -46,8 +36,12 @@ export default function ProfilePage() {
       });
   };
 
-  if (status === "unauthenticated") {
-    return redirect("/login");
+  if (loading) {
+    return "Loading user info...";
+  }
+
+  if (!data.isAdmin) {
+    return "Not an admin.";
   }
 
   return (

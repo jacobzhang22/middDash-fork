@@ -1,15 +1,10 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { config } from "@/app/api/auth/auth";
 import prisma from "@/libs/prismaConnect";
-// import { PrismaClient } from "@prisma/client/edge";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const session = await getServerSession(authOptions);
-
-  if (!session || !session.user) {
-    console.error("Unauthorized");
-    return Response.json({ error: "Unauthorized" }, 401);
-  }
+  const session = await getServerSession(config);
 
   try {
     const reportData = await req.json();
@@ -28,11 +23,10 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(config);
 
-  if (!session || !session.user) {
-    console.error("Unauthorized");
-    return Response.json({ error: "Unauthorized" }, 401);
+  if (!session.user.isAdmin) {
+    return NextResponse.json({ error: "Not an admin" }, { status: 403 });
   }
 
   try {

@@ -1,17 +1,12 @@
-// import mongoose from "mongoose";
-// const stripe = require("stripe")(process.env.STRIPE_SK);
-
-// import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import nodemailer from "nodemailer";
 import prisma from "@/libs/prismaConnect";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { config } from "@/app/api/auth/auth";
 
 // eslint-disable-next-line import/prefer-default-export
 export async function POST(req, res) {
-  // mongoose.connect(process.env.MONGO_URL);
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(config);
 
   const { cartProducts, address } = await req.json();
 
