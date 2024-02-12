@@ -62,6 +62,15 @@ model Item {
   orders     Order[]  @relation("ItemToOrder")
 }
 
+model Application {
+  id         String   @id @default(cuid()) @map("_id")
+	userId     String 
+	user       User     @relation(fields: [userId], references: [id], "ApplicationtoUser")
+  createdAt  DateTime @default(now())
+	isApproved Boolean  @default(false)
+	active 		 Boolean  @default(true)
+}
+
 model Account {
   id                String   @id @default(cuid())
   userId            String
@@ -110,9 +119,11 @@ model User {
   venmo               String?
   accounts            Account[]
   dashedOrders        Order[]   @relation("DasherToOrder")
+  applications        Application[]   @relation("ApplicationtoUser")
   orders              Order[]
   reports             Report[]
   sessions            Session[]
+	year                String?
 }
 
 model VerificationRequest {

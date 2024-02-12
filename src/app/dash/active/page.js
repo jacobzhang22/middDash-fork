@@ -39,7 +39,7 @@ export default function DasherProfile() {
       <div>
         <h1 className="font-heading text-5xl text-center my-5">Dasher Page</h1>
 
-        <div className="flex flex-col justify-center w-[300px] ml-auto mr-auto border-black border-2 py-2 ">
+        <div className="flex flex-col justify-center w-[300px] ml-auto mr-auto border-black border-2 py-2 rounded ">
           <div className="text-center ">
             Send Me Emails for Available Orders
           </div>

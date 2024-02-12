@@ -58,6 +58,7 @@ export async function GET(req) {
       id: true,
       isDasher: true,
       isAdmin: true,
+      email: true,
       name: true,
       phone: true,
       dorm: true,
