@@ -1,14 +1,13 @@
-// import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { config } from "@/app/api/auth/auth";
 import prisma from "@/libs/prismaConnect";
 
 export async function POST(req) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(config);
 
     const body = await req.json();
-    console.log(body);
+
     // first update year of the user
     const user = await prisma.user.update({
       where: { email: session.user.email },
