@@ -46,7 +46,6 @@ export async function PUT(req) {
 export async function GET(req) {
   const session = await getServerSession(config);
 
-  console.log("session", session);
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
     select: {
@@ -63,5 +62,5 @@ export async function GET(req) {
     },
   });
 
-  return Response.json({ user });
+  return Response.json({ ...user });
 }
