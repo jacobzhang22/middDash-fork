@@ -4,6 +4,19 @@ import { useEffect, useState } from "react";
 
 function StatusStage({ statusName, statusKey, order, setStatus }) {
   const statusTime = order.OrderStatus[0][statusKey];
+  const statusOrder = [
+    "orderedAt",
+    "acceptedAt",
+    "placedAt",
+    "pickedUpAt",
+    "deliveredAt",
+  ]; // Not ideal to hardcode
+  const currentIndex = statusOrder.indexOf(statusKey);
+  const previousStatus = statusOrder[currentIndex - 1];
+  const disabled = !(
+    currentIndex === 0 || order.OrderStatus[0][previousStatus]
+  );
+
   return (
     <div
       className={` flex flex-col items-center border-r-2 border-black p-2 ${statusTime ? "bg-green-50" : "bg-gray-50"}`}
@@ -14,8 +27,8 @@ function StatusStage({ statusName, statusKey, order, setStatus }) {
         new Date(statusTime).toLocaleString()
       ) : (
         <div
-          className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
-          onClick={() => setStatus(statusKey)}
+          className={`bg-gray-300 rounded-[10px] px-2 cursor-pointer ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+          onClick={() => !disabled && setStatus(statusKey)}
         >
           {" "}
           Now{" "}
