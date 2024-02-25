@@ -1,4 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
+// import { PrismaClient } from "@prisma/client/edge";
 // import mongoose from "mongoose";
 
 // export async function POST(req) {
@@ -17,13 +18,10 @@ import { PrismaClient } from "@prisma/client";
 
 // eslint-disable-next-line import/prefer-default-export
 export async function GET() {
-  const prisma = new PrismaClient();
-
   const allItems = await prisma.item.findMany({
     where: { featured: true },
   });
 
-  await prisma.$disconnect();
   // mongoose.connect(process.env.MONGO_URL);
   return Response.json(allItems);
 }

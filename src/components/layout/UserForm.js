@@ -12,6 +12,7 @@ export default function UserForm({ user, onSave }) {
   const [dorm, setDorm] = useState(user?.dorm || "");
   const [admin, setAdmin] = useState(user?.isAdmin || false);
   const [dasher, setDasher] = useState(user?.isDasher || false);
+  const [venmo, setVenmo] = useState(user?.venmo || "");
   const { data: loggedInUserData } = useProfile();
 
   console.log("users", user);
@@ -39,6 +40,7 @@ export default function UserForm({ user, onSave }) {
             roomNumber,
             dorm,
             dasher,
+            venmo,
           });
         }}
       >
@@ -50,7 +52,7 @@ export default function UserForm({ user, onSave }) {
           onChange={(ev) => setUserName(ev.target.value)}
         />
         <label>Email</label>
-        <input type="email" disabled value={user.email} placeholder="email" />
+        <input type="email" disabled value={user.email} placeholder="Email" />
         <AddressInputs
           addressProps={{
             phone,
@@ -59,6 +61,13 @@ export default function UserForm({ user, onSave }) {
           }}
           // eslint-disable-next-line react/jsx-no-bind
           setAddressProp={handleAddressChange}
+        />
+        <label>Venmo</label>
+        <input
+          type="text"
+          placeholder="Venmo"
+          value={venmo}
+          onChange={(ev) => setVenmo(ev.target.value)}
         />
         {loggedInUserData.isAdmin && (
           <div>

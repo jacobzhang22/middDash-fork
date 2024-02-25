@@ -1,19 +1,13 @@
-// import mongoose from "mongoose";
-// const stripe = require("stripe")(process.env.STRIPE_SK);
-
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import nodemailer from "nodemailer";
-import { authOptions } from "../auth/[...nextauth]/route";
+import prisma from "@/libs/prismaConnect";
+import { config } from "@/app/api/auth/auth";
 
 // eslint-disable-next-line import/prefer-default-export
 export async function POST(req, res) {
-  // mongoose.connect(process.env.MONGO_URL);
-  const session = await getServerSession(authOptions);
-  console.log("session", session);
+  const session = await getServerSession(config);
 
-  const prisma = new PrismaClient();
   const { cartProducts, address, instructions } = await req.json();
   console.log("cart", cartProducts);
 
@@ -23,11 +17,9 @@ export async function POST(req, res) {
     0,
   );
 
-  console.log("total price", totalPrice);
-  console.log("address", address);
-
   const order = await prisma.order.create({
     data: {
+      isActive: true,
       userId: session.user.id,
       locationId: cartProducts[0].locationId,
       price: totalPrice,
@@ -77,6 +69,8 @@ export async function POST(req, res) {
 			To: ${order.destinationDorm}
 			<br/>
 			Items: ${cartProducts.map((prod) => `<span> ${prod.name} </span>`).join(", ")}
+			<br/>
+			<a href = "${process.env.NEXTAUTH_URL}/orders/${order.id}">View Order</a>
 		</div>
 		`,
     };
@@ -88,8 +82,6 @@ export async function POST(req, res) {
       }
     });
   }
-
-  prisma.$disconnect();
 
   return new NextResponse(JSON.stringify({ data: order }), { status: 200 });
 }

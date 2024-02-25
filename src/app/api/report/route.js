@@ -1,16 +1,10 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { PrismaClient } from "@prisma/client";
+import { config } from "@/app/api/auth/auth";
+import prisma from "@/libs/prismaConnect";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const prisma = new PrismaClient();
-  const session = await getServerSession(authOptions);
-
-  if (!session || !session.user) {
-    console.error("Unauthorized");
-    await prisma.$disconnect();
-    return Response.json({ error: "Unauthorized" }, 401);
-  }
+  const session = await getServerSession(config);
 
   try {
     const reportData = await req.json();
@@ -21,23 +15,18 @@ export async function POST(req) {
       },
     });
 
-    await prisma.$disconnect();
     return Response.json({ report });
   } catch (error) {
     console.error("Failed to create report", error);
-    await prisma.$disconnect();
     return Response.json({ error: error.message }, 500);
   }
 }
 
 export async function GET(req) {
-  const prisma = new PrismaClient();
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(config);
 
-  if (!session || !session.user) {
-    console.error("Unauthorized");
-    await prisma.$disconnect();
-    return Response.json({ error: "Unauthorized" }, 401);
+  if (!session.user.isAdmin) {
+    return NextResponse.json({ error: "Not an admin" }, { status: 403 });
   }
 
   try {
@@ -55,11 +44,9 @@ export async function GET(req) {
       },
     });
 
-    await prisma.$disconnect();
     return Response.json({ reports });
   } catch (error) {
     console.error("Failed to fetch reports", error);
-    await prisma.$disconnect();
     return Response.json({ error: error.message }, 500);
   }
 }

@@ -1,48 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
+import nodemailer from "nodemailer";
 
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import User from "@/models/User";
-import UserInfo from "@/models/UserInfo";
-
-// export async function PUT(req, context) {
-//   const prisma = new PrismaClient();
-//   const session = await getServerSession(authOptions);
-//   const targetItemId = context.params.id;
-
-//   // if the currnet user is an admin
-//   if (session.user.isAdmin) {
-//     const body = await req.json();
-//     console.log("body", body);
-
-//     const currentItem = await prisma.item.findUnique({
-//       where: { id: targetItemId },
-//     });
-
-//     const updatedItem = await prisma.item.update({
-//       where: { id: targetItemId },
-//       data: {
-//         name: body.name ? body.name : currentItem.name,
-//         price: body.price ? parseInt(body.price) : currentItem.price,
-//         location: {
-//           connect: {
-//             id: body.location,
-//           },
-//         },
-//       },
-//     });
-//     return Response.json({ item: updatedItem });
-//   }
-
-//   prisma.$disconnect();
-//   return Response.json({ item: "error" });
-// }
-//
 export async function PATCH(req, context) {
   const { id } = context.params;
 
   const body = await req.json();
-  const prisma = new PrismaClient();
 
   // for updating an orders paid value
   if (body.paid) {
@@ -63,9 +25,11 @@ export async function PATCH(req, context) {
         user: true,
         paid: true,
         OrderStatus: true,
+        dasher: true,
+        dasherId: true,
+        isActive: true,
       },
     });
-    prisma.$disconnect();
 
     return Response.json({ order });
   }
@@ -78,7 +42,6 @@ export async function PATCH(req, context) {
       where: { id: body.statusId },
       data: { ...data },
     });
-    prisma.$disconnect();
 
     return Response.json({ status });
   }
@@ -86,9 +49,7 @@ export async function PATCH(req, context) {
 
 export async function GET(req, context) {
   const { id } = context.params;
-  // console.log("target id", id);
 
-  const prisma = new PrismaClient();
   const order = await prisma.order.findUnique({
     where: {
       id,
@@ -107,27 +68,74 @@ export async function GET(req, context) {
       dasher: true,
       OrderStatus: true,
       specialInstructions: true,
+      isActive: true,
     },
   });
-  prisma.$disconnect();
 
   return Response.json({ order });
 }
 
-// export async function DELETE(req, context) {
-//   const prisma = new PrismaClient();
-//   const session = await getServerSession(authOptions);
-//   const targetItemId = context.params.id;
+// marks order as inactive
+export async function DELETE(req, context) {
+  const { id } = context.params;
+  // console.log("target id", id);
 
-//   // if the currnet user is an admin
-//   if (session.user.isAdmin) {
-//     const deletedItem = await prisma.item.delete({
-//       where: { id: targetItemId },
-//     });
+  const order = await prisma.order.update({
+    where: {
+      id,
+    },
+    data: {
+      isActive: false,
+    },
+    select: {
+      userId: true,
+      locationId: true,
+      price: true,
+      location: true,
+      items: true,
+      destinationDorm: true,
+      destinationRoom: true,
+      phone: true,
+      user: true,
+      paid: true,
+      dasher: true,
+      OrderStatus: true,
+      isActive: true,
+    },
+  });
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "midddevclub@gmail.com",
+      pass: "ejuq wnnj iorg ggya",
+    },
+  });
 
-//     return Response.json({ status: "success" });
-//   }
+  const mailOptions = {
+    from: "midddevclub@gmail.com",
+    to: order.user.email,
+    subject: "Order Deleted",
+    html: `
+		<div>
+		Your order has been deleted
+		<br/>
+			From: ${order.location.name}
+			<br/>
+			To: ${order.destinationDorm}
+			<br/>
+			Items: ${order.items.map((prod) => `<span> ${prod.name} </span>`).join(", ")}
+			<br/>
+			<a href = "${process.env.NEXTAUTH_URL}/orders/${order.id}">View Order</a>
+		</div>
+		`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(`Email sent: ${info.response}`);
+    }
+  });
 
-//   prisma.$disconnect();
-//   return Response.json({ user: "error" });
-// }
+  return Response.json({ order });
+}

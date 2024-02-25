@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import { redirect } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import UserTabs from '@/components/layout/UserTabs';
-import EditableImage from '@/components/layout/EditableImage';
-import UserForm from '@/components/layout/UserForm';
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import UserTabs from "@/components/layout/UserTabs";
+import EditableImage from "@/components/layout/EditableImage";
+import UserForm from "@/components/layout/UserForm";
 
 export default function ProfilePage() {
   const session = useSession();
@@ -18,8 +18,8 @@ export default function ProfilePage() {
   const { status } = session;
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      fetch('/api/profile').then((response) => {
+    if (status === "authenticated") {
+      fetch("/api/profile").then((response) => {
         response.json().then((data) => {
           setUser(data);
           setIsAdmin(data.isAdmin);
@@ -32,9 +32,9 @@ export default function ProfilePage() {
   async function handleProfileInfoUpdate(ev, data) {
     ev.preventDefault();
     const savingPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch('/api/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
       if (response.ok) resolve();
@@ -42,18 +42,18 @@ export default function ProfilePage() {
     });
 
     await toast.promise(savingPromise, {
-      loading: 'Saving...',
-      success: 'Profile saved!',
-      error: 'Error',
+      loading: "Saving...",
+      success: "Profile saved!",
+      error: "Error",
     });
   }
 
-  if (status === 'loading' || !profileFetched) {
-    return 'Loading...';
+  if (status === "loading" || !profileFetched) {
+    return "Loading...";
   }
 
-  if (status === 'unauthenticated') {
-    return redirect('/login');
+  if (status === "unauthenticated") {
+    return redirect("/login");
   }
 
   return (

@@ -3,11 +3,12 @@
 // import { useProfile } from "@/components/UseProfile";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import useProfile from "@/components/UseProfile";
 import UserTabs from "@/components/layout/UserTabs";
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
-  // const { loading, data } = useProfile();
+  const { loading, data } = useProfile();
 
   useEffect(() => {
     fetch("/api/users").then((response) => {
@@ -17,13 +18,13 @@ export default function UsersPage() {
     });
   }, []);
 
-  // if (loading) {
-  //   return "Loading user info...";
-  // }
+  if (loading) {
+    return "Loading user info...";
+  }
 
-  // if (!data.admin) {
-  //   return "Not an admin.";
-  // }
+  if (!data.isAdmin) {
+    return "Not an admin.";
+  }
 
   return (
     <section className=" max-w-2xl mx-auto mt-8">

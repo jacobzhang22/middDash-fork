@@ -1,18 +1,12 @@
 // import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { config } from "@/app/api/auth/auth";
+import prisma from "@/libs/prismaConnect";
 import User from "@/models/User";
 import UserInfo from "@/models/UserInfo";
-import { PrismaClient } from "@prisma/client";
 
 export async function PUT(req) {
-  const prisma = new PrismaClient();
-  const session = await getServerSession(authOptions);
-
-  console.log("session", session);
-  if (session.user.isAdmin) {
-    console.log("have an admin");
-  }
+  const session = await getServerSession(config);
 
   const body = await req.json();
 
@@ -42,31 +36,31 @@ export async function PUT(req) {
       phone: body.phone ? body.phone : currentUser.phone,
       roomNumber: body.roomNumber ? body.roomNumber : currentUser.roomNumber,
       dorm: body.dorm ? body.dorm : currentUser.dorm,
+      venmo: body.venmo ? body.venmo : currentUser.venmo,
     },
   });
-  prisma.$disconnect();
 
   return Response.json({ updatedUser });
 }
 
 export async function GET(req) {
-  const prisma = new PrismaClient();
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(config);
 
-  // console.log("session", session)
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
     select: {
       id: true,
       isDasher: true,
       isAdmin: true,
+      email: true,
       name: true,
       phone: true,
       dorm: true,
       roomNumber: true,
+      dasherNotifications: true,
+      venmo: true,
     },
   });
-  prisma.$disconnect();
 
   return Response.json({ ...user });
 }

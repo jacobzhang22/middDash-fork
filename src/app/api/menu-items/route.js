@@ -1,65 +1,28 @@
-import mongoose from "mongoose";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismaConnect";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import MenuItem from "../../../models/MenuItem";
+import { config } from "@/app/api/auth/auth";
+import { NextResponse } from "next/server";
 
+// eslint-disable-next-line import/prefer-default-export
 export async function POST(req, context) {
-  const prisma = new PrismaClient();
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(config);
 
-  // if the currnet user is an admin
-  if (session.user.isAdmin) {
-    const body = await req.json();
-    // console.log("body", body)
+  if (!session.user.isAdmin) {
+    return NextResponse.json({ error: "Not an admin" }, { status: 403 });
+  }
+  const body = await req.json();
+  // console.log("body", body)
 
-    const newItem = await prisma.item.create({
-      data: {
-        name: body.name,
-        price: parseInt(body.price),
-        location: {
-          connect: {
-            id: body.location,
-          },
+  const newItem = await prisma.item.create({
+    data: {
+      name: body.name,
+      price: parseInt(body.price),
+      location: {
+        connect: {
+          id: body.location,
         },
       },
-    });
-    return Response.json({ item: newItem });
-  }
-
-  prisma.$disconnect();
-  return Response.json({ item: "error" });
-}
-
-export async function PUT(req) {
-  mongoose.connect(process.env.MONGO_URL);
-  const { _id, ...data } = await req.json();
-  await MenuItem.findByIdAndUpdate(_id, data);
-  return Response.json(true);
-}
-
-export async function GET() {
-  const prisma = new PrismaClient();
-
-  const allItems = await prisma.location.findMany({
-    include: {
-      items: true,
     },
   });
-
-  await prisma.$disconnect();
-  // mongoose.connect(process.env.MONGO_URL);
-  return Response.json(allItems);
+  return Response.json({ item: newItem });
 }
-
-// export async function DELETE(req) {
-// const prisma = new PrismaClient()
-
-// const url = new URL(req.url);
-// const _id = url.searchParams.get("_id");
-// // await MenuItem.deleteOne({ _id });
-// await prisma.item.delete()
-
-// await prisma.$disconnect()
-// return Response.json(true);
-// }
