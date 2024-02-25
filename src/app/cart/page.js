@@ -1,4 +1,6 @@
 "use client";
+
+/* eslint-disable */
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { CartContext, cartProductPrice } from "@/components/AppContext";
@@ -132,7 +134,11 @@ export default function CartPage() {
               addressProps={address}
               setAddressProp={handleAddressChange}
             />
-            <button type="submit" className="submit-order-button">
+            <button
+              type="submit"
+              className={`submit-order-button ${cartProducts.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled={cartProducts.length === 0}
+            >
               Submit Order
             </button>
           </form>
