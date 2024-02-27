@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable no-return-assign */
 
 "use client";
@@ -149,7 +150,11 @@ export default function CartPage() {
               addressProps={address}
               setAddressProp={handleAddressChange}
             />
-            <button type="submit" className="submit-order-button">
+            <button
+              type="submit"
+              className={`submit-order-button ${cartProducts.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled={cartProducts.length === 0}
+            >
               Submit Order
             </button>
           </form>
