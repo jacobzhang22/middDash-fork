@@ -8,7 +8,8 @@ import { config } from "@/app/api/auth/auth";
 export async function POST(req, res) {
   const session = await getServerSession(config);
 
-  const { cartProducts, address } = await req.json();
+  const { cartProducts, address, instructions } = await req.json();
+  console.log("cart", cartProducts);
 
   // should really pull from db instead of post to avoid spoofing
   const totalPrice = cartProducts.reduce(
@@ -29,6 +30,7 @@ export async function POST(req, res) {
       OrderStatus: {
         create: [{ orderedAt: new Date() }],
       },
+      specialInstructions: instructions,
     },
   });
 

@@ -67,6 +67,7 @@ export async function GET(req, context) {
       paid: true,
       dasher: true,
       OrderStatus: true,
+      specialInstructions: true,
       isActive: true,
     },
   });
