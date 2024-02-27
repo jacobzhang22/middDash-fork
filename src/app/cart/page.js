@@ -1,4 +1,6 @@
 /* eslint-disable */
+/* eslint-disable no-return-assign */
+
 "use client";
 
 import { useContext, useEffect, useState } from "react";
@@ -20,9 +22,16 @@ export default function CartPage() {
     roomNumber: "",
     dorm: "",
   });
+  const [instructions, setInstructions] = useState("");
   const { data: profileData } = useProfile();
   const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
   const [isOrderFrozen, setIsOrderFrozen] = useState(false);
+
+  const test2 = () => {
+    console.log(instructions);
+  };
+
+  useEffect(test2, [instructions]);
 
   useEffect(() => {
     if (profileData?.roomNumber) {
@@ -77,7 +86,11 @@ export default function CartPage() {
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ address, cartProducts }),
+      body: JSON.stringify({
+        address,
+        cartProducts,
+        instructions,
+      }),
     });
 
     const { data } = await response.json();
@@ -103,6 +116,7 @@ export default function CartPage() {
             cartProducts.map((product, index) => (
               <div
                 className="flex items-center gap-4 border-b py-4"
+                // eslint-disable-next-line react/no-array-index-key
                 key={index}
               >
                 <div className="w-24">
@@ -139,9 +153,14 @@ export default function CartPage() {
               ${subtotal}
               <br />
               $5.00
-              <br />${finaltotal}
+              <br />${(subtotal += 5)}
             </div>
           </div>
+          <textarea
+            placeholder="Special Instructions"
+            value={instructions}
+            onChange={(ev) => setInstructions(ev.target.value)}
+          />
         </div>
         <div className="bg-gray-100 p-4 rounded-lg">
           <h2>Checkout</h2>
@@ -152,8 +171,8 @@ export default function CartPage() {
             />
             <button
               type="submit"
-              className="submit-order-button"
-              disabled={isOrderFrozen}
+              className={`submit-order-button ${cartProducts.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled={isOrderFrozen || cartProducts.length === 0}
             >
               {isOrderFrozen ? "Orders Temporarily Frozen" : "Submit Order"}
             </button>
