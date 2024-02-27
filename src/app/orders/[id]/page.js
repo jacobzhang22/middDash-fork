@@ -159,17 +159,26 @@ export default function IndividualOrder() {
           </div>
 
           <div className="w-[50%] p-5 ">
-            <div className="text-center">
-              <SectionHeaders subHeader="Delivery Information" />
+            <div>
+              <div className="text-center">
+                <SectionHeaders subHeader="Delivery Information" />
+              </div>
+              <div className="flex justify-center w-[80%] ml-auto mr-auto my-4 ">
+                From: {order.location.name}
+                <br />
+                To: {order.destinationDorm} - {order.destinationRoom}
+                <br />
+                For: {order.user.name}, {order.user.email}, {order.user.phone}
+              </div>
             </div>
-            <div className="flex justify-center w-[80%] ml-auto mr-auto my-4 ">
-              From: {order.location.name}
-              <br />
-              To: {order.destinationDorm} - {order.destinationRoom}
-              <br />
-              For: {order.user.name}, {order.user.email}, {order.user.phone}
+            <div>
+              <div className="text-center">
+                <SectionHeaders subHeader="Special Instructions" />
+              </div>
+              <div className="flex justify-center w-[80%] ml-auto mr-auto my-4 ">
+                {order.specialInstructions}
+              </div>
             </div>
-            <div>{order.specialInstructions}</div>
           </div>
         </div>
         <DasherOrderControls
