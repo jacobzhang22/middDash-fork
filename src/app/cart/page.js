@@ -1,4 +1,6 @@
+/* eslint-disable */
 "use client";
+
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { CartContext, cartProductPrice } from "@/components/AppContext";
@@ -20,12 +22,24 @@ export default function CartPage() {
   });
   const { data: profileData } = useProfile();
   const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
+  const [isOrderFrozen, setIsOrderFrozen] = useState(false);
 
   useEffect(() => {
     if (profileData?.roomNumber) {
       const { phone, roomNumber, dorm } = profileData;
       setAddress({ phone, roomNumber, dorm });
     }
+
+    fetch("/api/admin-controls")
+      .then((res) => {
+        res.json().then((data) => {
+          setIsOrderFrozen(data.orderFreeze);
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching order freeze state:", error);
+        toast.error("Failed to fetch order freeze state.");
+      });
   }, [profileData]);
 
   function handleRemoveFromCart(index) {
@@ -34,9 +48,10 @@ export default function CartPage() {
   }
 
   let subtotal = 0;
-  cartProducts.forEach((p) => {
-    subtotal += cartProductPrice(p);
+  cartProducts.forEach((product) => {
+    subtotal += cartProductPrice(product);
   });
+  let finaltotal = subtotal + 5;
 
   function handleAddressChange(propName, value) {
     setAddress((prevAddress) => ({
@@ -47,6 +62,12 @@ export default function CartPage() {
 
   function initiateCheckout(ev) {
     ev.preventDefault();
+    if (isOrderFrozen) {
+      toast.error(
+        "Order submissions are currently frozen. Please try again later.",
+      );
+      return;
+    }
     setShowCheckoutPopup(true);
   }
 
@@ -56,10 +77,7 @@ export default function CartPage() {
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        address,
-        cartProducts,
-      }),
+      body: JSON.stringify({ address, cartProducts }),
     });
 
     const { data } = await response.json();
@@ -121,7 +139,7 @@ export default function CartPage() {
               ${subtotal}
               <br />
               $5.00
-              <br />${(subtotal = subtotal + 5)}
+              <br />${finaltotal}
             </div>
           </div>
         </div>
@@ -132,8 +150,12 @@ export default function CartPage() {
               addressProps={address}
               setAddressProp={handleAddressChange}
             />
-            <button type="submit" className="submit-order-button">
-              Submit Order
+            <button
+              type="submit"
+              className="submit-order-button"
+              disabled={isOrderFrozen}
+            >
+              {isOrderFrozen ? "Orders Temporarily Frozen" : "Submit Order"}
             </button>
           </form>
         </div>

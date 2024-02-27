@@ -147,3 +147,9 @@ model Report {
   userId     String
   user       User     @relation(fields: [userId], references: [id])
 }
+
+model AdminControls {
+  id      String   @id @default(cuid())
+  orderFreeze Boolean @default(false)
+}
+
