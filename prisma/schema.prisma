@@ -40,6 +40,8 @@ model Order {
   location        Location      @relation(fields: [locationId], references: [id])
   user            User          @relation(fields: [userId], references: [id])
   OrderStatus     OrderStatus[]
+  active    			Boolean 			@default(true) 
+  specialInstructions String?   @default("")
   items           Item[]        @relation("ItemToOrder")
 }
 
