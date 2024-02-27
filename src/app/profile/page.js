@@ -1,33 +1,35 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import UserTabs from "@/components/layout/UserTabs";
-import EditableImage from "@/components/layout/EditableImage";
 import UserForm from "@/components/layout/UserForm";
 
 export default function ProfilePage() {
-  const session = useSession();
+  const { data: session, status } = useSession();
 
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [profileFetched, setProfileFetched] = useState(false);
-  const { status } = session;
+  const [isOrderFrozen, setIsOrderFrozen] = useState(false);
 
   useEffect(() => {
     if (status === "authenticated") {
-      fetch("/api/profile").then((response) => {
-        response.json().then((data) => {
-          setUser(data);
-          setIsAdmin(data.isAdmin);
+      Promise.all([
+        fetch("/api/profile").then((res) => res.json()),
+        fetch("/api/admin-controls").then((res) => res.json()),
+      ])
+        .then(([userData, controlData]) => {
+          setUser(userData);
+          setIsAdmin(userData.isAdmin);
           setProfileFetched(true);
-        });
-      });
+          setIsOrderFrozen(controlData.orderFreeze);
+        })
+        .catch((error) => console.error("Error fetching data:", error));
     }
-  }, [session, status]);
+  }, [status]);
 
   async function handleProfileInfoUpdate(ev, data) {
     ev.preventDefault();
@@ -44,8 +46,20 @@ export default function ProfilePage() {
     await toast.promise(savingPromise, {
       loading: "Saving...",
       success: "Profile saved!",
-      error: "Error",
+      error: "Error saving profile",
     });
+  }
+
+  async function toggleOrderFreeze() {
+    const response = await fetch("/api/admin-controls", {
+      method: "POST",
+    });
+    const data = await response.json();
+    setIsOrderFrozen(data.orderFreeze);
+    const message = data.orderFreeze
+      ? "Orders are now frozen"
+      : "Orders are now unfrozen";
+    toast.success(message);
   }
 
   if (status === "loading" || !profileFetched) {
@@ -62,6 +76,20 @@ export default function ProfilePage() {
       <div className="max-w lg mx-auto mt-8">
         <UserForm user={user} onSave={handleProfileInfoUpdate} />
       </div>
+      {isAdmin && (
+        <div className="mt-2 text-center">
+          <button
+            className={`font-bold py-2 px-6 rounded-xl border border-gray-300 text-white ${
+              isOrderFrozen
+                ? "bg-red-700 hover:bg-red-800"
+                : "bg-red-500 hover:bg-red-600"
+            }`}
+            onClick={toggleOrderFreeze}
+          >
+            {isOrderFrozen ? "Unfreeze All Orders" : "Freeze All Orders"}
+          </button>
+        </div>
+      )}
     </section>
   );
 }

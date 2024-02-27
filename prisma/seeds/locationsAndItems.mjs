@@ -5,6 +5,11 @@ import { middXImage } from "./images/middXImage.mjs";
 async function main() {
   const prisma = new PrismaClient();
 
+  const controls = await prisma.adminControls.create({
+    data: {
+      orderFreeze: false,
+    },
+  });
   // seed admin
   const admin = await prisma.user.upsert({
     where: { email: "admin@gmail.com" },

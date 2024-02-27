@@ -25,6 +25,7 @@ export default function CartPage() {
   const [instructions, setInstructions] = useState("");
   const { data: profileData } = useProfile();
   const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
+  const [isOrderFrozen, setIsOrderFrozen] = useState(false);
 
   const test2 = () => {
     console.log(instructions);
@@ -37,6 +38,17 @@ export default function CartPage() {
       const { phone, roomNumber, dorm } = profileData;
       setAddress({ phone, roomNumber, dorm });
     }
+
+    fetch("/api/admin-controls")
+      .then((res) => {
+        res.json().then((data) => {
+          setIsOrderFrozen(data.orderFreeze);
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching order freeze state:", error);
+        toast.error("Failed to fetch order freeze state.");
+      });
   }, [profileData]);
 
   function handleRemoveFromCart(index) {
@@ -45,9 +57,10 @@ export default function CartPage() {
   }
 
   let subtotal = 0;
-  cartProducts.forEach((p) => {
-    subtotal += cartProductPrice(p);
+  cartProducts.forEach((product) => {
+    subtotal += cartProductPrice(product);
   });
+  let finaltotal = subtotal + 5;
 
   function handleAddressChange(propName, value) {
     setAddress((prevAddress) => ({
@@ -58,6 +71,12 @@ export default function CartPage() {
 
   function initiateCheckout(ev) {
     ev.preventDefault();
+    if (isOrderFrozen) {
+      toast.error(
+        "Order submissions are currently frozen. Please try again later.",
+      );
+      return;
+    }
     setShowCheckoutPopup(true);
   }
 
@@ -153,9 +172,9 @@ export default function CartPage() {
             <button
               type="submit"
               className={`submit-order-button ${cartProducts.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
-              disabled={cartProducts.length === 0}
+              disabled={isOrderFrozen || cartProducts.length === 0}
             >
-              Submit Order
+              {isOrderFrozen ? "Orders Temporarily Frozen" : "Submit Order"}
             </button>
           </form>
         </div>
