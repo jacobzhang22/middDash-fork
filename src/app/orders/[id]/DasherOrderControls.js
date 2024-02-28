@@ -1,12 +1,44 @@
 "use client";
 
-import MenuItem from "@/components/menu/MenuItem";
-import SectionHeaders from "@/components/layout/SectionHeaders";
-
 import { useEffect, useState } from "react";
 
+function StatusStage({ statusName, statusKey, order, setStatus }) {
+  const statusTime = order.OrderStatus[0][statusKey];
+  const statusOrder = [
+    "orderedAt",
+    "acceptedAt",
+    "placedAt",
+    "pickedUpAt",
+    "deliveredAt",
+  ]; // Not ideal to hardcode
+  const currentIndex = statusOrder.indexOf(statusKey);
+  const previousStatus = statusOrder[currentIndex - 1];
+  const disabled = !(
+    currentIndex === 0 || order.OrderStatus[0][previousStatus]
+  );
+
+  return (
+    <div
+      className={` flex flex-col items-center border-r-2 border-black p-2 ${statusTime ? "bg-green-50" : "bg-gray-50"}`}
+    >
+      {statusName}:
+      <br />
+      {statusTime ? (
+        new Date(statusTime).toLocaleString()
+      ) : (
+        <div
+          className={`bg-gray-300 rounded-[10px] px-2 cursor-pointer ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+          onClick={() => !disabled && setStatus(statusKey)}
+        >
+          {" "}
+          Now{" "}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function DasherOrderPage({ order, id, update, admin }) {
-  console.log("dasher order page has", order);
   const [checked, setChecked] = useState();
 
   useEffect(() => {
@@ -19,7 +51,6 @@ export default function DasherOrderPage({ order, id, update, admin }) {
       body: JSON.stringify({ paid: val }),
     }).then((res) => {
       res.json().then((responseData) => {
-        // console.log("respon", responseData.order);
         setChecked(responseData.order.paid);
         // setOrder(responseData.order);
       });
@@ -32,13 +63,13 @@ export default function DasherOrderPage({ order, id, update, admin }) {
       body: JSON.stringify({ statusId: order.OrderStatus[0].id, type: val }),
     }).then((res) => {
       res.json().then((responseData) => {
-        // console.log("respon", responseData.order);
         update();
         // setChecked(responseData.order.paid);
         // setOrder(responseData.order);
       });
     });
   };
+
   if (order) {
     return (
       <section className="mt-8">
@@ -61,95 +92,36 @@ export default function DasherOrderPage({ order, id, update, admin }) {
         <div className="w-full flex flex-col justify-center items-center ">
           Status:
           <div className="flex flex-row text-center ">
-            <div
-              className={` flex flex-col items-center border-r-2 border-black p-2 ${order.OrderStatus[0].orderedAt ? "bg-green-50" : "bg-gray-50"}`}
-            >
-              Ordered:
-              <br />
-              {order.OrderStatus[0].orderedAt ? (
-                new Date(order.OrderStatus[0].orderedAt).toLocaleString()
-              ) : (
-                <div
-                  className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
-                  onClick={() => setStatus("orderedAt")}
-                >
-                  {" "}
-                  Now{" "}
-                </div>
-              )}
-            </div>
-
-            <div
-              className={` flex flex-col items-center border-r-2 border-black p-2 ${order.OrderStatus[0].acceptedAt ? "bg-green-50" : "bg-gray-50"}`}
-            >
-              Accepted:
-              <br />
-              {order.OrderStatus[0].acceptedAt
-                ? new Date(order.OrderStatus[0].acceptedAt).toLocaleString()
-                : admin && (
-                    <div
-                      className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
-                      onClick={() => setStatus("acceptedAt")}
-                    >
-                      {" "}
-                      Now{" "}
-                    </div>
-                  )}
-            </div>
-
-            <div
-              className={` flex flex-col items-center border-r-2 border-black p-2 ${order.OrderStatus[0].placedAt ? "bg-green-50" : "bg-gray-50"}`}
-            >
-              Placed :
-              <br />
-              {order.OrderStatus[0].placedAt
-                ? new Date(order.OrderStatus[0].placedAt).toLocaleString()
-                : admin && (
-                    <div
-                      className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
-                      onClick={() => setStatus("placedAt")}
-                    >
-                      {" "}
-                      Now{" "}
-                    </div>
-                  )}
-            </div>
-
-            <div
-              className={` flex flex-col items-center border-r-2 border-black p-2 ${order.OrderStatus[0].pickedUpAt ? "bg-green-50" : "bg-gray-50"}`}
-            >
-              Picked Up:
-              <br />
-              {order.OrderStatus[0].pickedUpAt
-                ? new Date(order.OrderStatus[0].pickedUpAt).toLocaleString()
-                : admin && (
-                    <div
-                      className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
-                      onClick={() => setStatus("pickedUpAt")}
-                    >
-                      {" "}
-                      Now{" "}
-                    </div>
-                  )}
-            </div>
-
-            <div
-              className={` flex flex-col items-center p-2 ${order.OrderStatus[0].deliveredAt ? "bg-green-50" : "bg-gray-50"}`}
-            >
-              Delivered:
-              <br />
-              {order.OrderStatus[0].deliveredAt
-                ? new Date(order.OrderStatus[0].deliveredAt).toLocaleString()
-                : admin && (
-                    <div
-                      className="bg-gray-300 rounded-[10px] px-2 cursor-pointer"
-                      onClick={() => setStatus("deliveredAt")}
-                    >
-                      {" "}
-                      Now{" "}
-                    </div>
-                  )}
-            </div>
+            <StatusStage
+              statusName="Ordered"
+              statusKey="orderedAt"
+              order={order}
+              setStatus={setStatus}
+            />
+            <StatusStage
+              statusName="Accepted"
+              statusKey="acceptedAt"
+              order={order}
+              setStatus={setStatus}
+            />
+            <StatusStage
+              statusName="Placed"
+              statusKey="placedAt"
+              order={order}
+              setStatus={setStatus}
+            />
+            <StatusStage
+              statusName="Picked Up"
+              statusKey="pickedUpAt"
+              order={order}
+              setStatus={setStatus}
+            />
+            <StatusStage
+              statusName="Delivered"
+              statusKey="deliveredAt"
+              order={order}
+              setStatus={setStatus}
+            />
           </div>
         </div>
       </section>
