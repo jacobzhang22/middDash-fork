@@ -1,11 +1,14 @@
 "use client";
-
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import useProfile from "@/components/UseProfile";
 import UserTabs from "@/components/layout/UserTabs";
+import { useSession } from "next-auth/react";
 
 export default function MenuItemsPage() {
+  const session = useSession();
+  const { status } = session;
+
   const { loading, data } = useProfile();
   const [orders, setOrders] = useState([]);
 
@@ -23,6 +26,15 @@ export default function MenuItemsPage() {
 
   if (!data.isAdmin) {
     return "Not an admin.";
+  }
+
+  // checking if user is logged in
+  if (status === "loading") {
+    return "Loading...";
+  }
+
+  if (status === "unauthenticated") {
+    return redirect("/login");
   }
 
   return (
