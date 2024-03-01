@@ -14,8 +14,11 @@ export default function Order({ info }) {
         {info.location.name} {`->`} {info.destinationDorm}
       </span>
       <span className="">
-        {new Date(info.OrderStatus[0].orderedAt).toLocaleTimeString()} -{" "}
-        {new Date(info.OrderStatus[0].orderedAt).toLocaleDateString()}
+        {info.OrderStatus[0] &&
+          new Date(info.OrderStatus[0].orderedAt).toLocaleTimeString()}{" "}
+        -{" "}
+        {info.OrderStatus[0] &&
+          new Date(info.OrderStatus[0].orderedAt).toLocaleDateString()}
       </span>
     </Link>
   );
