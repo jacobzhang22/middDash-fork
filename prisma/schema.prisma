@@ -2,16 +2,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
-}
 
-// datasource db2 {
-//  provider          = "postgresql"
-//  url               = env("DATABASE_URL")
-//  shadowDatabaseUrl = env("HEROKU_POSTGRESQL_ROSE_URL")
-// }
+datasource db2 {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("HEROKU_POSTGRESQL_ROSE_URL")
+ }
 
 model OrderStatus {
   id          String    @id @default(cuid()) @map("_id")
@@ -27,6 +23,7 @@ model OrderStatus {
 model Order {
   id              String        @id @default(cuid()) @map("_id")
   userId          String
+  testing          String?
   locationId      String
   price           Int           @default(5)
   destinationDorm String
@@ -35,7 +32,6 @@ model Order {
   paid            Boolean       @default(false)
   dasherId        String?
   isActive        Boolean?       @default(false)
-  isActiveTest    Boolean?       @default(false)
   dasher          User?         @relation("DasherToOrder", fields: [dasherId], references: [id])
   location        Location      @relation(fields: [locationId], references: [id])
   user            User          @relation(fields: [userId], references: [id])
