@@ -4,15 +4,15 @@ import Right from "../icons/Right";
 
 export default function Hero() {
   return (
-    <section className="hero mt-4">
+    <section className=" flex  mt-4">
       <div className="py-12">
         <h1 className="text-4xl font-semibold">
           Delivering straight
           <br />
-          to your door from MiddXpress!
+          to your door from the Grille!
         </h1>
         <p className="my-6 text-gray-500 text-sm">
-          Stock up on your favorite grille foods, snacks, or candies all
+          Stock up on your favorite grille foods, snacks, or drinks all
           delivered in under 15 minutes!
         </p>
         <div className="flex justify-center items-center gap-4 text-sm">
@@ -32,7 +32,7 @@ export default function Hero() {
           </Link>
         </div>
       </div>
-      <div className="relative flex justify-center items-center h-[400px]">
+      <div className=" relative justify-center items-center hidden md:flex md:h-[400px]">
         <Image
           src="/midd_panther2.png"
           alt="panther"

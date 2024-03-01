@@ -10,7 +10,7 @@ import LearnMore from "../components/layout/LearnMore";
 export default function Home() {
   return (
     <>
-      <pre className="text-gray-500 -mt-2"> by MiddDev</pre>
+      {/* <pre className="text-gray-500 -mt-2"> by MiddDev</pre> */}
       <Hero />
       <HomeMenu />
       <section id="get-started">

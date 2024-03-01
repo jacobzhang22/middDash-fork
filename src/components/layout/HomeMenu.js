@@ -20,7 +20,7 @@ export default function HomeMenu() {
       <div className="text-center mb-4">
         <SectionHeaders mainHeader="Featured Items" />
       </div>
-      <div className=" flex flex-row justify-center gap-4">
+      <div className=" flex flex-row gap-4 justify-center flex-wrap ">
         {featuredItems?.length > 0 &&
           featuredItems.map((item) => (
             <div key={item.id}>

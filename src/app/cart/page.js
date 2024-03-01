@@ -21,6 +21,7 @@ export default function CartPage() {
     phone: "",
     roomNumber: "",
     dorm: "",
+    venmo: "",
   });
   const [instructions, setInstructions] = useState("");
   const { data: profileData } = useProfile();
@@ -34,9 +35,18 @@ export default function CartPage() {
   useEffect(test2, [instructions]);
 
   useEffect(() => {
+    console.log("profile", profileData);
     if (profileData?.roomNumber) {
-      const { phone, roomNumber, dorm } = profileData;
-      setAddress({ phone, roomNumber, dorm });
+      handleAddressChange("roomNumber", profileData.roomNumber);
+    }
+    if (profileData?.dorm) {
+      handleAddressChange("dorm", profileData.dorm);
+    }
+    if (profileData?.phone) {
+      handleAddressChange("phone", profileData.phone);
+    }
+    if (profileData?.venmo) {
+      handleAddressChange("venmo", profileData.venmo);
     }
 
     fetch("/api/admin-controls")
@@ -108,22 +118,18 @@ export default function CartPage() {
       <div className="text-center">
         <SectionHeaders mainHeader="Cart" />
       </div>
-      <div className="mt-8 grid gap-8 grid-cols-2">
-        <div>
+      <div className="mt-8 flex flex-col md:flex-row md:space-x-10 space-y-5 md:space-y-0 justify-center   ">
+        <div className=" md:flex-row bg-gray-100 md:bg-white px-5 rounded-lg">
           {cartProducts?.length === 0 ? (
             <div>No products in your shopping cart</div>
           ) : (
             cartProducts.map((product, index) => (
               <div
-                className="flex items-center gap-4 border-b py-4"
+                className="flex items-center justify-between border-b py-4"
                 // eslint-disable-next-line react/no-array-index-key
                 key={index}
               >
-                <div className="w-24">
-                  {/* Image component can be uncommented and used as needed */}
-                  {/* <Image src={product.image} alt={product.name} width={240} height={240} /> */}
-                </div>
-                <div className="grow">
+                <div className=" w-[200px]">
                   <h3 className="font-semibold">{product.name}</h3>
                 </div>
                 <div className="text-lg font-semibold">
@@ -141,7 +147,7 @@ export default function CartPage() {
               </div>
             ))
           )}
-          <div className="py-2 pr-16 flex justify-end items-center">
+          <div className=" py-2 md:pr-16 flex justify-between md:justify-end items-center px-5 ">
             <div className="text-gray-500">
               Subtotal:
               <br />
@@ -172,9 +178,22 @@ export default function CartPage() {
             <button
               type="submit"
               className={`submit-order-button ${cartProducts.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
-              disabled={isOrderFrozen || cartProducts.length === 0}
+              disabled={
+                isOrderFrozen ||
+                cartProducts.length === 0 ||
+                address.venmo === "" ||
+                address.dorm === "" ||
+                (address.phone === "" && address.roomNumber == "")
+              }
             >
-              {isOrderFrozen ? "Orders Temporarily Frozen" : "Submit Order"}
+              {isOrderFrozen
+                ? "Orders Temporarily Frozen"
+                : address.venmo !== "" &&
+                    address.dorm !== "" &&
+                    address.phone !== "" &&
+                    address.roomNumber !== ""
+                  ? "Submit order"
+                  : "Please fill out info"}
             </button>
           </form>
         </div>

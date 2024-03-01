@@ -20,6 +20,7 @@ export default function UserForm({ user, onSave }) {
     if (propName === "dorm") setDorm(value);
     if (propName === "roomNumber") setRoomNumber(value);
     if (propName === "phone") setPhone(value);
+    if (propName === "venmo") setVenmo(value);
   }
 
   return (
@@ -58,16 +59,10 @@ export default function UserForm({ user, onSave }) {
             phone,
             roomNumber,
             dorm,
+            venmo,
           }}
           // eslint-disable-next-line react/jsx-no-bind
           setAddressProp={handleAddressChange}
-        />
-        <label>Venmo</label>
-        <input
-          type="text"
-          placeholder="Venmo"
-          value={venmo}
-          onChange={(ev) => setVenmo(ev.target.value)}
         />
         {loggedInUserData.isAdmin && (
           <div>
