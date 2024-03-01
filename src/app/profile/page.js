@@ -79,6 +79,7 @@ export default function ProfilePage() {
       {isAdmin && (
         <div className="mt-2 text-center">
           <button
+            type="button"
             className={`font-bold py-2 px-6 rounded-xl border border-gray-300 text-white ${
               isOrderFrozen
                 ? "bg-red-700 hover:bg-red-800"

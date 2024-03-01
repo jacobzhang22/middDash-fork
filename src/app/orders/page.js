@@ -1,9 +1,11 @@
 "use client";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import useProfile from "@/components/UseProfile";
 import UserTabs from "@/components/layout/UserTabs";
 import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function MenuItemsPage() {
   const session = useSession();
