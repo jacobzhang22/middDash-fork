@@ -21,6 +21,7 @@ export default function CartPage() {
     phone: "",
     roomNumber: "",
     dorm: "",
+    venmo: "",
   });
   const [instructions, setInstructions] = useState("");
   const { data: profileData } = useProfile();
@@ -34,9 +35,18 @@ export default function CartPage() {
   useEffect(test2, [instructions]);
 
   useEffect(() => {
+    console.log("profile", profileData);
     if (profileData?.roomNumber) {
-      const { phone, roomNumber, dorm } = profileData;
-      setAddress({ phone, roomNumber, dorm });
+      handleAddressChange("roomNumber", profileData.roomNumber);
+    }
+    if (profileData?.dorm) {
+      handleAddressChange("dorm", profileData.dorm);
+    }
+    if (profileData?.phone) {
+      handleAddressChange("phone", profileData.phone);
+    }
+    if (profileData?.venmo) {
+      handleAddressChange("venmo", profileData.venmo);
     }
 
     fetch("/api/admin-controls")
@@ -168,9 +178,22 @@ export default function CartPage() {
             <button
               type="submit"
               className={`submit-order-button ${cartProducts.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
-              disabled={isOrderFrozen || cartProducts.length === 0}
+              disabled={
+                isOrderFrozen ||
+                cartProducts.length === 0 ||
+                address.venmo === "" ||
+                address.dorm === "" ||
+                (address.phone === "" && address.roomNumber == "")
+              }
             >
-              {isOrderFrozen ? "Orders Temporarily Frozen" : "Submit Order"}
+              {isOrderFrozen
+                ? "Orders Temporarily Frozen"
+                : address.venmo !== "" &&
+                    address.dorm !== "" &&
+                    address.phone !== "" &&
+                    address.roomNumber !== ""
+                  ? "Submit order"
+                  : "Please fill out info"}
             </button>
           </form>
         </div>

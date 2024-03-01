@@ -167,6 +167,10 @@ export default function IndividualOrder() {
                 To: {order.destinationDorm} - {order.destinationRoom}
                 <br />
                 For: {order.user.name}, {order.user.email}, {order.user.phone}
+                <br />
+                Orderer Venmo: {order.userVenmo}
+                <br />
+                {order.dasher && <>Dasher Venmo: {order.dasher.venmo} </>}
               </div>
             </div>
             <div>

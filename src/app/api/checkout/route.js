@@ -26,6 +26,7 @@ export async function POST(req, res) {
       items: { connect: cartProducts.map((prod) => ({ id: prod.id })) },
       destinationDorm: address.dorm,
       destinationRoom: address.roomNumber,
+      userVenmo: address.venmo,
       phone: address.phone,
       OrderStatus: {
         create: [{ orderedAt: new Date() }],

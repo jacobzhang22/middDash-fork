@@ -21,6 +21,7 @@ export async function PATCH(req, context) {
         items: true,
         destinationDorm: true,
         destinationRoom: true,
+        userVenmo: true,
         phone: true,
         user: true,
         paid: true,
@@ -56,6 +57,7 @@ export async function GET(req, context) {
     },
     select: {
       userId: true,
+      userVenmo: true,
       locationId: true,
       price: true,
       location: true,

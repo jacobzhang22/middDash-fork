@@ -39,6 +39,7 @@ model Order {
   active    			Boolean 			@default(true) 
   specialInstructions String?   @default("")
   items           Item[]        @relation("ItemToOrder")
+  userVenmo       String?       
 }
 
 model Location {
