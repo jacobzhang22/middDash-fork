@@ -2,6 +2,7 @@ import "./globals.css";
 import { Roboto } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import CustomHead from "@/components/CustomHead";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { AppProvider } from "../components/AppContext";
 import Header from "../components/layout/Header";
 
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
           </AppProvider>
         </main>
       </body>
+      <GoogleAnalytics gaId="G-J75HZMB64E" />
     </html>
   );
 }
