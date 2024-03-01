@@ -23,6 +23,8 @@ CREATE TABLE "Order" (
     "dasherId" TEXT,
     "isActive" BOOLEAN DEFAULT false,
     "isActiveTest" BOOLEAN DEFAULT false,
+    "active" BOOLEAN NOT NULL DEFAULT true,
+    "specialInstructions" TEXT DEFAULT '',
     CONSTRAINT "Order_dasherId_fkey" FOREIGN KEY ("dasherId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "Order_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location" ("_id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
@@ -44,6 +46,16 @@ CREATE TABLE "Item" (
     "price" INTEGER NOT NULL DEFAULT 5,
     "featured" BOOLEAN NOT NULL DEFAULT false,
     CONSTRAINT "Item_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location" ("_id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Application" (
+    "_id" TEXT NOT NULL PRIMARY KEY,
+    "userId" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "isApproved" BOOLEAN NOT NULL DEFAULT false,
+    "active" BOOLEAN NOT NULL DEFAULT true,
+    CONSTRAINT "Application_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -92,7 +104,8 @@ CREATE TABLE "User" (
     "dorm" TEXT,
     "phone" TEXT,
     "roomNumber" TEXT,
-    "venmo" TEXT
+    "venmo" TEXT,
+    "year" TEXT
 );
 
 -- CreateTable
@@ -115,6 +128,12 @@ CREATE TABLE "Report" (
     "isResolved" BOOLEAN NOT NULL DEFAULT false,
     "userId" TEXT NOT NULL,
     CONSTRAINT "Report_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "AdminControls" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "orderFreeze" BOOLEAN NOT NULL DEFAULT false
 );
 
 -- CreateTable
