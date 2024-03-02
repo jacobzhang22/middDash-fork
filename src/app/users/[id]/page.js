@@ -15,6 +15,7 @@ export default function EditUserPage() {
   useEffect(() => {
     fetch(`/api/users/${id}`).then((res) => {
       res.json().then((data) => {
+        console.log("user", user);
         setUser(data.user);
       });
     });
@@ -23,20 +24,18 @@ export default function EditUserPage() {
   async function handleSaveButtonClick(ev, data) {
     ev.preventDefault();
 
-    const promise = new Promise(async (resolve, reject) => {
-      const res = fetch(`/api/users/${user.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, _id: id }),
-      });
-      if (res.ok) resolve();
-      else reject();
+    const updateRaw = await fetch(`/api/users/${user.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, _id: id }),
     });
-    await toast.promise(promise, {
-      loading: "Saving user...",
-      success: "User saved",
-      error: "An error has occured",
-    });
+    const updateParsed = await updateRaw.json();
+    console.log("update", updateParsed);
+    if (updateParsed.user) {
+      toast.success("Updated!");
+    } else {
+      toast.error("Failure!");
+    }
   }
 
   if (loading) {

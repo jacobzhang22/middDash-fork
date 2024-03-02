@@ -14,7 +14,7 @@ export async function PUT(req, context) {
   const body = await req.json();
 
   const currentUser = await prisma.user.findUnique({
-    where: { email: session.user.email },
+    where: { id: targetUserId },
   });
 
   const updatedUser = await prisma.user.update({
@@ -34,7 +34,9 @@ export async function PUT(req, context) {
       isAdmin: true,
       name: true,
       phone: true,
+      venmo: true,
       dorm: true,
+      email: true,
       roomNumber: true,
     },
   });
@@ -58,8 +60,10 @@ export async function GET(req, context) {
       id: true,
       isDasher: true,
       isAdmin: true,
+      venmo: true,
       name: true,
       phone: true,
+      email: true,
       dorm: true,
       roomNumber: true,
       dasherNotifications: true,
@@ -88,6 +92,7 @@ export async function PATCH(req, context) {
       isAdmin: true,
       name: true,
       phone: true,
+      email: true,
       dorm: true,
       roomNumber: true,
       dasherNotifications: true,
@@ -112,6 +117,8 @@ export async function PATCH(req, context) {
         isDasher: true,
         isAdmin: true,
         name: true,
+        email: true,
+        venmo: true,
         phone: true,
         dorm: true,
         roomNumber: true,
