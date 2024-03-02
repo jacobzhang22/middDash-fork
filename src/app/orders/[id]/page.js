@@ -90,7 +90,9 @@ export default function IndividualOrder() {
       <section className="mt-8">
         <div>
           <div className="text-center">
-            <SectionHeaders mainHeader={`Order for ${order.user.name}`} />
+            <SectionHeaders
+              mainHeader={`Order for ${order.user.name ? order.user.name : order.user.email}`}
+            />
             <span> Current status: {orderStatus} </span>
             <span>
               {" "}

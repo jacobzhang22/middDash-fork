@@ -70,7 +70,9 @@ export default function MenuItemsPage() {
                   {order.location.name}
                 </span>
                 <div className="col-span-2">
-                  <span className="text-gray-500">{order.user.name}</span>
+                  <span className="text-gray-500">
+                    {order.user.name ? order.user.name : order.user.email}
+                  </span>
                 </div>
                 <div>
                   {!!order.paid && (
