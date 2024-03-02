@@ -59,7 +59,7 @@ export async function POST(req, res) {
   if (activeDashers.length > 0) {
     const mailOptions = {
       from: "midddevclub@gmail.com",
-      to: activeDashers.map((dasher) => dasher.email),
+      to: [...activeDashers.map((dasher) => dasher.email), session.user.email],
       subject: "New Order",
       html: `
 		<div>
@@ -75,7 +75,7 @@ export async function POST(req, res) {
 		</div>
 		`,
     };
-    transporter.sendMail(mailOptions, (error, info) => {
+    await transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log(error);
       } else {
