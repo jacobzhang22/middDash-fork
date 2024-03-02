@@ -19,7 +19,7 @@ function StatusStage({ statusName, statusKey, order, setStatus }) {
 
   return (
     <div
-      className={` flex flex-col items-center border-b-2 md:border-r-2 border-black p-2 ${statusTime ? "bg-green-50" : "bg-gray-50"}`}
+      className={` flex flex-col items-center border-b-2 border-r-0 md:border-b-0 md:border-r-2 border-black p-2 ${statusTime ? "bg-green-50" : "bg-gray-50"}`}
     >
       {statusName}:
       <br />
