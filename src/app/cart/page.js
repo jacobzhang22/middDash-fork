@@ -70,7 +70,7 @@ export default function CartPage() {
   cartProducts.forEach((product) => {
     subtotal += cartProductPrice(product);
   });
-  let finaltotal = subtotal + 5;
+  let finaltotal = subtotal + 3;
 
   function handleAddressChange(propName, value) {
     setAddress((prevAddress) => ({
@@ -158,8 +158,8 @@ export default function CartPage() {
             <div className="text-lg font-semibold pl-2 text-right">
               ${subtotal}
               <br />
-              $5.00
-              <br />${(subtotal += 5)}
+              $3.00
+              <br />${(subtotal += 3)}
             </div>
           </div>
           <textarea

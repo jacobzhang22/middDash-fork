@@ -142,7 +142,7 @@ export default function IndividualOrder() {
                 <h3 className="font-semibold">Delivery Fee</h3>
                 <div className="w-24" />
               </div>
-              <div className="text-lg font-semibold">$5</div>
+              <div className="text-lg font-semibold">$3</div>
             </div>
             <div className="flex items-center gap-4 border-b py-4">
               <div className="w-24" />
@@ -151,7 +151,7 @@ export default function IndividualOrder() {
                 <div className="w-24" />
               </div>
               <div className="text-lg font-semibold">
-                ${parseInt(order.price) + 5}
+                ${parseInt(order.price) + 3}
               </div>
             </div>
           </div>
