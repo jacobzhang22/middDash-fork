@@ -91,7 +91,7 @@ export default function IndividualOrder() {
         <div>
           <div className="text-center">
             <SectionHeaders
-              mainHeader={`Order for ${order.user.name ? order.user.name : order.user.email}`}
+              mainHeader={`Order for ${order.user.name ? order.user.name : order.user.email.split("@")[0]}`}
             />
             <span> Current status: {orderStatus} </span>
             <span>

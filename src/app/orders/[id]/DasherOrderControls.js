@@ -19,7 +19,7 @@ function StatusStage({ statusName, statusKey, order, setStatus }) {
 
   return (
     <div
-      className={` flex flex-col items-center border-r-2 border-black p-2 ${statusTime ? "bg-green-50" : "bg-gray-50"}`}
+      className={` flex flex-col items-center border-b-2 md:border-r-2 border-black p-2 ${statusTime ? "bg-green-50" : "bg-gray-50"}`}
     >
       {statusName}:
       <br />
@@ -72,10 +72,10 @@ export default function DasherOrderPage({ order, id, update, admin }) {
 
   if (order) {
     return (
-      <section className="mt-8">
+      <section className="mt-8 text-center ">
         Dasher name: {order.dasher ? order.dasher.name : "NO DASHER"}
         <br />
-        <div className="items-center flex-row flex gap-2">
+        <div className="items-center flex-row justify-center flex gap-2">
           Paid (marked by dasher):{" "}
           {checked !== undefined && (
             <input
@@ -91,7 +91,7 @@ export default function DasherOrderPage({ order, id, update, admin }) {
         </div>
         <div className="w-full flex flex-col justify-center items-center ">
           Status:
-          <div className="flex flex-row text-center ">
+          <div className="flex flex-col md:flex-row text-center ">
             <StatusStage
               statusName="Ordered"
               statusKey="orderedAt"
