@@ -26,7 +26,7 @@ export async function PUT(req, context) {
       roomNumber: body.roomNumber ? body.roomNumber : currentUser.roomNumber,
       dorm: body.dorm ? body.dorm : currentUser.dorm,
       isDasher: body.dasher,
-      isAdmin: body.admin ? body.admin : currentUser.isAdmin,
+      isAdmin: body.admin,
     },
     select: {
       id: true,
