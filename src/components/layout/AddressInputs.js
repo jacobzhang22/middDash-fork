@@ -30,7 +30,7 @@ export default function AddressInputs({ addressProps, setAddressProp }) {
           />
         </div>
       </div>
-      <label>Venmo (or write CASH)</label>
+      <label>Enter Your Venmo Username (or write CASH)</label>
       <input
         type="text"
         placeholder="Venmo"
