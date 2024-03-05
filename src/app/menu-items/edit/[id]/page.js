@@ -8,7 +8,6 @@ import UserTabs from "@/components/layout/UserTabs";
 import Left from "@/components/icons/Left";
 import useProfile from "@/components/UseProfile";
 import MenuItemForm from "@/components/layout/MenuItemForm";
-import DeleteButton from "@/components/DeleteButton";
 
 export default function EditMenuItemPage() {
   const { id } = useParams();
@@ -25,26 +24,30 @@ export default function EditMenuItemPage() {
     });
   }, []);
 
-  async function handleFormSubmit(ev, data) {
-    console.log("submitting");
+  async function handleFormSubmit(ev, formData) {
     ev.preventDefault();
-    // eslint-disable-next-line no-param-reassign
-    data = { ...data, id };
-    const response = await fetch(`/api/menu-items/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
+    const savingPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch(`/api/menu-items/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({ ...formData, id }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const parsedData = await response.json();
+      if (response.ok) {
+        setMenuItem(parsedData.item);
+        resolve(parsedData);
+      } else {
+        reject(parsedData);
+      }
     });
-    const parsedData = await response.json();
-    setMenuItem(parsedData.item);
 
-    // await toast.promise(savingPromise, {
-    //   loading: "Saving item",
-    //   success: "Saved",
-    //   error: "Error",
-    // });
+    await toast.promise(savingPromise, {
+      loading: "Saving item...",
+      success: "Item saved successfully!",
+      error: "Failed to save item.",
+    });
 
-    // setRedirectToItems(true);
+    setRedirectToItems(true);
   }
 
   async function handleDeleteClick() {
@@ -79,7 +82,7 @@ export default function EditMenuItemPage() {
 
   return (
     <section className="mt-8">
-      <UserTabs isAdmin />
+      <UserTabs isAdmin={data.isAdmin} />
       <div className="max-w-2xl mx-auto mt-8">
         <Link href="/menu-items" className="button">
           <Left />
