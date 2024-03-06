@@ -12,10 +12,11 @@ export async function POST(req) {
 
   try {
     const control = await prisma.adminControls.findFirst();
-    const updatedControl = await prisma.adminControls.update({
-      where: { id: control.id },
-      data: { orderFreeze: !control.orderFreeze },
+    const newValue = !control.orderFreeze;
+    const updatedControl = await prisma.adminControls.updateMany({
+      data: { orderFreeze: newValue },
     });
+
     return NextResponse.json({ orderFreeze: updatedControl.orderFreeze });
   } catch (error) {
     console.error("Failed to toggle order freeze", error);
