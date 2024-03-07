@@ -3,6 +3,12 @@ import { getServerSession } from "next-auth";
 import nodemailer from "nodemailer";
 import prisma from "@/libs/prismaConnect";
 import { config } from "@/app/api/auth/auth";
+// import twilio from 'twilio'
+
+// async function sendSMS(client, from, to, body) {
+//  const sent = await client.messages.create({ from, to, body })
+//	console.log("sent text:", sent)
+// }
 
 // eslint-disable-next-line import/prefer-default-export
 export async function POST(req, res) {
@@ -82,6 +88,10 @@ export async function POST(req, res) {
         console.log(`Email sent: ${info.response}`);
       }
     });
+
+    // also text it
+    // const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH)
+    // sendSMS(client, "+18556483488", "+14434017876", "testing" )
   }
 
   return new NextResponse(JSON.stringify({ data: order }), { status: 200 });

@@ -14,9 +14,9 @@ export default function AvailableOrders() {
   }, []);
 
   return (
-    <div className="max-w-md max-h-md mx-auto mt-4 flex flex-col">
+    <div className=" max-w-[600px] max-h-md mx-auto mt-4 flex flex-col">
       <h2 className="font-heading text-3xl text-gray-500 text-center">
-        Available Orders:
+        Orders:
       </h2>
 
       {orders &&

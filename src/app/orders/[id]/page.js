@@ -111,7 +111,7 @@ export default function IndividualOrder() {
             ) : (
               <> </>
             )}
-            {order.userId === data.id && order.isActive ? (
+            {(order.userId === data.id || data.isAdmin) && order.isActive ? (
               <div
                 className="text-primary cursor-pointer "
                 onClick={() => deleteOrder()}
