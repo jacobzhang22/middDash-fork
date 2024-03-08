@@ -70,7 +70,7 @@ export default function CartPage() {
   cartProducts.forEach((product) => {
     subtotal += cartProductPrice(product);
   });
-  let finaltotal = subtotal + 3;
+  let finaltotal = subtotal + 5;
 
   function handleAddressChange(propName, value) {
     setAddress((prevAddress) => ({
