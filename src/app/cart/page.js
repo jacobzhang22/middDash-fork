@@ -158,8 +158,8 @@ export default function CartPage() {
             <div className="text-lg font-semibold pl-2 text-right">
               ${subtotal}
               <br />
-              $3.00
-              <br />${(subtotal += 3)}
+              $5.00
+              <br />${(subtotal += 5)}
             </div>
           </div>
           <textarea
