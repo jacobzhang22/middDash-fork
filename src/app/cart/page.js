@@ -162,11 +162,17 @@ export default function CartPage() {
               <br />${(subtotal += 5)}
             </div>
           </div>
+
           <textarea
             placeholder="Special Instructions"
             value={instructions}
             onChange={(ev) => setInstructions(ev.target.value)}
           />
+          <div className="mt-2 font-bold">
+            <p>NOTE: If you want chips instead of fries</p>
+            <p>please specify Above. We'll request</p>
+            <p>$2 less per item on your total order</p>
+          </div>
         </div>
         <div className="bg-gray-100 p-4 rounded-lg">
           <h2>Checkout</h2>
