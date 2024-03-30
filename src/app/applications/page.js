@@ -36,13 +36,13 @@ export default function ProfilePage() {
       });
   };
 
-  if (loading) {
-    return "Loading user info...";
-  }
+  // if (loading) {
+  //   return "Loading user info...";
+  // }
 
-  if (!data.isAdmin) {
-    return "Not an admin.";
-  }
+  // if (!data.isAdmin) {
+  //   return "Not an admin.";
+  // }
 
   return (
     <section className="max-w-2xl mx-auto mt-8">

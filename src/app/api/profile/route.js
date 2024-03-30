@@ -46,21 +46,24 @@ export async function PUT(req) {
 export async function GET(req) {
   const session = await getServerSession(config);
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: {
-      id: true,
-      isDasher: true,
-      isAdmin: true,
-      email: true,
-      name: true,
-      phone: true,
-      dorm: true,
-      roomNumber: true,
-      dasherNotifications: true,
-      venmo: true,
-    },
-  });
+  if (session) {
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: {
+        id: true,
+        isDasher: true,
+        isAdmin: true,
+        email: true,
+        name: true,
+        phone: true,
+        dorm: true,
+        roomNumber: true,
+        dasherNotifications: true,
+        venmo: true,
+      },
+    });
 
-  return Response.json({ ...user });
+    return Response.json({ ...user });
+  }
+  return Response.json({ status: "no user" });
 }

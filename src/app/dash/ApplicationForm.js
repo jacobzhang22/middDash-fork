@@ -10,7 +10,14 @@ export default function ApplicationForm({ data }) {
     <div>
       {!hasSubmitted ? (
         <Formik
-          initialValues={{ email: data.email, year: "" }}
+          initialValues={{
+            phone: "",
+            management: false,
+            days: "",
+            name: "",
+            email: data ? data.email : "",
+            year: "",
+          }}
           validate={(values) => {
             const errors = {};
             if (!values.email) {
@@ -28,6 +35,10 @@ export default function ApplicationForm({ data }) {
                 method: "POST",
                 body: JSON.stringify({
                   year: values.year,
+                  name: values.name,
+                  management: values.management,
+                  days: values.days,
+                  phone: values.phone,
                 }),
               })
                 .then((res) => res.json())
@@ -52,12 +63,26 @@ export default function ApplicationForm({ data }) {
             /* and other goodies */
           }) => (
             <Form>
+              <div> Name </div>
+              <Field type="text" name="name" />
+              <ErrorMessage name="name" component="div" />
               <div> Email </div>
-              <Field type="email" name="email" disabled />
+              <Field type="email" name="email" disabled={!data} />
               <ErrorMessage name="email" component="div" />
+              <div> Phone Number </div>
+              <Field type="text" name="phone" />
+              <ErrorMessage name="phone" component="div" />
               <div> Grad Year </div>
               <Field type="text" name="year" />
               <ErrorMessage name="year" component="div" />
+              <div>Interested Days in Dashing (M, T, W, TR, F, SA, SN)</div>
+              <Field type="text" name="days" />
+              <ErrorMessage name="days" component="div" />
+              <div className="flex flex-row gap-2 my-4  ">
+                <div>Interested in management role?</div>
+                <Field type="checkbox" name="management" />
+              </div>
+              <ErrorMessage name="management" component="div" />
               <button type="submit" disabled={isSubmitting}>
                 Submit
               </button>

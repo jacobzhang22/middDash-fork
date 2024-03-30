@@ -63,8 +63,12 @@ model Item {
 
 model Application {
   id         String   @id @default(cuid()) @map("_id")
-	userId     String 
-	user       User     @relation(fields: [userId], references: [id], "ApplicationtoUser")
+	name 			 String?
+	year 			 String?
+	email 			 String?
+	phone 			 String?
+	managementInterest 			 String?
+	days 			 String?
   createdAt  DateTime @default(now())
 	isApproved Boolean  @default(false)
 	active 		 Boolean  @default(true)
@@ -118,7 +122,6 @@ model User {
   venmo               String?
   accounts            Account[]
   dashedOrders        Order[]   @relation("DasherToOrder")
-  applications        Application[]   @relation("ApplicationtoUser")
   orders              Order[]
   reports             Report[]
   sessions            Session[]

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/components/AppContext";
 import ShoppingCart from "@/components/icons/ShoppingCart";
+import PausePopup from "@/components/PausePopup";
 
 export default function Header() {
   const session = useSession();
@@ -28,6 +29,7 @@ export default function Header() {
 
   return (
     <div className="flex items-center justify-between border-b border-gray-400 py-5">
+      <PausePopup />
       <Link className="text-primary font-semibold text-3xl" href="/">
         MIDD-DASH
         <pre className="text-gray-500 text-sm"> by MiddDev</pre>

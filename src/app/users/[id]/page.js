@@ -15,7 +15,6 @@ export default function EditUserPage() {
   useEffect(() => {
     fetch(`/api/users/${id}`).then((res) => {
       res.json().then((data) => {
-        console.log("user", user);
         setUser(data.user);
       });
     });

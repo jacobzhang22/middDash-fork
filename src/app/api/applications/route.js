@@ -4,26 +4,22 @@ import prisma from "@/libs/prismaConnect";
 
 export async function POST(req) {
   try {
-    const session = await getServerSession(config);
-
     const body = await req.json();
-
-    // first update year of the user
-    const user = await prisma.user.update({
-      where: { email: session.user.email },
-      data: {
-        year: body.year,
-      },
-    });
 
     const application = await prisma.application.create({
       data: {
-        user: { connect: { id: session.user.id } },
+        name: body.name,
+        year: body.year,
+        managementInterest: body.management.toString(),
+        days: body.days,
+        phone: body.phone,
+        email: body.email,
       },
     });
 
     return Response.json({ status: "success", application });
   } catch (e) {
+    console.log("error", e);
     return Response.json({ status: "failure", data: e });
   }
 }

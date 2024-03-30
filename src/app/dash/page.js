@@ -10,9 +10,6 @@ export default function DasherPage() {
   const { loading, data } = useProfile();
   const [orders, setOrders] = useState([]);
 
-  if (!data) {
-    return <>Loading</>;
-  }
   return (
     <div>
       {data && data.isDasher ? (

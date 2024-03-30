@@ -15,7 +15,6 @@ export default withAuth(
 // these are the routes you must be signed in to access
 export const config = {
   matcher: [
-    "/dash",
     "/cart",
     "/profile",
     "/menu-items",
