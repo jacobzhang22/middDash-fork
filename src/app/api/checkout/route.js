@@ -69,7 +69,9 @@ export async function POST(req, res) {
       subject: "New Order",
       html: `
 		<div>
-		New order:
+		<div style = "text-align:center; width: 100%; font-size: 30px; font-weight: 900;  ">
+			MiddDash New order
+		</div>
 		<br/>
 			From: ${location.name}
 			<br/>
@@ -77,7 +79,9 @@ export async function POST(req, res) {
 			<br/>
 			Items: ${cartProducts.map((prod) => `<span> ${prod.name} </span>`).join(", ")}
 			<br/>
-			<a href = "${process.env.NEXTAUTH_URL}/orders/${order.id}">View Order</a>
+			<div style = "display:flex; justify-content: center; align-items: center;margin-top: 20px">
+			<a href = "${process.env.NEXTAUTH_URL}/orders/${order.id}" style = "width: 150px; border-radius: 10px; background-color: blue; color: white; margin-left: auto; margin-right:auto; padding: 10px; text-decoration: none; font-weight: 900; text-align: center" >View Order</a>
+			</div>
 		</div>
 		`,
     };

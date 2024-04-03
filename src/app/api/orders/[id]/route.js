@@ -42,6 +42,66 @@ export async function PATCH(req, context) {
     const status = await prisma.OrderStatus.update({
       where: { id: body.statusId },
       data: { ...data },
+      select: {
+        order: true,
+        orderedAt: true,
+        acceptedAt: true,
+        placedAt: true,
+        pickedUpAt: true,
+        deliveredAt: true,
+      },
+    });
+    const userEmail = await prisma.user.findUnique({
+      where: { id: status.order.userId },
+      select: { email: true },
+    });
+    console.log("order", status, "for ", userEmail);
+
+    let curStatus = "NONE";
+    if (status.orderedAt) {
+      curStatus = "Ordered";
+    }
+    if (status.acceptedAt) {
+      curStatus = "Accepted";
+    }
+    if (status.placedAt) {
+      curStatus = "Placed";
+    }
+    if (status.pickedUpAt) {
+      curStatus = "Picked Up";
+    }
+    if (status.deliveredAt) {
+      curStatus = "Delivered";
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "midddevclub@gmail.com",
+        pass: "ejuq wnnj iorg ggya",
+      },
+    });
+
+    const mailOptions = {
+      from: "midddevclub@gmail.com",
+      to: userEmail.email,
+      subject: `Order Status Update: ${curStatus} `,
+      html: `
+		<div>
+		Your order has been updated: ${curStatus}
+		<br/>
+			<div style = "display:flex; justify-content: center; align-items: center;margin-top: 20px">
+			<a href = "${process.env.NEXTAUTH_URL}/orders/${status.order.id}" style = "width: 150px; border-radius: 10px; background-color: blue; color: white; margin-left: auto; margin-right:auto; padding: 10px; text-decoration: none; font-weight: 900; text-align: center" >View Order</a>
+			</div>
+		</div>
+		`,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(`Email sent: ${info.response}`);
+      }
     });
 
     return Response.json({ status });

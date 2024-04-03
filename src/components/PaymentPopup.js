@@ -18,7 +18,7 @@ function PaymentConfirmationPopup({ onConfirm, subtotal }) {
             accept your order.
           </div>
           <div className="text-[20px]">
-            You can cancel your order at any time <strong>before</strong> it bas
+            You can cancel your order at any time <strong>before</strong> it has
             been accepted
           </div>
         </div>

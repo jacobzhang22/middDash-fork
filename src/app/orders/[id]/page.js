@@ -11,7 +11,7 @@ import useProfile from "@/components/UseProfile";
 import MenuItemForm from "@/components/layout/MenuItemForm";
 import DeleteButton from "@/components/DeleteButton";
 import SectionHeaders from "@/components/layout/SectionHeaders";
-import DasherOrderControls from "./DasherOrderControls.js";
+import DasherOrderControls from "./DasherOrderControls";
 
 export default function IndividualOrder() {
   const { id } = useParams();
