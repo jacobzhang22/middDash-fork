@@ -75,13 +75,10 @@ export async function GET(req, context) {
 export async function PATCH(req, context) {
   const session = await getServerSession(config);
 
-  if (!session.user.isAdmin) {
-    return NextResponse.json({ error: "Not an admin" }, { status: 403 });
-  }
-
   const { id } = context.params;
-  if (id !== session.user.id) {
-    return Response.status(400);
+  // if not an admin or operating on myself
+  if (!session.user.isAdmin && id !== session.user.id) {
+    return NextResponse.json({ error: "Not an admin" }, { status: 403 });
   }
 
   let dasher = await prisma.user.findUnique({

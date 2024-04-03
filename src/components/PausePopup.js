@@ -14,7 +14,7 @@ export default function ControlledPopup() {
     if (path !== "/dash") {
       setOpen(true);
     }
-  }, []);
+  }, [path]);
 
   return (
     <div>

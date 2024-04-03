@@ -56,7 +56,7 @@ export default function Order({ info }) {
         {info.OrderStatus[0] &&
           new Date(info.OrderStatus[0].orderedAt).toLocaleDateString()}
       </span>
-      <span>{info.user.email}</span>
+      <span className="mr-3">{info.user.email}</span>
     </Link>
   );
 }

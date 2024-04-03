@@ -10,10 +10,11 @@ export default function DasherProfile() {
   const [notify, setNotify] = useState(null);
   const { data: profileData } = useProfile();
 
-  // useEffect(()=> {
-  // 	if(notify !== null){
-  // 	}
-  // },[notify])
+  useEffect(() => {
+    if (notify !== null) {
+      setNotify(notify);
+    }
+  }, [notify]);
 
   const sendNotify = (value) => {
     fetch(`/api/users/${profileData.id}?modify=notifications`, {
