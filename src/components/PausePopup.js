@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Popup from "reactjs-popup";
 import { usePathname } from "next/navigation";
 
@@ -10,11 +10,11 @@ export default function ControlledPopup() {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
 
-  useEffect(() => {
-    if (path !== "/dash") {
-      setOpen(true);
-    }
-  }, [path]);
+  // useEffect(() => {
+  //   if (path !== "/dash") {
+  //     setOpen(true);
+  //   }
+  // }, [path]);
 
   return (
     <div>
