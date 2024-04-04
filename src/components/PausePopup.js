@@ -19,7 +19,7 @@ export default function ControlledPopup() {
   return (
     <div>
       <Popup open={open} closeOnDocumentClick onClose={closeModal}>
-        <div className="modal w-[500px] h-[300px] bg-gray-50 flex justify-center items-center shadow-[rgba(0,0,1,0.2)_10px_10px_10px_1000px] rounded-md relative px-10 ">
+        <div className="modal w-[100%] md:w-[500px] h-[300px] bg-gray-50 flex justify-center items-center shadow-[rgba(0,0,1,0.2)_10px_10px_10px_1000px] rounded-md relative px-10 ">
           <a
             className="close absolute top-2 right-5 text-[30px] cursor-pointer "
             onClick={closeModal}

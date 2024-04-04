@@ -93,7 +93,20 @@ export default function IndividualOrder() {
             <SectionHeaders
               mainHeader={`Order for ${order.user.name ? order.user.name : order.user.email.split("@")[0]}`}
             />
-            <span> Current status: {orderStatus} </span>
+            <span className="text-[20px]">
+              {" "}
+              Current status: <span className="text-[25px]">
+                {orderStatus}
+              </span>{" "}
+            </span>
+            <br />
+            {orderStatus === "Ordered" && (
+              <div className=" w-[300px] md:w-[400px] border-[1px] border-black mx-auto p-4 ">
+                Your order has not been accepted yet. When accepted, you will be
+                venmo requested. You can cancel your order at any time before
+                your order is accepted by a dasher{" "}
+              </div>
+            )}
             <span>
               {" "}
               {!order.isActive && (
