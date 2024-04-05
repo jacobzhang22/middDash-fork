@@ -13,7 +13,7 @@ export default function Home() {
     <>
       {/* <pre className="text-gray-500 -mt-2"> by MiddDev</pre> */}
       <Hero />
-      <div className="w-[600px] mx-auto mb-10 border-black border-[1px] p-5 text-center ">
+      <div className=" md:w-[600px] mx-auto mb-10 border-black border-[1px] p-5 text-center ">
         MiddDash is a student-run delivery service, operated by MiddDev Club.
         Please be aware that MiddDash is not affiliated with, endorsed by, or
         operated by Middlebury College, the Grille, or any of their affiliates.
