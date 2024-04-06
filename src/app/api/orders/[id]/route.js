@@ -125,7 +125,16 @@ export async function GET(req, context) {
       destinationDorm: true,
       destinationRoom: true,
       phone: true,
-      user: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
+          dorm: true,
+          phone: true,
+          roomNumber: true,
+          venmo: true,
+        },
+      },
       paid: true,
       dasher: true,
       OrderStatus: true,
