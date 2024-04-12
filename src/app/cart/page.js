@@ -115,8 +115,16 @@ export default function CartPage() {
 
   return (
     <section className="mt-8">
-      <div className="text-center">
+      <div className="text-center mx-10 ">
         <SectionHeaders mainHeader="Cart" />
+        <div className=" mt-3  border-[2px] p-3   ">
+          <b>Promo:</b> with orders over $15 (not including delivery). You can
+          get a free order of fries or a &lt;$5 item from MiddX. Please enter{" "}
+          <span className=" text-red-500 ">
+            PROMO: [fries or your desired item]{" "}
+          </span>{" "}
+          in the "Special Instructions Box"
+        </div>
       </div>
       <div className="mt-8 flex flex-col md:flex-row md:space-x-10 space-y-5 md:space-y-0 justify-center   ">
         <div className=" md:flex-row bg-gray-100 md:bg-white px-5 rounded-lg">
