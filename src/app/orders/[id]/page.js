@@ -34,17 +34,31 @@ export default function IndividualOrder() {
   };
 
   const acceptOrder = () => {
-    fetch(`/api/orders/${id}/dasher`, {
+    fetch(`/api/orders/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
-        dasher: data.id,
+        dasherId: data.id,
+        statusId: order.OrderStatus[0].id,
       }),
     }).then((res) => {
       res.json().then((responseData) => {
-        console.log("responseData", responseData.order);
-        setOrder(responseData.order);
+        update();
+        // setChecked(responseData.order.paid);
+        // setOrder(responseData.order);
       });
     });
+
+    // fetch(`/api/orders/${id}/dasher`, {
+    //   method: "PATCH",
+    //   body: JSON.stringify({
+    //     dasher: data.id,
+    //   }),
+    // }).then((res) => {
+    //   res.json().then((responseData) => {
+    //     console.log("responseData", responseData.order);
+    //     setOrder(responseData.order);
+    //   });
+    // });
   };
 
   const deleteOrder = () => {

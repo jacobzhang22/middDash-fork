@@ -35,7 +35,7 @@ export async function PATCH(req, context) {
     return Response.json({ order });
   }
   // for updating the status of an item
-  if (body.statusId) {
+  if (body.statusId && !body.dasherId) {
     const data = {};
 
     data[body.type] = new Date();
@@ -105,6 +105,53 @@ export async function PATCH(req, context) {
     });
 
     return Response.json({ status });
+  }
+
+  // for adding a dasher to an order
+  if (body.dasherId && body.statusId) {
+    // add dasher to order
+    const order = await prisma.order.update({
+      where: {
+        id,
+      },
+      data: {
+        dasher: { connect: { id: body.dasherId } },
+      },
+      select: {
+        userId: true,
+        locationId: true,
+        price: true,
+        location: true,
+        items: true,
+        destinationDorm: true,
+        destinationRoom: true,
+        phone: true,
+        user: true,
+        paid: true,
+        OrderStatus: true,
+        dasher: true,
+        dasherId: true,
+        isActive: true,
+      },
+    });
+    // update order status
+    const data = {};
+
+    data.acceptedAt = new Date();
+    await prisma.OrderStatus.update({
+      where: { id: body.statusId },
+      data: { ...data },
+      select: {
+        order: true,
+        orderedAt: true,
+        acceptedAt: true,
+        placedAt: true,
+        pickedUpAt: true,
+        deliveredAt: true,
+      },
+    });
+
+    return Response.json({ order });
   }
 }
 
