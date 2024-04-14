@@ -18,10 +18,14 @@ export async function POST(req, res) {
   console.log("cart", cartProducts);
 
   // should really pull from db instead of post to avoid spoofing
-  const totalPrice = cartProducts.reduce(
-    (accumulator, currentValue) => accumulator + currentValue.price,
-    0,
-  );
+  // const totalPrice = cartProducts.reduce(
+  // (accumulator, currentValue) => accumulator + currentValue.price,
+  // 0,
+  // );
+  let totalPrice = 0;
+  cartProducts.forEach((product) => {
+    totalPrice += parseInt(product.price, 10);
+  });
 
   const order = await prisma.order.create({
     data: {
